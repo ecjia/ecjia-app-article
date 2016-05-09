@@ -1,9 +1,8 @@
 <?php
-
 /**
  * 文章及文章分类相关函数库
  */
-defined ( 'IN_ECJIA' ) or exit ( 'No permission resources.' );
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 获得文章关联的商品--原global.func
@@ -12,22 +11,21 @@ defined ( 'IN_ECJIA' ) or exit ( 'No permission resources.' );
  * @param   integer $id
  * @return  array
  */
-function article_related_goods($id)
-{
+function article_related_goods($id) {
 	$db = RC_Loader::load_app_model('goods_article_viewmodel', 'article');
 
 	$db->view = array(
-			'goods' => array(
-					'type'  => Component_Model_View::TYPE_LEFT_JOIN,
-					'alias' => 'g',
-					'field' => "g.goods_id, g.goods_name, g.goods_thumb, g.goods_img, g.shop_price AS org_price,IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price,g.market_price, g.promote_price, g.promote_start_date, g.promote_end_date",
-					'on'    => 'g.goods_id  = ga.goods_id',
-			),
-			'member_price' => array(
-					'type'  => Component_Model_View::TYPE_LEFT_JOIN,
-					'alias' => 'mp',
-					'on'    => 'mp.goods_id = g.goods_id AND mp.user_rank = "'.$_SESSION['user_rank'].'"',
-			)
+		'goods' => array(
+			'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+			'alias' => 'g',
+			'field' => "g.goods_id, g.goods_name, g.goods_thumb, g.goods_img, g.shop_price AS org_price,IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price,g.market_price, g.promote_price, g.promote_start_date, g.promote_end_date",
+			'on'    => 'g.goods_id  = ga.goods_id',
+		),
+		'member_price' => array(
+			'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+			'alias' => 'mp',
+			'on'    => 'mp.goods_id = g.goods_id AND mp.user_rank = "'.$_SESSION['user_rank'].'"',
+		)
 	);
 
 	$res = $db->where(array('ga.article_id' => $id, 'g.is_on_sale' => 1, 'g.is_alone_sale' => 1, 'g.is_delete' => 0))->select();
@@ -36,8 +34,7 @@ function article_related_goods($id)
 		foreach ($res as $row){
 			$arr[$row['goods_id']]['goods_id']      = $row['goods_id'];
 			$arr[$row['goods_id']]['goods_name']    = $row['goods_name'];
-			//$arr[$row['goods_id']]['short_name']   = $GLOBALS['_CFG']['goods_name_length'] > 0 ? sub_str($row['goods_name'], $GLOBALS['_CFG']['goods_name_length']) : $row['goods_name'];
-			$arr[$row['goods_id']]['short_name']   = ecjia::config('goods_name_length') > 0 ? RC_String::sub_str($row['goods_name'], ecjia::config('goods_name_length')) : $row['goods_name'];
+			$arr[$row['goods_id']]['short_name']   	= ecjia::config('goods_name_length') > 0 ? RC_String::sub_str($row['goods_name'], ecjia::config('goods_name_length')) : $row['goods_name'];
 			$arr[$row['goods_id']]['goods_thumb']   = get_image_path($row['goods_id'], $row['goods_thumb'], true);
 			$arr[$row['goods_id']]['goods_img']     = get_image_path($row['goods_id'], $row['goods_img']);
 			$arr[$row['goods_id']]['market_price']  = price_format($row['market_price']);
@@ -52,7 +49,6 @@ function article_related_goods($id)
 			}
 		}
 	}
-
 	return $arr;
 }
 /**
@@ -62,16 +58,12 @@ function article_related_goods($id)
  *        	$article_id
  * @return $list
  */
-function get_article_goods($article_id)
-{
-	$db = RC_Loader::load_app_model( 'goods_article_viewmodel', 'goods');
+function get_article_goods($article_id) {
+	$db = RC_Loader::load_app_model('goods_article_viewmodel', 'goods');
 	$list = array();
-	$list = $db->join( 'goods' )->where(array('ga.article_id ' => $article_id))->select ();
-
+	$list = $db->join('goods')->where(array('ga.article_id ' => $article_id))->select();
 	return $list;
 }
-
-
 
 /**未调用方法汇总**----start**/
 /**
@@ -82,13 +74,9 @@ function get_article_goods($article_id)
  * @param
  *        	$article_id
  */
-function drop_link_goods($goods_id, $article_id)
-{
+function drop_link_goods($goods_id, $article_id) {
 	$db = RC_Loader::load_app_model('goods_article_model', 'goods');
-	$db->where( array(
-			'goods_id' => $goods_id,
-			'article_id' => $article_id
-	))->delete();
+	$db->where(array('goods_id' => $goods_id, 'article_id' => $article_id))->delete();
 }
 
 /**
@@ -98,16 +86,15 @@ function drop_link_goods($goods_id, $article_id)
  * @param   integer     $article_id
  * @return  array
  */
-function get_article_info($article_id)
-{
+function get_article_info($article_id) {
 	$db = RC_Loader::load_app_model('article_viewmodel', 'article');
 	$db->view = array(
-			'comment' => array(
-					'type'  => Component_Model_View::TYPE_LEFT_JOIN,
-					'alias' => 'r',
-					'field' => 'a.*, IFNULL(AVG(r.comment_rank), 0) AS comment_rank',
-					'on'    => 'r.id_value = a.article_id AND comment_type = 1',
-			),
+		'comment' => array(
+			'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+			'alias' => 'r',
+			'field' => 'a.*, IFNULL(AVG(r.comment_rank), 0) AS comment_rank',
+			'on'    => 'r.id_value = a.article_id AND comment_type = 1',
+		),
 	);
 	$row = $db->group('a.article_id')->find(array('a.is_open' => 1, 'a.article_id' => $article_id));
 	if ($row !== false) {
@@ -134,8 +121,7 @@ function get_article_info($article_id)
  *
  * @return array
  */
-function get_cat_articles($cat_id, $page = 1, $size = 20, $requirement = '')
-{
+function get_cat_articles($cat_id, $page = 1, $size = 20, $requirement = '') {
 	$db_article = RC_Loader::load_app_model ( 'article_model', 'article');
 
 	// 取出所有非0的文章
@@ -158,16 +144,14 @@ function get_cat_articles($cat_id, $page = 1, $size = 20, $requirement = '')
 	if ($res) {
 		foreach( $res as $row ) {
 			$article_id = $row['article_id'];
-				
 			$arr[$article_id]['id'] 			= $article_id;
-			$arr[$article_id]['title']	    = $row['title'];
-			$arr[$article_id]['short_title'] = ecjia::config('article_title_length') > 0 ? RC_String::sub_str($row ['title'], ecjia::config('article_title_length')) : $row ['title'];
+			$arr[$article_id]['title']	    	= $row['title'];
+			$arr[$article_id]['short_title'] 	= ecjia::config('article_title_length') > 0 ? RC_String::sub_str($row ['title'], ecjia::config('article_title_length')) : $row ['title'];
 			$arr[$article_id]['author'] 		= empty ( $row ['author'] ) || $row ['author'] == '_SHOPHELP' ? ecjia::config ( 'shop_name' ) : $row ['author'];
-			$arr[$article_id]['url'] 		= $row['open_type'] != 1 ? build_uri( 'article', array('aid' => $article_id), $row ['title']) : trim($row ['file_url']);
-			$arr[$article_id]['add_time']   = date( ecjia::config( 'date_format' ), $row['add_time'] );
+			$arr[$article_id]['url'] 			= $row['open_type'] != 1 ? build_uri( 'article', array('aid' => $article_id), $row ['title']) : trim($row ['file_url']);
+			$arr[$article_id]['add_time']   	= date( ecjia::config( 'date_format' ), $row['add_time'] );
 		}
 	}
-
 	return $arr;
 }
 
@@ -178,8 +162,7 @@ function get_cat_articles($cat_id, $page = 1, $size = 20, $requirement = '')
  *
  * @return integer
  */
-function get_article_count($cat_id, $requirement = '')
-{
+function get_article_count($cat_id, $requirement = '') {
 	$db_article = RC_Loader::load_app_model( 'article_model', 'article');
 	RC_Loader::load_app_func( 'common', 'goods');
 	if ($requirement != '') {
@@ -191,10 +174,6 @@ function get_article_count($cat_id, $requirement = '')
 }
 /***未调用方法汇总*----end**/
 
-
-
-
-
 /**
  * 获得指定文章分类下所有底层分类的ID
  *
@@ -202,12 +181,10 @@ function get_article_count($cat_id, $requirement = '')
  * @param integer $cat 指定的分类ID
  * @return void
  */
-function get_article_children($cat = 0)
-{
-	RC_Loader::load_app_func('common','goods');
+function get_article_children($cat = 0) {
+	RC_Loader::load_app_func('common', 'goods');
 	return db_create_in( array_unique( array_merge( array( $cat ), array_keys(article_cat_list($cat, 0, false) )) ), 'cat_id' );
 }
-
 
 /**
  * 获得指定分类下的子分类的数组
@@ -223,14 +200,10 @@ function get_article_children($cat = 0)
  *        	限定返回的级数。为0时返回所有级数
  * @return mix
  */
-function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0) 
-{
+function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0) {
 	$dbview = RC_Loader::load_app_model('article_cat_viewmodel', 'article');
 	
-	$res = $dbview->join(array('article_cat','article'))->where( 'c.parent_id not in (1,2,3) and c.cat_id<>1' )->group ( 'c.cat_id' )->order ( array (
-			'parent_id' => 'asc',
-			'sort_order' => 'ASC' 
-		))->select ();
+	$res = $dbview->join(array('article_cat','article'))->where('c.parent_id not in (1,2,3) and c.cat_id<>1')->group('c.cat_id')->order(array('parent_id' => 'asc', 'sort_order' => 'ASC'))->select();
 	if (empty($res) == true) {
 		return $re_type ? '' : array ();
 	}
@@ -276,7 +249,6 @@ function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 
 			}
 			$select .= htmlspecialchars ( addslashes ( $var['cat_name'] ) ) . '</option>';
 		}
-		
 		return $select;
 	} else {
 		if (!empty($options)) {
@@ -287,7 +259,6 @@ function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 
 		return $options;
 	}
 }
-
 
 /**
  * 过滤和排序所有文章分类，返回一个带有缩进级别的数组
@@ -301,8 +272,7 @@ function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 
  *        	级别
  * @return void
  */
-function article_cat_options($spec_cat_id, $arr) 
-{
+function article_cat_options($spec_cat_id, $arr) {
 	static $cat_options = array ();
 	
 	if (isset ( $cat_options [$spec_cat_id] )) {
@@ -318,7 +288,7 @@ function article_cat_options($spec_cat_id, $arr)
 					if ($value ['parent_id'] > 0) {
 						break;
 					}
-					
+
 					$options [$cat_id] = $value;
 					$options [$cat_id] ['level'] = $level;
 					$options [$cat_id] ['id'] = $cat_id;
@@ -411,279 +381,6 @@ function article_cat_options($spec_cat_id, $arr)
 	}
 }
 
-// /**
-//  * 获得指定分类下的子分类的数组
-//  *
-//  * @access public
-//  * @param int $cat_id
-//  *        	分类的ID
-//  * @param int $selected
-//  *        	当前选中分类的ID
-//  * @param boolean $re_type
-//  *        	返回的类型: 值为真时返回下拉列表,否则返回数组
-//  * @param int $level
-//  *        	限定返回的级数。为0时返回所有级数
-//  * @param int $is_show_all
-//  *        	如果为true显示所有分类，如果为false隐藏不可见分类。
-//  * @return mix
-//  */
-// function cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0, $is_show_all = true) 
-// {
-// 	$db_goods = RC_Loader::load_app_model ( 'goods_model', 'goods');
-// 	$db_category = RC_Loader::load_app_model ( 'sys_category_viewmodel', 'goods');
-// 	$db_goods_cat = RC_Loader::load_app_model ( 'goods_cat_viewmodel', 'goods');
-// 	static $res = NULL;
-	
-// 	if ($res === NULL) {
-// 		$data = false;
-// 		// $data = read_static_cache('cat_pid_releate');
-// 		if ($data === false) {
-			
-// 			$res = $db_category->join( 'category' )->group ( 'c.cat_id' )->order ( array (
-// 					'c.parent_id' => 'asc',
-// 					'c.sort_order' => 'asc' 
-// 				))->select ();
-// 			$res2 = $db_goods->field ( 'cat_id, COUNT(*)|goods_num' )->where ( 'is_delete = 0 AND is_on_sale = 1 ' )->group ( 'cat_id asc' )->select ();
-// 			$res3 = $db_goods_cat->join ( 'goods' )->where ( "g.is_delete = 0 AND g.is_on_sale = 1" )->group ( 'gc.cat_id' )->select ();
-			
-// 			$newres = array ();
-// 			foreach ( $res2 as $k => $v ) {
-// 				$newres [$v ['cat_id']] = $v ['goods_num'];
-// 				foreach ( $res3 as $ks => $vs ) {
-// 					if ($v ['cat_id'] == $vs ['cat_id']) {
-// 						$newres [$v ['cat_id']] = $v ['goods_num'] + $vs ['goods_num'];
-// 					}
-// 				}
-// 			}
-// 			if (! empty ( $res )) {
-// 				foreach ( $res as $k => $v ) {
-// 					$res [$k] ['goods_num'] = ! empty ( $newres [$v ['cat_id']] ) ? $newres [$v ['cat_id']] : 0;
-// 				}
-// 			}
-// 			// 如果数组过大，不采用静态缓存方式
-// 			if (count ( $res ) <= 1000) {
-// 				// write_static_cache('cat_pid_releate', $res);
-// 			}
-// 		} else {
-// 			$res = $data;
-// 		}
-// 	}
-// 	if (empty ( $res ) == true) {
-// 		return $re_type ? '' : array ();
-// 	}
-	
-// 	$options = cat_options ( $cat_id, $res ); // 获得指定分类下的子分类的数组
-// 	$children_level = 99999; // 大于这个分类的将被删除
-// 	if ($is_show_all == false) {
-// 		foreach ( $options as $key => $val ) {
-// 			if ($val ['level'] > $children_level) {
-// 				unset ( $options [$key] );
-// 			} else {
-// 				if ($val ['is_show'] == 0) {
-// 					unset ( $options [$key] );
-// 					if ($children_level > $val ['level']) {
-// 						$children_level = $val ['level']; // 标记一下，这样子分类也能删除
-// 					}
-// 				} else {
-// 					$children_level = 99999; // 恢复初始值
-// 				}
-// 			}
-// 		}
-// 	}
-	
-// 	/* 截取到指定的缩减级别 */
-// 	if ($level > 0) {
-// 		if ($cat_id == 0) {
-// 			$end_level = $level;
-// 		} else {
-// 			$first_item = reset ( $options ); // 获取第一个元素
-// 			$end_level = $first_item ['level'] + $level;
-// 		}
-		
-// 		/* 保留level小于end_level的部分 */
-// 		foreach ( $options as $key => $val ) {
-// 			if ($val ['level'] >= $end_level) {
-// 				unset ( $options [$key] );
-// 			}
-// 		}
-// 	}
-	
-// 	if ($re_type == true) {
-// 		$select = '';
-// 		if (! empty ( $options )) {
-// 			foreach ( $options as $var ) {
-// 				$select .= '<option value="' . $var ['cat_id'] . '" ';
-// 				$select .= ($selected == $var ['cat_id']) ? "selected='ture'" : '';
-// 				$select .= '>';
-// 				if ($var ['level'] > 0) {
-// 					$select .= str_repeat ( '&nbsp;', $var ['level'] * 4 );
-// 				}
-// 				$select .= htmlspecialchars ( addslashes ( $var ['cat_name'] ), ENT_QUOTES ) . '</option>';
-// 			}
-// 		}
-// 		return $select;
-// 	} else {
-// 		if (! empty ( $options )) {
-// 			foreach ( $options as $key => $value ) {
-// 				$options [$key] ['url'] = build_uri ( 'category', array (
-// 						'cid' => $value ['cat_id'] 
-// 				), $value ['cat_name'] );
-// 			}
-// 		}
-// 		return $options;
-// 	}
-// }
-
-// /**
-//  * 过滤和排序所有分类，返回一个带有缩进级别的数组
-//  *
-//  * @access private
-//  * @param int $cat_id
-//  *        	上级分类ID
-//  * @param array $arr
-//  *        	含有所有分类的数组
-//  * @param int $level
-//  *        	级别
-//  * @return void
-//  */
-// function cat_options($spec_cat_id, $arr) 
-// {
-// 	static $cat_options = array();
-// 	if (isset( $cat_options[$spec_cat_id] )) {
-// 		return $cat_options[$spec_cat_id];
-// 	}
-	
-// 	if (! isset( $cat_options [0] )) {
-// 		$level   = $last_cat_id = 0;
-// 		$options = $cat_id_array = $level_array = array ();
-// 		// $data = read_static_cache('cat_option_static');
-// 		$data = false;
-// 		if ($data === false) {
-// 			while( !empty( $arr ) ) {
-// 				foreach ( $arr as $key => $value ) {
-// 					$cat_id = $value ['cat_id'];
-// 					if ($level == 0 && $last_cat_id == 0) {
-// 						if ($value ['parent_id'] > 0) {
-// 							break;
-// 						}
-						
-// 						$options[$cat_id] = $value;
-// 						$options[$cat_id]['level'] = $level;
-// 						$options[$cat_id]['id'] = $cat_id;
-// 						$options[$cat_id]['name'] = $value ['cat_name'];
-// 						unset ( $arr [$key] );
-// 						if ($value['has_children'] == 0) {
-// 							continue;
-// 						}
-// 						$last_cat_id = $cat_id;
-// 						$cat_id_array = array($cat_id);
-// 						$level_array [$last_cat_id] = ++ $level;
-// 						continue;
-// 					}
-					
-// 					if ($value['parent_id'] == $last_cat_id) {
-// 						$options[$cat_id] = $value;
-// 						$options[$cat_id]['level'] = $level;
-// 						$options[$cat_id]['id'] = $cat_id;
-// 						$options[$cat_id]['name'] = $value['cat_name'];
-// 						unset ( $arr[$key] );
-						
-// 						if ($value['has_children'] > 0) {
-// 							if (end( $cat_id_array ) != $last_cat_id) {
-// 								$cat_id_array[] = $last_cat_id;
-// 							}
-// 							$last_cat_id = $cat_id;
-// 							$cat_id_array[] = $cat_id;
-// 							$level_array[$last_cat_id] = ++ $level;
-// 						}
-// 					} elseif ($value['parent_id'] > $last_cat_id) {
-// 						break;
-// 					}
-// 				}
-				
-// 				$count = count( $cat_id_array );
-// 				if ($count > 1) {
-// 					$last_cat_id = array_pop( $cat_id_array );
-// 				} elseif ($count == 1) {
-// 					if ($last_cat_id != end( $cat_id_array )) {
-// 						$last_cat_id = end( $cat_id_array );
-// 					} else {
-// 						$level = 0;
-// 						$last_cat_id = 0;
-// 						$cat_id_array = array ();
-// 						continue;
-// 					}
-// 				}
-				
-// 				if ($last_cat_id && isset ( $level_array[$last_cat_id] )) {
-// 					$level = $level_array[$last_cat_id];
-// 				} else {
-// 					$level = 0;
-// 				}
-// 			}
-// 			// 如果数组过大，不采用静态缓存方式
-// 			if (count( $options ) <= 2000) {
-// 				// write_static_cache('cat_option_static', $options);
-// 			}
-// 		} else {
-// 			$options = $data;
-// 		}
-// 		$cat_options[0] = $options;
-// 	} else {
-// 		$options = $cat_options [0];
-// 	}
-	
-// 	if (! $spec_cat_id) {
-// 		return $options;
-// 	} else {
-// 		if (empty ( $options[$spec_cat_id] )) {
-// 			return array ();
-// 		}
-		
-// 		$spec_cat_id_level = $options[$spec_cat_id]['level'];
-		
-// 		foreach ( $options as $key => $value ) {
-// 			if ($key != $spec_cat_id) {
-// 				unset ( $options[$key] );
-// 			} else {
-// 				break;
-// 			}
-// 		}
-		
-// 		$spec_cat_id_array = array ();
-// 		foreach ( $options as $key => $value ) {
-// 			if (($spec_cat_id_level == $value['level'] && $value['cat_id'] != $spec_cat_id) || ($spec_cat_id_level > $value['level'])) {
-// 				break;
-// 			} else {
-// 				$spec_cat_id_array[$key] = $value;
-// 			}
-// 		}
-// 		$cat_options[$spec_cat_id] = $spec_cat_id_array;
-		
-// 		return $spec_cat_id_array;
-// 	}
-// }
-
-// /**
-//  * 取得品牌列表
-//  * 
-//  * @return array 品牌列表 id => name
-//  */
-// function get_brand_list() 
-// {
-// 	$db = RC_Loader::load_app_model( 'brand_model', 'goods');
-	
-// 	$res = $db->field( 'brand_id, brand_name' )->order( 'sort_order asc' )->select();
-// 	$brand_list = array();
-// 	if (! empty( $res )) {
-// 		foreach( $res as $row ) {
-// 			$brand_list[$row['brand_id']] = addslashes ( $row['brand_name'] );
-// 		}
-// 	}
-// 	return $brand_list;
-// }
-
-
 /**
  * 获得商品列表
  *
@@ -696,8 +393,7 @@ function article_cat_options($spec_cat_id, $arr)
  *            s integer $conditions
  * @return array
  */
-function goods_list($is_delete, $real_goods = 1, $conditions = '')
-{
+function goods_list($is_delete, $real_goods = 1, $conditions = '') {
 	$db = RC_Loader::load_app_model('goods_auto_viewmodel', 'goods');
 	/* 过滤条件 */
 	$param_str = '-' . $is_delete . '-' . $real_goods;
@@ -780,11 +476,7 @@ function goods_list($is_delete, $real_goods = 1, $conditions = '')
 	RC_Loader::load_sys_class('ecjia_page', false);
 	$count = $db->join(null)->where('is_delete = ' . $is_delete . '' . $where)->count();
 
-	$count_where = array(
-			'is_delete' => $is_delete,
-			'is_real' => 1,
-			'is_on_sale' => 1
-	);
+	$count_where = array('is_delete' => $is_delete, 'is_real' => 1, 'is_on_sale' => 1);
 
 	if ($filter ['extension_code']) {
 		$count_where['is_real'] = 0;
@@ -805,12 +497,6 @@ function goods_list($is_delete, $real_goods = 1, $conditions = '')
 	$filter ['count_goods_num']	= $count_not_sale + $count_on_sale;
 	$filter ['count']			= $count;
 	$row = $sql;
-	return array(
-			'goods'		=> $row,
-			'filter'	=> $filter,
-			'page'		=> $page->show(5),
-			'desc'		=> $page->page_desc()
-	);
+	return array('goods' => $row, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
 }
-
 // end

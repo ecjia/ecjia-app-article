@@ -39,7 +39,7 @@ class admin_article_auto extends ecjia_admin
 
 	public function init() 
 	{
-		$this->admin_priv('article_auto_manage',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
 		$goodsdb = $this->get_auto_goods();
 		$this->assign('full_page', 	   1);
 		$this->assign('ur_here',   	   RC_Lang::lang('article_auto'));
@@ -57,7 +57,7 @@ class admin_article_auto extends ecjia_admin
 		$goods_id = intval($_GET['goods_id']);
 		$links[]  = array('text' => RC_Lang::lang('article_auto'), 'href' => RC_Uri::url('article/article_auto/init'));
 		$this->db_auto_manage->where(array('item_id' => $goods_id, 'type' => 'article'))->delete();
-		$this->showmessage(RC_Lang::lang('edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('links' => $links));
+		$this->showmessage(RC_Lang::lang('edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links));
 	}
 	
 	
@@ -130,8 +130,8 @@ class admin_article_auto extends ecjia_admin
 				$this->db_auto_manage->where(array('starttime' => strval($date)))->update($data);
 			}
 			
-			$lnk[] = array('text' => RC_Lang::lang('back_list'), 'href' => RC_Uri::url('article/article_auto/init'));
-			$this->showmessage(RC_Lang::lang('batch_start_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $lnk));
+			$links[] = array('text' => RC_Lang::lang('back_list'), 'href' => RC_Uri::url('article/article_auto/init'));
+			$this->showmessage(RC_Lang::lang('batch_start_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links));
 		}
 	}
 	
@@ -162,8 +162,8 @@ class admin_article_auto extends ecjia_admin
 				$this->db_auto_manage->where(array('endtime' => strval($date)))->update($data);
 			}
 			
-			$lnk[] = array('text' => RC_Lang::lang('back_list'), 'href' => RC_Uri::url('article/admin_article_auto/init'));
-			$this->showmessage(RC_Lang::lang('batch_end_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $lnk));
+			$links[] = array('text' => RC_Lang::lang('back_list'), 'href' => RC_Uri::url('article/admin_article_auto/init'));
+			$this->showmessage(RC_Lang::lang('batch_end_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links));
 		}
 	}
 	

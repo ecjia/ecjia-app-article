@@ -41,6 +41,5 @@
 			<!-- {/foreach} -->
 		</tbody>
 	</table>
-	<!-- {$ads_list.page} -->
 </div>
 <!-- {/block} -->

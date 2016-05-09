@@ -3,13 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-	// var action_url = "{RC_Uri::admin_url('upload.php')}";
 	ecjia.admin.article_info.init();
-	// var articleId = {$article.article_id|default:0};
-	// var elements  = document.forms['infoForm'].elements;
-// 	var selectzone  = new ecjia.selectzone(1, elements['source_select[]'], elements['target_select[]'], '','index.php?m=article&c=admin');
-
-
 </script>
 <!-- {/block} -->
 
@@ -22,6 +16,7 @@
 		{/if}
 	</h3>
 </div>
+
 <!-- start goods form -->
 <div class="row-fluid ">
 	<div class="span12">
@@ -155,16 +150,12 @@
 															</tbody>
 														</table>
 													</div>
-
-
 	 												<!-- 自定义栏目模板区域 END -->
-
 												</div>
 											</div>
 										</div>
 									</div>
 									<!-- {/if} -->
-
 								</div>
 								<!-- 右边 -->
 								<div class="right-bar move-mod">
@@ -301,8 +292,6 @@
 					<div class="span12 move-mod">
 					</div>
 				</div>
-
-
 				<h3 class="heading">
 					文章内容
 				</h3>

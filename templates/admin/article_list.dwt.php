@@ -63,55 +63,51 @@
 	</form>
 </div>
 	
-	<div class="row-fluid">
-		<div class="span12">
-			<form method="POST" action="{$form_action}" name="listForm" data-pjax-url="{RC_Uri::url('article/admin/init')}">
-				<div class="row-fluid">
-					<table class="table table-striped smpl_tbl table-hide-edit">
-						<thead>
-							<tr>
-							    <th class="table_checkbox"><input type="checkbox" name="select_rows" data-toggle="selectall" data-children=".checkbox"/></th>
-							    <th class="w500">{$lang.title}</th>
-							    <th class="w200">{$lang.cat}</th>
-							    <th class="w200">{$lang.add_time}</th>
-							    <th class="w100">{$lang.is_open}</th>
-						  	</tr>
-						</thead>
-						<tbody>
-							<!-- {foreach from=$article_list.arr item=list} -->
-							<tr>
-							    <td>
-							         <span><input type="checkbox" name="checkboxes[]" class="checkbox" value="{$list.article_id}" {if $list.cat_id lte 0 }disabled="disabled"{/if}/></span>
-							    </td>
-							    <td class="hide-edit-area">
-							    	<span class="cursor_pointer" data-text="textarea" data-trigger="editable" data-url="{RC_Uri::url('article/admin/edit_title')}" data-name="{$list.cat_id}" data-pk="{$list.article_id}" data-title="编辑文章名称" >{$list.title}</span>
-							    	<div class="edit-list">
-										{assign var=view_url value=RC_Uri::url('article/admin/preview',"id={$list.article_id}")}
-								      	<a class="data-pjax" href="{$view_url}" title="{$lang.view}">{t}预览{/t}</a>&nbsp;|&nbsp;
-								      	{assign var=edit_url value=RC_Uri::url('article/admin/edit',"id={$list.article_id}")}
-								      	<a class="data-pjax" href="{$edit_url}" title="{$lang.edit}">{t}编辑{/t}</a>&nbsp;|&nbsp; 
-								      	{if $has_goods}
-								      	<a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$list.article_id}"}' title="关联商品">关联商品</a>&nbsp;|&nbsp; 
-								      	{/if}
-								     	<!-- {if $list.cat_id > 0} -->
-								     	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{t}您确定要删除文章[{$list.title}]吗？{/t}" href='{RC_Uri::url("article/admin/remove","id={$list.article_id}")}' title="{t}移除{/t}">{t}删除{/t}</a>
-								     	<!-- {/if} -->
-								     </div>
-								</td>
-							    <td><span><!-- {if $list.cat_id > 0} -->{$list.cat_name|escape:html}<!-- {else} -->{$lang.reserve}<!-- {/if} --></span></td>
-							    <td><span>{$list.date}</span><br><span>{if $list.article_type eq 0}{$lang.common}{else}{$lang.top}{/if}</span></td>
-							    <td>
-						    	<i class="{if $list.is_open eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url="{RC_Uri::url('article/admin/toggle_show')}" data-id="{$list.article_id}" ></i>
-							    </td>
-							</tr>
-							<!-- {foreachelse} -->
-							   <tr><td class="no-records" colspan="10">{t}没有找到任何记录{/t}</td></tr>
-							<!-- {/foreach} -->
-			            </tbody>
-			         </table>
-		         </div>
-	         </form>
-         </div>
+<div class="row-fluid">
+	<div class="span12">
+		<form method="POST" action="{$form_action}" name="listForm" data-pjax-url="{RC_Uri::url('article/admin/init')}">
+			<table class="table table-striped smpl_tbl table-hide-edit">
+				<thead>
+					<tr>
+					    <th class="table_checkbox"><input type="checkbox" name="select_rows" data-toggle="selectall" data-children=".checkbox"/></th>
+					    <th class="w500">{$lang.title}</th>
+					    <th class="w200">{$lang.cat}</th>
+					    <th class="w200">{$lang.add_time}</th>
+					    <th class="w100">{$lang.is_open}</th>
+				  	</tr>
+				</thead>
+				<tbody>
+					<!-- {foreach from=$article_list.arr item=list} -->
+					<tr>
+					    <td>
+					         <span><input type="checkbox" name="checkboxes[]" class="checkbox" value="{$list.article_id}" {if $list.cat_id lte 0 }disabled="disabled"{/if}/></span>
+					    </td>
+					    <td class="hide-edit-area">
+					    	<span class="cursor_pointer" data-text="textarea" data-trigger="editable" data-url="{RC_Uri::url('article/admin/edit_title')}" data-name="{$list.cat_id}" data-pk="{$list.article_id}" data-title="编辑文章名称" >{$list.title}</span>
+					    	<div class="edit-list">
+						      	<a class="data-pjax" href='{RC_Uri::url("article/admin/preview", "id={$list.article_id}")}' title="{$lang.view}">{t}预览{/t}</a>&nbsp;|&nbsp;
+						      	<a class="data-pjax" href='{RC_Uri::url("article/admin/edit", "id={$list.article_id}")}' title="{$lang.edit}">{t}编辑{/t}</a>&nbsp;|&nbsp; 
+						      	{if $has_goods}
+						      	<a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$list.article_id}"}' title="关联商品">关联商品</a>&nbsp;|&nbsp; 
+						      	{/if}
+						     	<!-- {if $list.cat_id > 0} -->
+						     	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{t}您确定要删除文章[{$list.title}]吗？{/t}" href='{RC_Uri::url("article/admin/remove","id={$list.article_id}")}' title="{t}移除{/t}">{t}删除{/t}</a>
+						     	<!-- {/if} -->
+						     </div>
+						</td>
+					    <td><span><!-- {if $list.cat_id > 0} -->{$list.cat_name|escape:html}<!-- {else} -->{$lang.reserve}<!-- {/if} --></span></td>
+					    <td><span>{$list.date}</span><br><span>{if $list.article_type eq 0}{$lang.common}{else}{$lang.top}{/if}</span></td>
+					    <td>
+				    	<i class="{if $list.is_open eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url="{RC_Uri::url('article/admin/toggle_show')}" data-id="{$list.article_id}" ></i>
+					    </td>
+					</tr>
+					<!-- {foreachelse} -->
+					   <tr><td class="no-records" colspan="10">{t}没有找到任何记录{/t}</td></tr>
+					<!-- {/foreach} -->
+	            </tbody>
+	         </table>
+	         <!-- {$article_list.page} -->
+		</form>
 	</div>
-	<!-- {$article_list.page} -->
+</div>
 <!-- {/block} -->

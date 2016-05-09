@@ -27,7 +27,6 @@
 						<i class="open_state is_open" id="icon_{$cat.level}_{$cat.cat_id}" style="margin-left:{$cat.level}em" onclick='ecjia.admin.article_cat_list.rowClicked(this);'></i>
 						<span><a  href="index.php?m=article&c=admin&a=init&amp;cat_id={$cat.cat_id}">{$cat.cat_name|escape}</a></span>
 					</td>
-			
 					<td>
 						<span  class="cursor_pointer" data-trigger="editable" data-url="{url path='article/admin_articlecat/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="请输入排序序号"> 
 							{$cat.sort_order}

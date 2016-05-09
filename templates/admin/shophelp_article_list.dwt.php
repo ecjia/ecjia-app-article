@@ -23,7 +23,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<!-- {foreach from=$list.row item=item}-->
+			<!-- {foreach from=$list.item item=item}-->
 			<tr>
 				<td>
 					<input type="hidden" value="{$item.article_id}" />
@@ -34,7 +34,7 @@
 				<td align="right">
 					<span>
 						<a class="data-pjax no-underline" href='{url path="article/admin_shophelp/edit" args="cat_id=$cat_id&id={$item.article_id}"}' title="{$lang.edit}"><i class="fontello-icon-edit"></i></a>
-						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除帮助文章[{$item.title}]吗？{/t}" href='{RC_Uri::url("article/admin_shophelp/remove_art","id={$item.article_id}")}' title="{t}移除{/t}"><i class="fontello-icon-trash"></i></a>
+						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除帮助文章[{$item.title}]吗？{/t}" href='{RC_Uri::url("article/admin_shophelp/remove_art", "id={$item.article_id}")}' title="{t}移除{/t}"><i class="fontello-icon-trash"></i></a>
 					</span>
 				</td>
 			</tr>
@@ -43,6 +43,6 @@
 			<!-- {/foreach} -->
 		</tbody>
 	</table>
-	<!-- {$ads_list.page} -->
+	<!-- {$list.page} -->
 </div>
 <!-- {/block} -->

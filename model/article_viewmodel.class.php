@@ -11,12 +11,12 @@ class article_viewmodel extends Component_Model_View {
 		$this->table_alias_name = 'a';
 
 		$this->view = array(
-				'article_cat' => array(
-						'type'  =>	Component_Model_View::TYPE_LEFT_JOIN,
-						'alias' => 	'ac',
-						'field' => 	'a.article_id, a.title, ac.cat_name, a.add_time, a.file_url, a.open_type, ac.cat_id, ac.cat_name, a.link, a.content, ac.sort_order',
-						'on'    => 	'ac.cat_id  = a.cat_id',
-				),
+			'article_cat' => array(
+				'type'  =>	Component_Model_View::TYPE_LEFT_JOIN,
+				'alias' => 	'ac',
+				'field' => 	'a.article_id, a.title, ac.cat_name, a.add_time, a.file_url, a.open_type, ac.cat_id, ac.cat_name, a.link, a.content, ac.sort_order',
+				'on'    => 	'ac.cat_id  = a.cat_id',
+			),
 		);
 		
 		parent::__construct();

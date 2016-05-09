@@ -23,7 +23,7 @@
         </form>
 	</div>
 	<div class="right-bar">
-			<table class="table dataTable table-hide-edit">
+		<table class="table dataTable table-hide-edit">
 			<thead>
 				<tr>
 					<th class="w350">{$lang.cat_name}</th>
@@ -32,7 +32,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- {foreach from=$list  item=item} -->
+				<!-- {foreach from=$list item=item} -->
 				<tr>
 					<td>
 						<span class="article_edit_catname cursor_pointer"  data-trigger="editable" data-url="{RC_Uri::url('article/admin_shophelp/edit_catname')}" data-name="title" data-pk="{$item.cat_id}"  data-title="编辑帮助分类名称">{$item.cat_name|escape:html}</span>
@@ -55,5 +55,4 @@
 		</table>
 	</div>
 </div>
-<!-- {$article_list.page} -->
 <!-- {/block} -->

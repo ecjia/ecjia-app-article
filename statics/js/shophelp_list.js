@@ -15,15 +15,6 @@
 						dataType:"json",
 						success:function(data){
 							if (data.state == "success") {
-								if(data.pjax) {
-									var url = data.pjax;
-									ecjia.pjax(url, function(){
-										ecjia.admin.showmessage(data);
-									});
-								} else {
-									ecjia.admin.showmessage(data);
-								}
-							} else {
 								ecjia.admin.showmessage(data);
 							}	
 						}
