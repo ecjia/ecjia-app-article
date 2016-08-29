@@ -12,14 +12,25 @@ class article_viewmodel extends Component_Model_View {
 
 		$this->view = array(
 			'article_cat' => array(
-				'type'  =>	Component_Model_View::TYPE_LEFT_JOIN,
-				'alias' => 	'ac',
-				'field' => 	'a.article_id, a.title, ac.cat_name, a.add_time, a.file_url, a.open_type, ac.cat_id, ac.cat_name, a.link, a.content, ac.sort_order',
-				'on'    => 	'ac.cat_id  = a.cat_id',
+				'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+				'alias' => 'ac',
+				'on'    => 'ac.cat_id = a.cat_id',
+			),
+			'auto_manage' => array(
+				'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+				'alias' => 'am',
+				'on'    => 'a.article_id = am.item_id AND am.type = "article"',
 			),
 		);
-		
 		parent::__construct();
+	}
+	
+	public function article_count($where = array(), $table = null, $field = '*') {
+		return $this->join($table)->where($where)->count($field);
+	}
+	
+	public function article_select($option) {
+		return $this->join($option['table'])->field($option['field'])->where($option['where'])->order($option['order'])->limit($option['limit'])->select();
 	}
 }
 

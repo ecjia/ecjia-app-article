@@ -1,202 +1,224 @@
 <?php
 /**
  * ECJIA 文章自动发布管理
+ *  @author songqian
+ *  
  */
 defined('IN_ECJIA') or exit('No permission resources.');
 
-class admin_article_auto extends ecjia_admin 
-{
-	private $db_crons;
-	private $db_auto_manage;
-	public function __construct() 
-	{
+class admin_article_auto extends ecjia_admin {
+    private $db_article_view;
+    private $db_article;
+    private $db_auto_manage;
+    private $db_crons;
+    
+	public function __construct() {
 		parent::__construct();
-		RC_Lang::load('article');
-		/* 数据模型加载 */
-		//$this->db_crons       = RC_Loader::load_app_model('crons_model', 'cronjob');
-		$this->db_auto_manage = RC_Loader::load_app_model('auto_manage_model', 'article');
 		
-		/* 加载全局 js/css */
+		RC_Loader::load_app_func('global');
+		assign_adminlog_contents();
+		
+		$this->db_article_view 	= RC_Loader::load_app_model('article_viewmodel');
+		$this->db_article		= RC_Loader::load_app_model('article_model');
+		$this->db_auto_manage	= RC_Loader::load_app_model('article_auto_manage_model');
+		
+		/*加载全局JS及CSS*/
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('jquery-form');
+		RC_Script::enqueue_script('bootstrap-placeholder');
 		RC_Script::enqueue_script('smoke');
-
 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
-
-		RC_Style::enqueue_style('chosen');
-		RC_Style::enqueue_style('uniform-aristo');
-		RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
+		RC_Script::enqueue_script('moment.min', RC_Uri::admin_url('statics/lib/moment_js/moment.min.js'));
 		RC_Script::enqueue_script('jquery-uniform');
+		RC_Style::enqueue_style('uniform-aristo');
 		RC_Script::enqueue_script('jquery-chosen');
-		RC_Script::enqueue_script('article_auto',RC_App::apps_url('statics/js/article_auto.js', __FILE__), array(), false, true);
-		RC_Script::enqueue_script('bootstrap-datepicker', RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'));
-
-		RC_Loader::load_sys_class('ecjia_page', false);
-
+		RC_Style::enqueue_style('chosen');
+		RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'), array(), false, false);
+		RC_Script::enqueue_script('bootstrap-datepicker.min', RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'), array(), false, false);
+		RC_Script::enqueue_script('article_auto', RC_App::apps_url('statics/js/article_auto.js', __FILE__));
+		
+		RC_Script::localize_script('article_auto', 'js_lang', RC_Lang::get('article::article.js_lang'));
 	}
 
-
-	public function init() 
-	{
-		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
-		$goodsdb = $this->get_auto_goods();
-		$this->assign('full_page', 	   1);
-		$this->assign('ur_here',   	   RC_Lang::lang('article_auto'));
-		$this->assign('goodsdb',       $goodsdb);
-		$this->assign('searcharticle', RC_Uri::url('article/admin_article_auto/init'));
+	public function init() {
+		$this->admin_priv('article_auto_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('文章自动发布')));
-		$this->assign_lang();
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_auto_release')));
+		
+		$this->assign('ur_here', RC_Lang::get('article::article.article_auto_release'));
+		$this->assign('search_action', RC_Uri::url('article/admin_article_auto/init'));
+		
+		$list = $this->get_auto_articles();
+        $crons_enable = RC_Api::api('cron', 'cron_info', array('cron_code' => 'cron_auto_manage'));
+
+		$this->assign('crons_enable', $crons_enable['enable']);
+		$this->assign('list', $list);
+
 		$this->display('article_auto.dwt');
 	}
 	
-	public function del() 
-	{
-		$this->admin_priv('article_auto_delete', ecjia::MSGTYPE_JSON);
-		$goods_id = intval($_GET['goods_id']);
-		$links[]  = array('text' => RC_Lang::lang('article_auto'), 'href' => RC_Uri::url('article/article_auto/init'));
-		$this->db_auto_manage->where(array('item_id' => $goods_id, 'type' => 'article'))->delete();
-		$this->showmessage(RC_Lang::lang('edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links));
+	public function batch() {
+		$this->admin_priv('article_auto_update');
+		
+		$type         = !empty($_GET['type'])         ? $_GET['type']         : '';
+		$article_id   = !empty($_POST['article_id'])  ? $_POST['article_id']  : '';
+		$page 		  = !empty($_GET['page'])         ? intval($_GET['page']) : 1;
+		$time 		  = !empty($_POST['select_time']) ? RC_Time::local_strtotime($_POST['select_time']) : '';
+		
+		if (empty($article_id)) {
+			$this->showmessage(RC_Lang::get('article::article.select_article_msg'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+			
+		if (empty($time)) {
+			$this->showmessage(RC_Lang::get('article::article.choose_time'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		
+		if ($type == 'batch_start') {
+			$message	= RC_Lang::get('article::article.batch_start_succeed');
+			$time_type 	= 'starttime';
+		} elseif ($type == 'batch_end') {
+			$message 	= RC_Lang::get('article::article.batch_end_succeed');
+			$time_type 	= 'endtime';
+		}
+		
+		$article_list = $this->db_auto_manage->auto_manage_field(array('type' => 'article'), 'item_id', true);
+		$id_arr = explode(',', $article_id);
+		
+		if (!empty($id_arr)) {
+			foreach ($id_arr as $k => $v) {
+				$data = array(
+					'item_id' 	=> $v,
+					'type'	  	=> 'article',
+					$time_type	=> $time
+				);
+				if (!empty($article_list)) {
+					if (in_array($v, $article_list)) {
+						$this->db_auto_manage->auto_manage($data, array('item_id' => $v, 'type' => 'article'));
+					} else {
+						$this->db_auto_manage->auto_manage($data);
+					}
+				} else {
+					$this->db_auto_manage->auto_manage($data);
+				}
+			}
+			$title_list = $this->db_article->article_field(array('article_id' => $id_arr), 'title', true);
+		}
+		
+		if (!empty($title_list)) {
+			foreach ($title_list as $v) {
+				ecjia_admin::admin_log(RC_Lang::get('article::article.article_name_is').$v, $type, 'article');
+			}
+		}
+		$this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init', array('page' => $page))));
+	}
+	
+	//撤销
+	public function del() {
+		$this->admin_priv('article_auto_delete');
+		
+		$id       = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+		$title    = $this->db_article->article_field(array('article_id' => $id), 'title');
+		
+		$this->db_auto_manage->auto_manage_delete(array('item_id' => $id , 'type' => 'article'));
+		
+		ecjia_admin::admin_log(RC_Lang::get('article::article.article_name_is').$title, 'cancel', 'article_auto');
+		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	
-	public function edit_starttime() 
-	{
-		$this->admin_priv('article_auto_update', ecjia::MSGTYPE_JSON);
-		$val = trim($_POST['val']);
-		if (! preg_match('/^\d{4}-\d{2}-\d{2}$/', $val) ) {
-			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	public function edit_starttime() {
+		$this->admin_priv('article_auto_update');
+		
+		$id		= !empty($_POST['pk']) 		? intval($_POST['pk']) 	: 0;
+		$value 	= !empty($_POST['value']) 	? trim($_POST['value']) : '';
+		$page 	= !empty($_GET['page']) 	? intval($_GET['page']) : 1;
+		
+		$val = '';
+		if (!empty($value)) {
+			$val = RC_Time::local_strtotime($value);
 		}
-		$id   = intval($_POST['id']);
-		$time = RC_Time::local_strtotime($val);
-		if ($id <= 0 || $_POST['val'] == '0000-00-00' || $time <= 0) {
-			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) || $value == '0000-00-00' || $val <= 0) {
+			$this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
+		
+		$count = $this->db_auto_manage->is_only(array('item_id' => $id, 'type' => 'article'));
+		
 		$data = array(
-			'item_id' 	=> $id,
-			'type'    	=> 'article',
-			'starttime'	=> $time
-		);
-		$this->db_auto_manage->where( array('starttime' => strval($time)) )->update($data);
-		$this->showmessage(RC_Lang::lang('edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($val), 'act' => 'article_auto', 'id' => $id));
-	}
-	
-	public function edit_endtime() 
-	{
-		$this->admin_priv('article_auto_update', ecjia::MSGTYPE_JSON);
-		$val = trim($_POST['val']);
-		if (! preg_match('/^\d{4}-\d{2}-\d{2}$/', $val) ) {
-			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
-
-		$id   = intval($_POST['id']);
-		$time = RC_Time::local_strtotime($val);
-		if ($id <= 0 || $_POST['val'] == '0000-00-00' || $time <= 0) {
-			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
-		$data = array(
-			'item_id' => $id,
-			'type'    => 'article',
-			'endtime' => $time
+			'item_id'	=> $id,
+			'type'		=> 'article',
+			'starttime' => $val
 		);
 		
-		$this->db_auto_manage->where(array('endtime' => strval($time)))->update($data);
-		$this->showmessage(RC_Lang::lang('edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($val), 'act' => 'article_auto', 'id' => $id));
-	}
-	
-	/**
-	 * 批量发布
-	 */
-	public function batch_start() 
-	{
-		$this->admin_priv('article_auto_update', ecjia::MSGTYPE_JSON);
-
-		if (!isset($_POST['checkboxes']) || !is_array($_POST['checkboxes'])) {
-			$this->showmessage(RC_Lang::lang('no_select_goods'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		if ($count == 0) {
+            $this->db_auto_manage->auto_manage($data);
 		} else {
-			$date = trim($_POST['date']);
-			if ($date == '0000-00-00') {
-				$date = 0;
-			} else {
-				$date = RC_Time::local_strtotime($date);
-			}
-			foreach($_POST['checkboxes'] as $id) {
-				$data = array(
-						'item_id' 	=> $id,
-						'type'    	=> 'article',
-						'starttime' => $date
-				);
-				$this->db_auto_manage->where(array('starttime' => strval($date)))->update($data);
-			}
-			
-			$links[] = array('text' => RC_Lang::lang('back_list'), 'href' => RC_Uri::url('article/article_auto/init'));
-			$this->showmessage(RC_Lang::lang('batch_start_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links));
+            $this->db_auto_manage->auto_manage($data, array('item_id' => $id, 'type' => 'article'));
 		}
+		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init', array('page' => $page))));
 	}
 	
-	
-	/**
-	 * 批量取消发布
-	 */
-	public function batch_end() 
-	{
-		$this->admin_priv('article_auto_update', ecjia::MSGTYPE_JSON);
+	public function edit_endtime() {
+		$this->admin_priv('article_auto_update');
 		
-		if (!isset($_POST['checkboxes']) || !is_array( $_POST['checkboxes'] )) {
-			$this->showmessage(RC_Lang::lang('no_select_goods'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		} else{
-			$date = trim($_POST['date']);
-			if ($date == '0000-00-00') {
-				$date = 0;
-			} else {
-				$date = RC_Time::local_strtotime($date);
-			}
-			
-			foreach($_POST['checkboxes'] as $id) {
-				$data = array(
-						'item_id' => $id,
-						'type'    => 'article',
-						'endtime' => $date
-				);
-				$this->db_auto_manage->where(array('endtime' => strval($date)))->update($data);
-			}
-			
-			$links[] = array('text' => RC_Lang::lang('back_list'), 'href' => RC_Uri::url('article/admin_article_auto/init'));
-			$this->showmessage(RC_Lang::lang('batch_end_succeed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links));
+		$id		= !empty($_POST['pk'])       ? intval($_POST['pk'])  : 0;
+		$value 	= !empty($_POST['value'])    ? trim($_POST['value']) : '';
+		$page 	= !empty($_GET['page'])      ? intval($_GET['page']) : 1;
+		
+		$val = '';
+		if (!empty($value)) {
+			$val = RC_Time::local_strtotime($value);
 		}
+		if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) || $value == '0000-00-00' || $val <= 0) {
+			$this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		
+		$count = $this->db_auto_manage->is_only(array('item_id' => $id, 'type' => 'article'));
+		
+		$data = array(
+			'item_id'    => $id,
+			'type'		 => 'article',
+			'endtime'    => $val
+		);
+		
+		if ($count == 0) {
+            $this->db_auto_manage->auto_manage($data);
+		} else {
+            $this->db_auto_manage->auto_manage($data, array('item_id' => $id, 'type' => 'article'));
+		}
+		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init', array('page' => $page))));
 	}
 	
 	/**
-	 * 获取自动文章
+	 * 获取自动发布文章
 	 * @return array
 	 */
-	private  function get_auto_goods()
-	{
-		$dbview = RC_Loader::load_app_model('article_viewmodel', 'article');
-		/* 加载分页类 */
-		RC_Loader::load_sys_class('ecjia_page', false);
-		$goods_name = trim($_POST['goods_name']);
-		if (!empty($goods_name)) {
-			// 			$where  = "a.title LIKE '%$goods_name%'";
-			$where['a.title'] = array('like' => "%". mysql_like_quote($goods_name). "%" );
-			$filter['goods_name'] = $goods_name;
+	private function get_auto_articles() {
+		$db_article_view = RC_Loader::load_app_model('article_viewmodel');
+		
+		$keywords = !empty($_GET['keywords']) ? trim(htmlspecialchars($_GET['keywords'])) : '';
+		$where = '';
+	
+		if ($keywords) {
+			$where['a.title'] = array('like' => "%". mysql_like_quote($keywords). "%" );
 		}
-		$count = $dbview->join(null)->where($where)->count('*');
-		/* 文章总数 */
+	
+		$count = $db_article_view->article_count($where);
 		$page = new ecjia_page($count, 15, 5);
-		$filter['record_count'] = $count;
-		$goodsdb = array();
-		$dbview->view = array(
-			'auto_manage' => array(
-				'type'  => Component_Model_View::TYPE_LEFT_JOIN,
-				'alias' => 'am',
-				'field' => 'a.*,am.starttime,am.endtime',
-				'on'    => 'a.article_id  = am.item_id AND am.type = "article"',
-			),
+		$order = array('a.add_time' => 'desc');
+		$limit = $page->limit();
+		
+		$option = array(
+			'table'	=> 'auto_manage',
+			'field'	=> 'a.*, am.starttime, am.endtime',
+			'where'	=> $where,
+			'order'	=> $order,
+			'limit'	=> $limit
 		);
-		$data = $dbview->where($where)->order( array('a.add_time' => 'DESC'))->limit($page->limit())->select();
-		if(!empty($data)) {
+		$data = $db_article_view->article_select($option);
+	
+		$list = array();
+		if (!empty($data)) {
 			foreach ($data as $rt) {
 				if (!empty($rt['starttime'])) {
 					$rt['starttime'] = RC_Time::local_date('Y-m-d', $rt['starttime']);
@@ -204,15 +226,11 @@ class admin_article_auto extends ecjia_admin
 				if (!empty($rt['endtime'])) {
 					$rt['endtime'] = RC_Time::local_date('Y-m-d', $rt['endtime']);
 				}
-				$rt['goods_id']   = $rt['article_id'];
-				$rt['goods_name'] = $rt['title'];
-				$goodsdb[] = $rt;
+				$list[] = $rt;
 			}
 		}
-		$arr = array('goodsdb' => $goodsdb, 'page' => $page->show(5), 'desc' => $page->page_desc());
-		return $arr;
+		return array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());
 	}
-
 }
 
 // end

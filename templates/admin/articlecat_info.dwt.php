@@ -18,26 +18,26 @@
 </div>
 <div class="row-fluid">
 	<div class="span12">
-		<form class="form-horizontal" method="post" action="{$form_action}" name="theCatInfoForm"  data-edit-url="{RC_Uri::url('article/admin_articlecat/edit')}" >
+		<form class="form-horizontal" method="post" action="{$form_action}" name="theCatInfoForm">
 			<fieldset>
 				<div class="control-group formSep" >
-					<label class="control-label">{$lang.cat_name}：</label>
+					<label class="control-label">{lang key='article::article.cat_name'}：</label>
 					<div class="controls">
 						<input type="text" name="cat_name" maxlength="60" size = "30" value="{$cat.cat_name|escape}" />
-						<span class="input-must">{$lang.require_field}</span>
+						<span class="input-must">{lang key='system::system.require_field'}</span>
 					</div>
 				</div>
 				<div class="control-group formSep" >
-					<label class="control-label">{$lang.parent_cat}</label>
+					<label class="control-label">{lang key='article::article.parent_cat'}</label>
 					<div class="controls">
 						<select name="parent_id"  {if $disabled }disabled="disabled"{/if} >
-							<option value="0">{$lang.cat_top}</option>
+							<option value="0">{lang key='article::article.cat_top'}</option>
 							<!-- {$cat_select} -->
 						</select>
 					</div>
 				</div>	
 				<div class="control-group formSep" >
-					<label class="control-label">{$lang.sort_order}：</label>
+					<label class="control-label">{lang key='system::system.sort_order'}：</label>
 					<div class="controls">
 						<input type="text" name='sort_order' {if $cat.sort_order}value='{$cat.sort_order}'{else} value="50"{/if} size="15" />
 					</div>
@@ -46,21 +46,21 @@
 					<div class="accordion-group">
 						<div class="accordion-heading">
 							<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#collapse001">
-								<strong>{t}SEO优化{/t}</strong>
+								<strong>{lang key='article::article.seo_optimization'}</strong>
 							</a>
 						</div>
 						<div class="accordion-body collapse" id="collapse001">
 							<div class="accordion-inner">
 							<div class="control-group control-group-small" >
-									<label class="control-label">{t}关键字：{/t}</label>
+									<label class="control-label">{lang key='article::article.keywords'}</label>
 									<div class="controls">
 										<input class="span12" type="text" name="keywords" value="{$cat.keywords|escape}" size="40" />
 										<br />
-										<p class="help-block w280 m_t5">{t}用英文逗号分隔{/t}</p>
+										<p class="help-block w280 m_t5">{lang key='article::article.split'}</p>
 									</div>
 								</div>
 								<div class="control-group control-group-small" >
-									<label class="control-label">{t}简单描述：{/t}</label>
+									<label class="control-label">{lang key='article::article.simple_description'}</label>
 									<div class="controls">
 										<textarea class="span12 h100" name="cat_desc" cols="40" rows="3">{$cat.cat_desc}</textarea>
 									</div>
@@ -71,9 +71,12 @@
 				</div>
 				<div class="control-group" >
 					<div class="controls">
-						<button class="btn btn-gebo" type="submit">{$lang.button_submit}</button>
+						<!-- {if $cat.cat_id} -->
+						<button class="btn btn-gebo" type="submit">{lang key='article::article.update'}</button>
 						<input type="hidden" name="id" value="{$cat.cat_id}" />
-						<input type="hidden" name="old_catname" value="{$cat.cat_name}" />
+						<!-- {else} -->
+						<button class="btn btn-gebo" type="submit">{lang key='system::system.button_submit'}</button>
+						<!-- {/if} -->
 					</div>
 				</div>
 			</fieldset>

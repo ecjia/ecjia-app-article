@@ -1,7 +1,8 @@
 <?php
-defined('IN_ROYALCMS') or exit('No permission resources.');
+defined('IN_ECJIA') or exit('No permission resources.');
 
 class mobile extends ecjia_front {
+
 	public function __construct() {	
 		parent::__construct();	
 		
@@ -14,6 +15,7 @@ class mobile extends ecjia_front {
 		$this->assign('article_info', $article_info);
 		$this->display('article_info.dwt');
 	}
+	
 }
 
 // end

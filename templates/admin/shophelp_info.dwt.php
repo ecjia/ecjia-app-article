@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-	ecjia.admin.shophelp_list.shophelp_article_info();
+	ecjia.admin.shophelp_list.info();
 </script>
 <!-- {/block} -->
 
@@ -15,53 +15,57 @@
 	</h3>
 </div>
 
-<!-- start goods form -->
 <div class="row-fluid edit-page">
 	<div class="span12">
-		<form class="form-horizontal" action="{$form_action}" method="post"enctype="multipart/form-data" name="theForm" data-edit-url="{RC_Uri::url('article/admin_shophelp/edit')}">
-			<div class="control-group formSep">
-				<div>
-					<input type="text" name="title" size="40" maxlength="60" class="span10" value="{$article.title}" placeholder="在此输入帮助文章标题" /> <span class="input-must">{$lang.require_field}</span>
-				</div>
-			</div>
-			<div class="control-group formSep">
-				<div>{ecjia:editor content=$article.content textarea_name='content'}</div>
-			</div>
-			<div class="foldable-list move-mod-group">
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#collapse001">
-							<strong>{t}SEO优化{/t}</strong>
-						</a>
+		<div class="tabbable">
+			<form class="form-horizontal" action="{$form_action}" method="post" enctype="multipart/form-data" name="theForm">
+				<div class="control-group formSep">
+					<div>
+						<input type="text" name="title" size="40" maxlength="60"  class="span10"  value="{$article.title}" placeholder="{lang key='article::shophelp.enter_help_article_title'}" /> <span class="input-must">{lang key='system::system.require_field'}</span>
 					</div>
-					<div class="accordion-body collapse" id="collapse001">
-						<div class="accordion-inner">
-						<div class="control-group control-group-small" >
-								<label class="control-label">{t}关键字：{/t}</label>
-								<div class="controls">
-									<input class="span12" type="text" name="keywords" value="{$article.keywords}" size="40" />
-									<br />
-									<p class="help-block w280 m_t5">{t}用英文逗号分隔{/t}</p>
-								</div>
-							</div>
+				</div>
+				<div class="control-group formSep">
+					<div>{ecjia:editor content=$article.content textarea_name='content'}</div>
+				</div>
+				<div class="foldable-list move-mod-group">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#collapse001">
+								<strong>{lang key='article::article.seo_optimization'}</strong>
+							</a>
+						</div>
+						<div class="accordion-body collapse" id="collapse001">
+							<div class="accordion-inner">
 							<div class="control-group control-group-small" >
-								<label class="control-label">{t}简单描述：{/t}</label>
-								<div class="controls">
-									<textarea class="span12 h100" name="description" value="{$article.description}" cols="40" rows="3">{$article.description}</textarea>
+									<label class="control-label">{lang key='article::article.keyword'}：</label>
+									<div class="controls">
+										<input class="span12" type="text" name="keywords" value="{$article.keywords}" size="40" />
+										<br />
+										<p class="help-block w280 m_t5">{lang key='article::article.split'}</p>
+									</div>
+								</div>
+								<div class="control-group control-group-small" >
+									<label class="control-label">{lang key='article::article.simple_description'}</label>
+									<div class="controls">
+										<textarea class="span12 h100" name="description" cols="40" rows="3">{$article.description}</textarea>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<p class="ecjiaf-tac">
-				<button class="btn btn-gebo" type="submit">{$lang.button_submit}</button>
-				<input type="hidden" name="old_title" value="{$article.title}" />
-				<input type="hidden" name="id" value="{$article.article_id}" />
-				<input type="hidden" name="cat_id" value="{$cat_id}" />
-			</p>
-		</form>
+				<p class="ecjiaf-tac">
+					<!-- {if $article.article_id} -->
+					<button class="btn btn-gebo" type="submit">{lang key='article::article.update'}</button>
+					<input type="hidden" name="old_title" value="{$article.title}" />
+					<input type="hidden" name="id" value="{$article.article_id}" />
+					<!-- {else} -->
+					<button class="btn btn-gebo" type="submit">{lang key='system::system.button_submit'}</button>
+					<!-- {/if} -->
+					<input type="hidden" name="cat_id" value="{$cat_id}" />
+				</p>
+			</form>
+		</div>
 	</div>
 </div>
-<!-- end goods form -->
 <!-- {/block} -->

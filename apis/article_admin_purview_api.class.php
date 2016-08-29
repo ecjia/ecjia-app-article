@@ -2,30 +2,24 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 后台权限API
- * @author royalwang
+ * @author songqian
  *
  */
 class article_admin_purview_api extends Component_Event_Api {
-    
     public function call(&$options) {
         $purviews = array(
-        	array('action_name' => __('文章添加/更新'), 'action_code' => 'article_manage', 'relevance'   => ''),
-        	array('action_name' => __('文章删除'), 'action_code' => 'article_delete', 'relevance'   => ''),
-        	
-        	array('action_name' => __('分类添加/更新'), 'action_code' => 'article_cat_manage', 'relevance'   => ''),
-        	array('action_name' => __('分类删除'), 'action_code' => 'article_cat_delete', 'relevance'   => ''),
+        	array('action_name' => RC_Lang::get('article::article.article_add_update'), 'action_code' => 'article_manage', 		'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.article_remove'), 	'action_code' => 'article_delete', 		'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.cat_add_update'), 	'action_code' => 'article_cat_manage', 	'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.cat_remove'), 		'action_code' => 'article_cat_delete', 	'relevance' => ''),
+            array('action_name' => RC_Lang::get('article::article.shopinfo_manage'), 	'action_code' => 'shopinfo_manage', 	'relevance' => ''),
+            array('action_name' => RC_Lang::get('article::article.shophelp_manage'), 	'action_code' => 'shophelp_manage', 	'relevance' => ''),
         		
-            array('action_name' => __('网店信息管理'), 'action_code' => 'shopinfo_manage', 'relevance'   => ''),
-        		
-            array('action_name' => __('网店帮助管理'), 'action_code' => 'shophelp_manage', 'relevance'   => ''),
-        		
-//          array('action_name' => __('文章自动发布'), 'action_code' => 'article_auto_manage', 'relevance'   => ''),
-//         	array('action_name' => __('文章自动更新'), 'action_code' => 'article_auto_update', 'relevance'   => ''),
-//         	array('action_name' => __('文章自动删除'), 'action_code' => 'article_auto_delete', 'relevance'   => ''),
+         	array('action_name' => RC_Lang::get('article::article.article_auto_manage'), 'action_code' => 'article_auto_manage', 'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.article_auto_update'), 'action_code' => 'article_auto_update', 'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.article_auto_delete'), 'action_code' => 'article_auto_delete', 'relevance' => ''),
         );
-        
         return $purviews;
     }
 }
-
 // end

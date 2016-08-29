@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 文章管理语言项
  */
 
-
 /**
  * ECJIA 文章列表字段信息 
  */
@@ -148,7 +147,7 @@ $LANG['edit_ok'] = '操作成功';
 $LANG['edit_error'] = '操作失败';
 $LANG['delete'] = '撤销';
 $LANG['deleteck'] = '确定删除此文章的自动发布/取消发布处理么?此操作不会影响文章本身';
-$LANG['enable_notice'] = '您需要到系统设置->计划任务中开启该功能后才能使用。';
+$LANG['enable_notice'] = '您需要到工具->计划任务中开启该功能后才能使用。';
 $LANG['button_start'] = '批量发布';
 $LANG['button_end'] = '批量取消发布';
 
