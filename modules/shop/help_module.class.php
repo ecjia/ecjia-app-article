@@ -7,6 +7,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class detail_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+    	
     	$this->authSession();
 		$data = get_shop_help2();
 		$out = array();
@@ -17,7 +18,6 @@ class detail_module extends api_front implements api_interface {
 		return $out;
 	}
 }
-
 
 function get_shop_help2() {
 	$dbview = RC_Loader::load_app_model('article_viewmodel', 'article');
