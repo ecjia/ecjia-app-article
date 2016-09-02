@@ -5,8 +5,7 @@ class detail_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
     	$this->authSession();	
-    	$id = $this->requestData('article_id', '0');
-    	
+    	$id = $this->requestData('article_id', 0);
 		if (empty($id)) {
 			EM_Api::outPut(101);
 		}
