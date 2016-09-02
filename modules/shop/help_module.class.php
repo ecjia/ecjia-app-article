@@ -5,9 +5,9 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author royalwang
  *
  */
-class help_module implements ecjia_interface {
-	
-	public function run(ecjia_api & $api) {
+class detail_module extends api_front implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+    	$this->authSession();
 		$data = get_shop_help2();
 		$out = array();
 		foreach ($data as $value) {
