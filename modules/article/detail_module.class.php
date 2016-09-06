@@ -6,12 +6,12 @@ class detail_module extends api_front implements api_interface {
     		
     	$this->authSession();	
     	$id = $this->requestData('article_id', 0);
-		if (empty($id)) {
-			EM_Api::outPut(101);
+    	if ($id <= 0) {
+			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		
 		if (!$article = get_article_info($id)) {
-			EM_Api::outPut(13);
+			return new ecjia_error('does not exist', '不存在的信息');
 		}
 		
 		$base = sprintf('<base href="%s/" />', dirname(SITE_URL));
