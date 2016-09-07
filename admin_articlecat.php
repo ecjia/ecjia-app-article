@@ -6,7 +6,6 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_articlecat extends ecjia_admin {
-    private $db_nav;
     private $db_article_cat;
     private $db_article;
     
@@ -14,7 +13,6 @@ class admin_articlecat extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Loader::load_app_class('article_cat', 'article', false);
-		$this->db_nav 				= RC_Loader::load_app_model('article_nav_model');
 		$this->db_article_cat 		= RC_Loader::load_app_model('article_cat_model');
 		$this->db_article		 	= RC_Loader::load_app_model('article_model');
 		
@@ -43,6 +41,7 @@ class admin_articlecat extends ecjia_admin {
 	 */
 	public function init() {
 		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.cat')));
 		
@@ -91,12 +90,12 @@ class admin_articlecat extends ecjia_admin {
 		
 		$this->assign('ur_here', RC_Lang::get('system::system.articlecat_add'));
 		$this->assign('action_link', array('text' => RC_Lang::get('system::system.02_articlecat_list'), 'href' => RC_Uri::url('article/admin_articlecat/init')));
+		
 		$this->assign('cat_select', article_cat::article_cat_list(0));
 		$this->assign('form_action', RC_Uri::url('article/admin_articlecat/insert'));
 		
 		$this->display('articlecat_info.dwt');
 	}
-	
 	
 	public function insert() {
 		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
@@ -112,7 +111,7 @@ class admin_articlecat extends ecjia_admin {
 		}
 		$cat_type = 1;
 		if ($parent_id > 0) {
-            $p_cat_type = $this->db_article_cat->article_cat_field(array('cat_id' => $parent_id), 'cat_type');
+            $p_cat_type = $this->db_article_cat->article_cat_field($parent_id, 'cat_type');
 		    $p_cat_type = $p_cat_type['cat_type'];
 			if ($p_cat_type == 2 || $p_cat_type == 3 || $p_cat_type == 5) {
 				$this->showmessage(RC_Lang::get('article::article.not_allow_add'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -133,7 +132,8 @@ class admin_articlecat extends ecjia_admin {
 		$id = $this->db_article_cat->article_cat_manage($data);
 		
 		if ($show_in_nav == 1) {
-            $vieworder = $this->db_nav->nav_max(array('type' => 'middle'), 'vieworder');
+            $vieworder = RC_DB::table('nav')->where('type', 'middle')->max('vieworder');
+            
 		    $vieworder += 2;
 			//显示在自定义导航栏中
 			$data = array(
@@ -146,7 +146,7 @@ class admin_articlecat extends ecjia_admin {
 				'url' 		=>  build_uri('article_cat', array('acid' => $id), $cat_name),
 				'type' 		=> 'middle',
 			);
-            $this->db_nav->nav_manage($data);
+            RC_DB::table('nav')->insert($data);
 		}
 		
 		ecjia_admin::admin_log($cat_name, 'add', 'articlecat');
@@ -245,7 +245,7 @@ class admin_articlecat extends ecjia_admin {
 		
 		if ($cat_type == 1 || $cat_type == 5) {
 			if ($parent_id > 0) {
-			    $p_cat_type = $this->db_article_cat->article_cat_field(array('cat_id' => $parent_id), 'cat_type');
+			    $p_cat_type = $this->db_article_cat->article_cat_field($parent_id, 'cat_type');
 			     
 				if ($p_cat_type == 4) {
 					$cat_type = 5;
@@ -267,50 +267,48 @@ class admin_articlecat extends ecjia_admin {
 			'sort_order'  => $sort_order,
 			'show_in_nav' => $show_in_nav,
 		);
-        $query = $this->db_article_cat->article_cat_manage($data, array('cat_id' => $id));
-		if ($query) {
-			if ($cat_name != $info['cat_name']) {
-				//如果分类名称发生了改变
-				$data  = array( 'name' => $cat_name);
-			    $this->db_article_cat->article_cat_manage($data, array('ctype' => 'a', 'cid' => $id, 'type' => 'middle'));
-			}
-			if ($show_in_nav != $info['show_in_nav']) {
-				if ($show_in_nav == 1) {
-					//显示
-                    $nid = $this->db_nav->nav_find('id', array('ctype' => 'a', 'cid' => $id, 'type' => 'middle'));
-				    $nid = $nid['id'];
-					if (empty($nid)) {
-					    $vieworder = $this->db_nav->nav_max('type = "middle"', 'vieworder');
-						$vieworder += 2;
-						$uri = build_uri('article_cat', array('acid'=> $id), $cat_name);
-						//不存在
-						$data = array(
-							'name' 		=> $cat_name,
-							'ctype'	 	=> 'a',
-							'cid' 		=> $id,
-							'ifshow' 	=> '1',
-							'vieworder' => $vieworder,
-							'opennew' 	=> '0',
-							'url' 		=> $uri,
-							'type' 		=> 'middle',
-						);
-                        $this->db_nav->nav_manage($data);
-					} else {
-						$data = array('ifshow' => 1);
-						$this->db_nav->nav_manage($data, array('ctype' => 'a', 'cid' => $id, 'type' => 'middle'));
-					}
-				} else {
-					//去除
-					$data = array('ifshow' => 0);
-                    $this->db_nav->nav_manage($data, array('ctype' => 'a', 'cid' => $id, 'type' => 'middle'));
-				}
-			}
-			$links[] = array('text' => RC_Lang::get('article::article.back_cat_list'), 'href' => RC_Uri::url('article/admin_articlecat/init'));
-			ecjia_admin::admin_log($cat_name, 'edit', 'articlecat');
-			$this->showmessage(sprintf(RC_Lang::get('article::article.catedit_succed'), $cat_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('article/admin_articlecat/edit', array('id' => $id))));
-		} else {
-			die($this->db_article_cat->error());
+       	$this->db_article_cat->article_cat_manage($data, array('cat_id' => $id));
+        ecjia_admin::admin_log($cat_name, 'edit', 'articlecat');
+        
+		if ($cat_name != $info['cat_name']) {
+			//如果分类名称发生了改变
+			$data = array('name' => $cat_name);
+		    RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->update($data);
 		}
+
+		if ($show_in_nav != $info['show_in_nav']) {
+			if ($show_in_nav == 1) {
+				$nid = RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->first();
+				//不存在
+				if (empty($nid)) {
+				    $vieworder = RC_DB::table('nav')->where('type', 'middle')->max('vieworder');
+				    
+					$vieworder += 2;
+					$uri = build_uri('article_cat', array('acid'=> $id), $cat_name);
+					$data = array(
+						'name' 		=> $cat_name,
+						'ctype'	 	=> 'a',
+						'cid' 		=> $id,
+						'ifshow' 	=> '1',
+						'vieworder' => $vieworder,
+						'opennew' 	=> '0',
+						'url' 		=> $uri,
+						'type' 		=> 'middle',
+					);
+                  	RC_DB::table('nav')->insert($data);
+				} else {
+					$data = array('ifshow' => 1);
+					RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->update($data);
+				}
+			} else {
+				//去除
+				$data = array('ifshow' => 0);
+          		RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->update($data);
+			}
+		}
+		$links[] = array('text' => RC_Lang::get('article::article.back_cat_list'), 'href' => RC_Uri::url('article/admin_articlecat/init'));
+		
+		$this->showmessage(sprintf(RC_Lang::get('article::article.catedit_succed'), $cat_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('article/admin_articlecat/edit', array('id' => $id))));
 	}
 	
 	/**
@@ -349,10 +347,10 @@ class admin_articlecat extends ecjia_admin {
 			if ($query > 0) {
 				$this->showmessage(sprintf(RC_Lang::get('article::article.not_emptycat')), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
-				$cat_name = $this->db_article_cat->article_cat_field(array('cat_id' => $id), 'cat_name');
+				$cat_name = $this->db_article_cat->article_cat_field($id, 'cat_name');
 
 				$this->db_article_cat->article_cat_delete($id);
-				$this->db_nav->nav_delete(array('ctype' => 'a', 'cid' => $id, 'type' => 'middle'));
+				RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->delete();
 				
 				ecjia_admin::admin_log($cat_name, 'remove', 'articlecat');
 				$this->showmessage(RC_Lang::get('article::article.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -368,40 +366,39 @@ class admin_articlecat extends ecjia_admin {
 		
 		$id  = intval($_POST['id']);
 		$val = intval($_POST['val']);
-        if ($this->db_article_cat->cat_update($id, array('show_in_nav' => $val)) != false) {
-            if($val == 1) {
-                $nid = $this->db_nav->nav_select('id', array('ctype' => 'a', 'cid' => $id, 'type' => 'middle'));
-                if (empty($nid)) {
-					//不存在
-                    $vieworder = $this->db_nav->nav_max(array('type' => 'middle'), 'vieworder');
-					$vieworder += 2;	
-					$catname = $this->db_article_cat->article_cat_field(array('cat_id' => $id), 'cat_name');
+       	
+       	RC_DB::table('article_cat')->where('cat_id', $id)->update(array('show_in_nav' => $val));
+        if ($val == 1) {
+        	$nid = RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->first();
+        	if (empty($nid)) {
+				//不存在
+               	$vieworder = RC_DB::table('nav')->where('type', 'middle')->max('vieworder');
+                    
+				$vieworder += 2;	
+				$catname = $this->db_article_cat->article_cat_field($id, 'cat_name');
 					
-					$uri  = build_uri('article_cat', array('acid'=> $id), $catname);
-					$data = array(
-						'name'		=> $catname,
-						'ctype'		=> 'a',
-						'cid'		=> $id,
-						'ifshow'	=> '1',
-						'vieworder' => $vieworder,
-						'opennew'	=> '0',
-						'url'		=> $uri,
-						'type'		=> 'middle',
-					);
-					$this->db_nav->nav_manage($data);
-				} else {
-					$data = array('ifshow' => 1);
-					$this->db_nav->nav_manage($data, array('ctype' => 'a','cid' => $id,'type' => 'middle'));
-				}
+				$uri  = build_uri('article_cat', array('acid' => $id), $catname);
+				$data = array(
+					'name'		=> $catname,
+					'ctype'		=> 'a',
+					'cid'		=> $id,
+					'ifshow'	=> '1',
+					'vieworder' => $vieworder,
+					'opennew'	=> '0',
+					'url'		=> $uri,
+					'type'		=> 'middle',
+				);
+				RC_DB::table('nav')->insert($data);
 			} else {
-				//去除
-				$data = array('ifshow' => 0);
-				$this->db_nav->nav_manage($data, array('ctype' => 'a', 'cid' => $id, 'type' => 'middle'));
+				$data = array('ifshow' => 1);
+				RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->update($data);
 			}
-			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $val));
 		} else {
-			$this->showmessage($this->db_nav->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			//去除
+			$data = array('ifshow' => 0);
+			RC_DB::table('nav')->where('ctype', 'a')->where('cid', $id)->where('type', 'middle')->update($data);
 		}
+		$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $val));
 	}
 }
 

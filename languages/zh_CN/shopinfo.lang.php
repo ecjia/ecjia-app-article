@@ -18,11 +18,11 @@ return array(
 	'articleadd_succeed' 	=> '添加 “%s”成功',
 		
 	/* 提示信息 */
-	'title_exist' 			=> '网店标题“%s”已经存在',
-	'articleedit_succeed' 	=> '更新“%s” 成功',
+	'title_exist' 			=> '网店标题 %s 已经存在',
+	'articleedit_succeed' 	=> '更新 %s 成功',
 	'edit_fail' 			=> '编辑网店名称失败',
 	'remove_fail' 			=> '删除失败',
-	'remove_success' 		=> '删除“%s”成功',
+	'remove_success' 		=> '删除 %s 成功',
 	'title_empty' 			=> '网店标题不能为空！',
 		
 	/*JS 语言项*/

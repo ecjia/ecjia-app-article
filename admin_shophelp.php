@@ -40,7 +40,6 @@ class admin_shophelp extends ecjia_admin {
 	 * 网店帮助分类
 	 */
 	public function init() {
-	    
 		$this->admin_priv('shophelp_manage', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
@@ -64,7 +63,6 @@ class admin_shophelp extends ecjia_admin {
 		
 		$this->display('shophelp_cat_list.dwt');
 	}
-	
 
 	/**
 	 * 分类下的文章
@@ -84,7 +82,7 @@ class admin_shophelp extends ecjia_admin {
 		);
 		
 		$cat_id = intval($_GET['cat_id']);
-		$cat_name = $this->db_article_cat->article_cat_field(array('cat_id' => $cat_id), 'cat_name');
+		$cat_name = $this->db_article_cat->article_cat_field($cat_id, 'cat_name');
         
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($cat_name));
 		
@@ -105,7 +103,7 @@ class admin_shophelp extends ecjia_admin {
 		$this->admin_priv('shophelp_manage', ecjia::MSGTYPE_JSON);
 		
 		$cat_id = intval($_GET['cat_id']);
-		$cat_name = $this->db_article_cat->article_cat_field(array('cat_id' => $cat_id), 'cat_name');
+		$cat_name = $this->db_article_cat->article_cat_field($cat_id, 'cat_name');
 
 		$this->assign('cat_name', $cat_name);
 		$this->assign('ur_here', RC_Lang::get('article::shophelp.add_help_article'));
@@ -218,7 +216,7 @@ class admin_shophelp extends ecjia_admin {
 			'description'	=> !empty($_POST['description']) ? trim($_POST['description']) : '',
 		);
 		if ($this->db_article->article_manage($data)) {
-		    $cat_name = $this->db_article_cat->article_cat_field(array('cat_id' => $cat_id), 'cat_name');
+		    $cat_name = $this->db_article_cat->article_cat_field($cat_id, 'cat_name');
 		    
 			ecjia_admin::admin_log($title.'，'.RC_Lang::get('article::shophelp.help_category_is').$cat_name, 'edit', 'shophelp');
 			$this->showmessage(sprintf(RC_Lang::get('article::shophelp.articleedit_succeed'), $title), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_shophelp/edit', array('id' => $id, 'cat_id' => $cat_id))));
@@ -277,7 +275,7 @@ class admin_shophelp extends ecjia_admin {
 		if ($this->db_article->article_count(array('cat_id' => $id)) != 0) {
 			$this->showmessage(RC_Lang::get('article::shophelp.not_emptycat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
-		    $cat_name = $this->db_article_cat->article_cat_field(array('cat_id' => $id), 'cat_name');
+		    $cat_name = $this->db_article_cat->article_cat_field($id, 'cat_name');
 			ecjia_admin::admin_log($cat_name, 'remove', 'shophelpcat');
 			
 			$this->db_article_cat->article_cat_delete($id);
@@ -295,7 +293,7 @@ class admin_shophelp extends ecjia_admin {
 		$info = $this->db_article->article_find($id);
 		
 		if ($this->db_article->article_delete($id)) {
-		    $cat_name = $this->db_article_cat->article_cat_field(array('cat_id' => $info['cat_id']), 'cat_name');
+		    $cat_name = $this->db_article_cat->article_cat_field($info['cat_id'], 'cat_name');
 
 		    ecjia_admin::admin_log($info['title'].'，'.RC_Lang::get('article::shophelp.help_category_is').$cat_name, 'remove', 'shophelp');
 			$this->showmessage(RC_Lang::get('article::shophelp.remove_article_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -335,15 +333,14 @@ class admin_shophelp extends ecjia_admin {
 	 * @return array
 	 */
 	private function get_shophelp_list() {
-		$db_article_cat = RC_Loader::load_app_model('article_cat_model');
-		$option = array(
-			'field' => array('cat_id', 'cat_name', 'sort_order'),
-			'where'	=> array('cat_type' => 5, 'parent_id' => 3),
-			'order' => 'sort_order asc'
-		);
+		$data = RC_DB::table('article_cat')
+			->select('cat_id', 'cat_name', 'sort_order')
+			->where('cat_type', 5)
+			->where('parent_id', 3)
+			->orderby('sort_order', 'asc')
+			->get();
 		
 		$list = array();
-		$data = $db_article_cat->shophelp_select($option);
 		if (!empty($data)) {
 			foreach ($data as $rows) {
 				$list[] = $rows;
@@ -360,15 +357,15 @@ class admin_shophelp extends ecjia_admin {
 		
 		$count = $db_article->article_count(array('cat_id' => $cat_id));
 		$page = new ecjia_page($count, 15, 5);
-		
-		$option = array(
-			'field'	=> array('article_id', 'title', 'article_type', 'add_time'),
-			'where'	=> array('cat_id' => $cat_id),
-			'order'	=> 'article_id DESC',
-			'limit'	=> $page->limit(),
-		);
-		$data = $db_article->shophelp_article_select($option);
 
+		$data = RC_DB::table('article')
+			->select('article_id', 'title', 'article_type', 'add_time')
+			->where('cat_id', $cat_id)
+			->orderby('article_id', 'desc')
+			->take(15)
+			->skip($page->start_id-1)
+			->get();
+		
 		$list = array();
 		if (!empty($data)) {
 			foreach ($data as $rows) {

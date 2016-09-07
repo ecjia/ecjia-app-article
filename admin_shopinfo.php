@@ -149,7 +149,6 @@ class admin_shopinfo extends ecjia_admin {
 		$this->display('shopinfo_info.dwt');
 	}
 	
-	
 	public function update() {
 		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
 		
@@ -202,14 +201,11 @@ class admin_shopinfo extends ecjia_admin {
 	 * 获取网店信息文章
 	 */
 	private function get_shopinfo_article($cat_id = 0) {
-		$db_article = RC_Loader::load_app_model('article_model');
-		
-		$option = array(
-			'field'	=> array('article_id, title, add_time'),
-			'where'	=> array('cat_id' => $cat_id),
-			'order'	=> 'article_id asc',
-		);
-	    $data = $db_article->shopinfo_article_select($option);
+	    $data = RC_DB::table('article')
+	    	->select('article_id', 'title', 'add_time')
+	    	->where('cat_id', $cat_id)
+	    	->orderby('article_id', 'asc')
+	    	->get();
 	    
 	    $list = array();
 	    if (!empty($data)) {

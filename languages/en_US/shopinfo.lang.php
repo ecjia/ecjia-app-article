@@ -19,10 +19,10 @@ return array(
 	
 	/* Prompting message */
 	'title_exist'		 	=> '%s already exists.',
-	'articleedit_succeed' 	=> 'Edit success',
+	'articleedit_succeed' 	=> 'Edit  %s success',
 	'edit_fail'		 		=> 'Edit name failed.',
 	'remove_fail' 			=> 'Delete failed.',
-	'remove_success' 		=> 'Delete “%s” successfully',
+	'remove_success' 		=> 'Delete %s successfully',
 	'title_empty' 			=> 'Title can\'t be blank!',
 	
 	/*JS language item*/
