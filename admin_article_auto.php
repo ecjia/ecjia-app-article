@@ -82,9 +82,9 @@ class admin_article_auto extends ecjia_admin {
 			$time_type 	= 'endtime';
 		}
 		
-		$article_list = $this->db_auto_manage->auto_manage_field(array('type' => 'article'), 'item_id', true);
+		$article_list = RC_DB::table('auto_manage')->where('type', 'article')->lists('item_id');
 		$id_arr = explode(',', $article_id);
-		
+
 		if (!empty($id_arr)) {
 			foreach ($id_arr as $k => $v) {
 				$data = array(
@@ -94,12 +94,12 @@ class admin_article_auto extends ecjia_admin {
 				);
 				if (!empty($article_list)) {
 					if (in_array($v, $article_list)) {
-						$this->db_auto_manage->auto_manage($data, array('item_id' => $v, 'type' => 'article'));
+						RC_DB::table('auto_manage')->where('item_id', $v)->where('type', 'article')->update($data);
 					} else {
-						$this->db_auto_manage->auto_manage($data);
+						RC_DB::table('auto_manage')->insert($data);
 					}
 				} else {
-					$this->db_auto_manage->auto_manage($data);
+					RC_DB::table('auto_manage')->insert($data);
 				}
 			}
 			$title_list = $this->db_article->article_field(array('article_id' => $id_arr), 'title', true);
@@ -120,7 +120,7 @@ class admin_article_auto extends ecjia_admin {
 		$id       = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$title    = $this->db_article->article_field(array('article_id' => $id), 'title');
 		
-		$this->db_auto_manage->auto_manage_delete(array('item_id' => $id , 'type' => 'article'));
+		RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->delete();
 		
 		ecjia_admin::admin_log(RC_Lang::get('article::article.article_name_is').$title, 'cancel', 'article_auto');
 		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -142,8 +142,7 @@ class admin_article_auto extends ecjia_admin {
 			$this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
-		$count = $this->db_auto_manage->is_only(array('item_id' => $id, 'type' => 'article'));
-		
+		$count = RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->count();
 		$data = array(
 			'item_id'	=> $id,
 			'type'		=> 'article',
@@ -151,9 +150,9 @@ class admin_article_auto extends ecjia_admin {
 		);
 		
 		if ($count == 0) {
-            $this->db_auto_manage->auto_manage($data);
+            RC_DB::table('auto_manage')->insert($data);
 		} else {
-            $this->db_auto_manage->auto_manage($data, array('item_id' => $id, 'type' => 'article'));
+            RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->update($data);
 		}
 		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init', array('page' => $page))));
 	}
@@ -173,8 +172,7 @@ class admin_article_auto extends ecjia_admin {
 			$this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
-		$count = $this->db_auto_manage->is_only(array('item_id' => $id, 'type' => 'article'));
-		
+		$count = RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->count();
 		$data = array(
 			'item_id'    => $id,
 			'type'		 => 'article',
@@ -182,9 +180,9 @@ class admin_article_auto extends ecjia_admin {
 		);
 		
 		if ($count == 0) {
-            $this->db_auto_manage->auto_manage($data);
+            RC_DB::table('auto_manage')->insert($data);
 		} else {
-            $this->db_auto_manage->auto_manage($data, array('item_id' => $id, 'type' => 'article'));
+            RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->update($data);
 		}
 		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init', array('page' => $page))));
 	}
@@ -196,26 +194,31 @@ class admin_article_auto extends ecjia_admin {
 	private function get_auto_articles() {
 		$db_article_view = RC_Loader::load_app_model('article_viewmodel');
 		
+		$db_article = RC_DB::table('article');
 		$keywords = !empty($_GET['keywords']) ? trim(htmlspecialchars($_GET['keywords'])) : '';
 		$where = '';
 	
+		$db_article->leftJoin('auto_manage', function($join){
+			$join->on('auto_manage.item_id', '=', 'article.article_id')->where('auto_manage.type', '=', 'article');
+		});
+		
 		if ($keywords) {
 			$where['a.title'] = array('like' => "%". mysql_like_quote($keywords). "%" );
+			$db_article->where('article.title', 'like', '%'. mysql_like_quote($keywords). '%');
 		}
 	
-		$count = $db_article_view->article_count($where);
+		$count = $db_article->count();
+		
 		$page = new ecjia_page($count, 15, 5);
 		$order = array('a.add_time' => 'desc');
 		$limit = $page->limit();
 		
-		$option = array(
-			'table'	=> 'auto_manage',
-			'field'	=> 'a.*, am.starttime, am.endtime',
-			'where'	=> $where,
-			'order'	=> $order,
-			'limit'	=> $limit
-		);
-		$data = $db_article_view->article_select($option);
+		$data = $db_article
+			->select('article.*', 'auto_manage.starttime', 'auto_manage.endtime')
+			->orderby('article.add_time')
+			->take(15)
+			->skip($page->start_id-1)
+			->get();
 	
 		$list = array();
 		if (!empty($data)) {

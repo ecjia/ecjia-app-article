@@ -12,17 +12,29 @@ class article_model extends Component_Model_Model {
 	
 	/* 判断重复 */
 	public function article_count($where = array()) {
-	    return $this->where($where)->count();
+		$db_article = RC_DB::table('article');
+		if (!empty($where)) {
+			foreach ($where as $k => $v) {
+				if (is_array($v)) {
+					foreach ($v as $key => $val) {
+						if ($key == 'neq') {
+							$db_article->where($k, '!=', $val);
+						}
+					}
+				} else {
+					$db_article->where($k, $v);
+				}
+			}
+		}
+		return $db_article->count();
 	}
 	
 	/* 文章管理 */
 	public function article_manage($parameter) {
 	    if (!isset($parameter['article_id'])) {
-	        $id = $this->insert($parameter);
+	        $id = RC_DB::table('article')->insertGetId($parameter);
 	    } else {
-	        $where = array('article_id' => $parameter['article_id']);
-	
-	        $this->where($where)->update($parameter);
+	        RC_DB::table('article')->where('article_id', $parameter['article_id'])->update($parameter);
 	        $id = $parameter['article_id'];
 	    }
 	    return $id;
@@ -30,26 +42,39 @@ class article_model extends Component_Model_Model {
 	
 	/* 文章详情 */
 	public function article_find($id) {
-	    return $this->where(array('article_id' => $id))->find();
+	    return RC_DB::table('article')->where('article_id', $id)->first();
 	}
 	
 	/* 删除文章 */
 	public function article_delete($id) {
-	    return $this->where(array('article_id' => $id))->delete();
+	    return RC_DB::table('article')->where('article_id', $id)->delete();
 	}
 	
 	/* 查询字段信息 */
-	public function article_field($where, $field, $bool=false) {
-	    return $this->where($where)->get_field($field, $bool);
+	public function article_field($id, $field, $bool=false) {
+		$db_article = RC_DB::table('article');
+		if (!empty($id)) {
+			$db_article->where('article_id', $id);
+		}
+		if ($bool) {
+			return $db_article->lists($field);
+		} else {
+			return $db_article->pluck($field);
+		}
 	}
 	
-	public function article_batch($where, $type, $data=array()) {
+	/* 文章批量操作 */
+	public function article_batch($ids, $type, $data=array()) {
+		$db_article = RC_DB::table('article');
+		if (!is_array($ids)) {
+			$ids = explode(',', $ids);
+		}
 	    if ($type == 'select') {
-	        return $this->in($where)->select();
+			return $db_article->whereIn('article_id', $ids)->get();
 	    } elseif ($type == 'delete') {
-	        return $this->in($where)->delete();
+	    	return $db_article->whereIn('article_id', $ids)->delete();
 	    } elseif ($type == 'update') {
-	        return $this->in($where)->update($data);
+	    	return $db_article->whereIn('article_id', $ids)->update($data);
 	    }
 	}
 	

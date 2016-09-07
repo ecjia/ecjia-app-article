@@ -17,7 +17,7 @@ class article_admin_menu_api extends Component_Event_Api {
             ecjia_admin::make_admin_menu('divider', '', '', 4)->add_purview(array('shophelp_manage', 'shopinfo_manage', 'article_auto_manage')),
             ecjia_admin::make_admin_menu('04_article_help', RC_Lang::get('article::article.shop_help'), RC_Uri::url('article/admin_shophelp/init'), 5)->add_purview('shophelp_manage'),
             ecjia_admin::make_admin_menu('05_article_info', RC_Lang::get('article::article.shop_info'), RC_Uri::url('article/admin_shopinfo/init'), 6)->add_purview('shopinfo_manage'),
-//             ecjia_admin::make_admin_menu('06_article_auto', RC_Lang::get('article::article.article_auto_release'), RC_Uri::url('article/admin_article_auto/init'), 7)->add_purview('article_auto_manage')
+            ecjia_admin::make_admin_menu('06_article_auto', RC_Lang::get('article::article.article_auto_release'), RC_Uri::url('article/admin_article_auto/init'), 7)->add_purview('article_auto_manage')
         );
         
         $menus->add_submenu($submenus);
