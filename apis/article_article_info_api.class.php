@@ -27,13 +27,11 @@ class article_article_info_api extends Component_Event_Api {
 	 */
 	
 	private function article_info($options) {
-		$db_article = RC_Loader::load_app_model('article_model', 'article');
 		$where = array();
 		$where['article_id'] = $options['id'];
 		$where['is_open']	  = empty($options['is_open']) ? 1 : intval($options['is_open']);
 		
-		
-		return $db_article->find($where);
+		return RC_Model::model('article/article_model')->find($where);
 	}
 	
 }

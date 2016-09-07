@@ -26,7 +26,7 @@ class article_article_list_api extends Component_Event_Api {
 	 */
 	
 	private function articleslist($options) {
-		$dbview = RC_Loader::load_app_model('article_viewmodel', 'article');
+		$dbview = RC_Model::model('article/article_viewmodel');
 		
 		$filter = array();
 		$filter['keywords']	  = empty($options['keywords']) ? '' : trim($options['keywords']);
