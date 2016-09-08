@@ -13,8 +13,8 @@ class admin_articlecat extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Loader::load_app_class('article_cat', 'article', false);
-		$this->db_article_cat 		= RC_Loader::load_app_model('article_cat_model');
-		$this->db_article		 	= RC_Loader::load_app_model('article_model');
+		$this->db_article_cat 		= RC_Model::model('article/article_cat_model');
+		$this->db_article		 	= RC_Model::model('article/article_model');
 		
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');

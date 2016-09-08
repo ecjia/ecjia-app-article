@@ -19,11 +19,11 @@ class admin extends ecjia_admin {
 		RC_Loader::load_app_func('global');
 		assign_adminlog_contents();
 		
-		$this->db_article 			= RC_Loader::load_app_model('article_model');
-		$this->db_article_cat		= RC_Loader::load_app_model('article_cat_model');
-		$this->db_article_view		= RC_Loader::load_app_model('article_viewmodel');
-		$this->db_goods_articleview = RC_Loader::load_app_model('article_goods_article_viewmodel');
-		$this->db_goods_article		= RC_Loader::load_app_model('article_goods_article_model');
+		$this->db_article 			= RC_Model::model('article/article_model');
+		$this->db_article_cat		= RC_Model::model('article/article_cat_model');
+		$this->db_article_view		= RC_Model::model('article/article_viewmodel');
+		$this->db_goods_articleview = RC_Model::model('article/article_goods_article_viewmodel');
+		$this->db_goods_article		= RC_Model::model('article/article_goods_article_model');
 		
 		/* 加载所需js */
 		RC_Script::enqueue_script('smoke');
@@ -711,7 +711,7 @@ class admin extends ecjia_admin {
 	 * 获取文章列表
 	 */
 	private function get_articles_list() {
-		$db_article_view = RC_Loader::load_app_model('article_viewmodel');
+		$db_article_view = RC_Model::model('article/article_viewmodel');
 		
 		$filter = array();
 		$filter['keywords']   = empty($_GET['keywords'])      ? ''                : trim($_GET['keywords']);

@@ -13,8 +13,8 @@ class admin_shopinfo extends ecjia_admin {
 	public function __construct() {
 		parent::__construct();
 		
-		$this->db_article     = RC_Loader::load_app_model('article_model');
-		$this->db_article_cat = RC_Loader::load_app_model('article_cat_model');
+		$this->db_article     = RC_Model::model('article/article_model');
+		$this->db_article_cat = RC_Model::model('article/article_cat_model');
 
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
