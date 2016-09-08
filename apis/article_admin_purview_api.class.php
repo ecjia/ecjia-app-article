@@ -8,16 +8,17 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class article_admin_purview_api extends Component_Event_Api {
     public function call(&$options) {
         $purviews = array(
-        	array('action_name' => RC_Lang::get('article::article.article_add_update'), 'action_code' => 'article_manage', 		'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.article_manage'), 	'action_code' => 'article_update', 		'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.article_update'), 	'action_code' => 'article_update', 		'relevance' => ''),
         	array('action_name' => RC_Lang::get('article::article.article_remove'), 	'action_code' => 'article_delete', 		'relevance' => ''),
-        	array('action_name' => RC_Lang::get('article::article.cat_add_update'), 	'action_code' => 'article_cat_manage', 	'relevance' => ''),
+        		
+        	array('action_name' => RC_Lang::get('article::article.cat_manage'), 		'action_code' => 'article_cat_manage', 	'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.cat_update'), 		'action_code' => 'article_cat_update', 	'relevance' => ''),
         	array('action_name' => RC_Lang::get('article::article.cat_remove'), 		'action_code' => 'article_cat_delete', 	'relevance' => ''),
+        		
             array('action_name' => RC_Lang::get('article::article.shopinfo_manage'), 	'action_code' => 'shopinfo_manage', 	'relevance' => ''),
             array('action_name' => RC_Lang::get('article::article.shophelp_manage'), 	'action_code' => 'shophelp_manage', 	'relevance' => ''),
-        		
-         	array('action_name' => RC_Lang::get('article::article.article_auto_manage'), 'action_code' => 'article_auto_manage', 'relevance' => ''),
-        	array('action_name' => RC_Lang::get('article::article.article_auto_update'), 'action_code' => 'article_auto_update', 'relevance' => ''),
-        	array('action_name' => RC_Lang::get('article::article.article_auto_delete'), 'action_code' => 'article_auto_delete', 'relevance' => ''),
+     
         );
         return $purviews;
     }

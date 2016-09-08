@@ -74,7 +74,7 @@ class admin_articlecat extends ecjia_admin {
 	 * 添加文章分类
 	 */
 	public function add() {
-		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.articlecat_add')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -98,7 +98,7 @@ class admin_articlecat extends ecjia_admin {
 	}
 	
 	public function insert() {
-		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
 		
 		$cat_name     = !empty($_POST['cat_name'])    ? trim($_POST['cat_name'])      : '';
 		$cat_desc     = !empty($_POST['cat_desc'])    ? trim($_POST['cat_desc'])      : '';
@@ -159,7 +159,7 @@ class admin_articlecat extends ecjia_admin {
 	 * 编辑文章分类
 	 */
 	public function edit() {
-		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.articlecat_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -208,7 +208,7 @@ class admin_articlecat extends ecjia_admin {
 	}
 
 	public function update() {
-		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
 		
 		$cat_name     = !empty($_POST['cat_name'])        ? trim($_POST['cat_name'])      : '';
 		$cat_desc     = !empty($_POST['cat_desc'])        ? trim($_POST['cat_desc'])      : '';
@@ -315,7 +315,7 @@ class admin_articlecat extends ecjia_admin {
 	 * 编辑文章分类的排序
 	 */
 	public function edit_sort_order() {
-		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
 		
 		$id    = intval($_POST['pk']);
 		$order = intval($_POST['value']);
@@ -362,7 +362,7 @@ class admin_articlecat extends ecjia_admin {
 	 *快捷编辑改分类是否在导航栏上面显示
 	 */
 	public function toggle_show_in_nav() {
-		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
 		
 		$id  = intval($_POST['id']);
 		$val = intval($_POST['val']);

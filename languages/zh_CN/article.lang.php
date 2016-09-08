@@ -233,9 +233,9 @@ return array(
 	'shop_help'		  		=> '网店帮助',
 	'shop_info'				=> '网店信息',
 	'article_auto_release'	=> '文章自动发布',
-	'article_add_update'	=> '文章添加/更新',
+	'article_update'		=> '文章更新',
 	'article_remove'		=> '文章删除',
-	'cat_add_update'		=> '分类添加/更新',
+	'cat_update'			=> '分类更新',
 	'cat_remove'			=> '分类删除',
 	'shopinfo_manage'		=> '网店信息管理',
 	'shophelp_manage'		=> '网店帮助管理',
@@ -307,6 +307,8 @@ return array(
 		'cancel'					=> '取消',
 	    'select_time'   		    => '请选择时间',
 	),
+	
+	'cat_manage'	=>	'文章分类管理'
 );
 
 //end

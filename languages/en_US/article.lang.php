@@ -307,6 +307,8 @@ return array(
 		'cancel'					=> 'Cancel',
 	    'select_time' 			    => 'Please select the time',
 	),
+	
+	'cat_manage'	=>	'articel category manage'
 );
 
 //end

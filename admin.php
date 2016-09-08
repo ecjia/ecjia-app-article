@@ -91,7 +91,7 @@ class admin extends ecjia_admin {
 	 * 添加文章页面
 	 */
 	public function add() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 		
 		RC_Script::enqueue_script('dropper-jq', RC_Uri::admin_url('statics/lib/dropper-upload/jquery.fs.dropper.js'), array(), false, true);
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('system::system.article_add')));
@@ -108,12 +108,11 @@ class admin extends ecjia_admin {
 		
 		$this->assign('ur_here', RC_Lang::get('system::system.article_add'));
 		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => RC_Uri::url('article/admin/init')));
-		
 		$article = array();
 		$article['is_open'] = 1;
-		
 		$this->assign('article', $article);
 		$this->assign('cat_select', article_cat::article_cat_list());
+		
 		$this->assign('form_action', RC_Uri::url('article/admin/insert'));
 
 		$this->display('article_info.dwt');
@@ -123,7 +122,7 @@ class admin extends ecjia_admin {
 	 * 添加文章
 	 */
 	public function insert() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 		$title 	      = !empty($_POST['title'])           ? trim($_POST['title'])         : '';
 		$cat_id       = !empty($_POST['article_cat'])     ? intval($_POST['article_cat']) : 0;
@@ -198,7 +197,7 @@ class admin extends ecjia_admin {
 	 * 添加自定义栏目
 	 */
 	public function insert_term_meta() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 		$article_id   = !empty($_POST['article_id'])  ? intval($_POST['article_id'])              : 0;
 		$key          = !empty($_POST['key'])         ? htmlspecialchars(trim($_POST['key']))     : '';
@@ -225,7 +224,7 @@ class admin extends ecjia_admin {
 	 * 更新自定义栏目
 	 */
 	public function update_term_meta() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 	    $article_id = !empty($_POST['article_id']) ? intval($_POST['article_id']) : 0;
 		$meta_id    = !empty($_POST['meta_id'])    ? intval($_POST['meta_id'])    : 0;
@@ -259,7 +258,6 @@ class admin extends ecjia_admin {
 	 */
 	public function remove_term_meta() {
 		$meta_id = !empty($_GET['meta_id']) ? intval($_GET['meta_id']) : 0;
-		
 		RC_DB::table('term_meta')->where('meta_id', $meta_id)->delete();
 		
 		$this->showmessage(RC_Lang::get('article::article.drop_custom_columns_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -269,7 +267,7 @@ class admin extends ecjia_admin {
 	 * 编辑
 	 */
 	public function edit() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -329,7 +327,7 @@ class admin extends ecjia_admin {
 	}
 
 	public function update() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 	
 		$id           = !empty($_POST['id']) 			  ? intval($_POST['id'])          : 0;
 		$title 	      = !empty($_POST['title'])           ? trim($_POST['title'])         : '';
@@ -443,7 +441,7 @@ class admin extends ecjia_admin {
 	 * 关联商品
 	 */
 	public function link_goods() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.edit_link_goods')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -478,7 +476,7 @@ class admin extends ecjia_admin {
 	 * 添加商品关联
 	 */
 	public function insert_link_goods() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 		$article_id		= !empty($_GET['id']) 			? intval($_GET['id']) 	: 0;
 		$linked_array 	= !empty($_GET['linked_array']) ? $_GET['linked_array'] : '';
@@ -510,7 +508,7 @@ class admin extends ecjia_admin {
 	 * 编辑文章标题
 	 */
 	public function edit_title() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 		$id    	= !empty($_POST['pk'])    ? intval($_POST['pk'])      : 0;
 		$title 	= !empty($_POST['value']) ? trim($_POST['value'])     : '';
@@ -540,7 +538,7 @@ class admin extends ecjia_admin {
 	 * 切换是否显示
 	 */
 	public function toggle_show() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
 
 		$id   = !empty($_POST['id'])  ? intval($_POST['id'])  : 0;
 		$val  = !empty($_POST['val']) ? intval($_POST['val']) : 0;
@@ -589,7 +587,7 @@ class admin extends ecjia_admin {
 	 * 删除附件
 	 */
 	public function delfile() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_delete', ecjia::MSGTYPE_JSON);
 
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$old_url = $this->db_article->article_field($id, 'file_url');
