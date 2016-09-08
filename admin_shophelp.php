@@ -353,7 +353,7 @@ class admin_shophelp extends ecjia_admin {
 	 * 获取网店帮助分类下的文章列表
 	 */
 	private function get_shophelp_article($cat_id) {
-		$db_article = RC_Loader::load_app_model('article_model');
+		$db_article = RC_Model::model('article/article_model');
 		
 		$count = $db_article->article_count(array('cat_id' => $cat_id));
 		$page = new ecjia_page($count, 15, 5);

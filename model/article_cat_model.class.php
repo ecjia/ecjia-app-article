@@ -13,7 +13,7 @@ class article_cat_model extends Component_Model_Model {
 	/* 判断重复 */
 	public function article_cat_count($where) {
 	    $db_article_cat = RC_DB::table('article_cat');
-	    if (!empty($where)) {
+	    if (is_array($where)) {
 	    	foreach ($where as $k => $v) {
 	    		if (is_array($v)) {
 	    			foreach ($v as $key => $val) {

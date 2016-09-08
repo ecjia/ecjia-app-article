@@ -233,7 +233,7 @@ defined ( 'IN_ECJIA' ) or exit ( 'No permission resources.' );
  * @return  array
  */
 function get_article_info($article_id) {
-	$db = RC_Loader::load_app_model('article_viewmodel', 'article');
+	$db = RC_Model::model('article/article_viewmodel');
 	$db->view = array(
 		'comment' => array(
 			'type'  => Component_Model_View::TYPE_LEFT_JOIN,
