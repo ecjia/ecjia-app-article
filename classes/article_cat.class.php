@@ -22,13 +22,24 @@ class article_cat
 	 * @return mix
 	 */
 	public static function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0) {
-		$option = array(
-			'field'	=> 'c.*, COUNT(s.cat_id) AS has_children, COUNT(a.article_id) AS article_num',
-			'where'	=> 'c.parent_id not in (1,2,3) and c.cat_id<>1',
-			'group'	=> 'c.cat_id',
-			'order'	=> array('parent_id' => 'asc', 'sort_order' => 'ASC'),
-		);
-		$res = RC_Model::model('article/article_cat_viewmodel')->article_cat_select($option);
+// 		$option = array(
+// 			'field'	=> 'c.*, COUNT(s.cat_id) AS has_children, COUNT(a.article_id) AS article_num',
+// 			'where'	=> 'c.parent_id not in (1,2,3) and c.cat_id<>1',
+// 			'group'	=> 'c.cat_id',
+// 			'order'	=> array('parent_id' => 'asc', 'sort_order' => 'ASC'),
+// 		);
+// 		$res = RC_Model::model('article/article_cat_viewmodel')->article_cat_select($option);
+
+		$res = $db_article = RC_DB::table('article_cat as c')
+			->leftJoin('article_cat as s', RC_DB::raw('s.parent_id'), '=', RC_DB::raw('c.cat_id'))
+			->leftJoin('article as a', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('c.cat_id'))
+			->select(RC_DB::raw('c.*'), RC_DB::raw('COUNT(s.cat_id) as has_children'), RC_DB::raw('COUNT(a.article_id) as article_num'))
+			->whereNotIn(RC_DB::raw('c.parent_id'), array(1,2,3))
+			->where(RC_DB::raw('c.cat_id'), '!=', 1)
+			->groupby(RC_DB::raw('c.cat_id'))
+			->orderby('parent_id', 'asc')
+			->orderby('sort_order', 'asc')
+			->get();
 		
 		if (empty($res) == true) {
 			return $re_type ? '' : array ();
@@ -250,6 +261,17 @@ class article_cat
 				return $field_name . ' IN (' . $item_list_tmp . ') ';
 			}
 		}
+	}
+	
+	/**
+	 * 获得指定文章分类下所有底层分类的ID数组
+	 *
+	 * @access public
+	 * @param integer $cat 指定的分类ID
+	 * @return array
+	 */
+	public function get_children_list($cat = 0) {
+		return array_unique(array_merge(array($cat), array_keys(self::article_cat_list($cat, 0, false))));
 	}
 }
 

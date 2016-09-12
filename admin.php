@@ -459,7 +459,8 @@ class admin extends ecjia_admin {
 		$this->assign('ur_here', RC_Lang::get('article::article.edit_link_goods'));
 		
 		$article_id = !empty($_GET['id']) ? $_GET['id'] : '';
-		$linked_goods = RC_DB::table('goods_article')->leftJoin('goods', 'goods.goods_id', '=', 'goods_article.goods_id')
+		$linked_goods = RC_DB::table('goods_article')
+			->leftJoin('goods', 'goods.goods_id', '=', 'goods_article.goods_id')
 			->where('goods_article.article_id', $article_id)
 			->select('goods.goods_id', 'goods.goods_name')
 			->get();
@@ -709,42 +710,31 @@ class admin extends ecjia_admin {
 	 * 获取文章列表
 	 */
 	private function get_articles_list() {
-		$db_article_view = RC_Model::model('article/article_viewmodel');
-		
 		$filter = array();
 		$filter['keywords']   = empty($_GET['keywords'])      ? ''                : trim($_GET['keywords']);
 		$filter['cat_id']     = empty($_GET['cat_id'])        ? 0                 : intval($_GET['cat_id']);
 		$filter['sort_by']    = empty($_GET['sort_by'])       ? 'a.article_id'    : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
 	
-		if (isset($_GET['is_ajax']) && $_GET['is_ajax'] == 1) {
-			$filter['keywords'] = $filter['keywords'];
-		}
-	
+		$db_article = RC_DB::table('article as a')
+			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
+		
 		//不获取系统帮助文章的过滤
-		$where = 'a.cat_id <> 0 AND ac.cat_type <> 5';
-	
+		$db_article->where(RC_DB::raw('a.cat_id'), '!=', '0')->where(RC_DB::raw('ac.cat_type'), '!=', 5);
+		
 		if (!empty($filter['keywords'])) {
-			$where .= " AND a.title LIKE '%" . mysql_like_quote($filter['keywords']) . "%'";
+			$db_article ->where(RC_DB::raw('title'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
 		}
 		if ($filter['cat_id'] && ($filter['cat_id'] > 0)) {
-			$where .= " AND a." . article_cat::get_article_children($filter['cat_id']);
+			$db_article ->whereIn(RC_DB::raw('a.cat_id'), article_cat::get_children_list($filter['cat_id']));
 		}
-
-		$field = 'article_id';
-		$table = 'article_cat';
-		$count = $db_article_view->article_count($where, $table, $field);
+		
+		$count = $db_article->select('article_id')->count();
 		$page = new ecjia_page($count, 15, 5);
 		
-		$option = array(
-			'table'	=> 'article_cat',
-			'field'	=> 'a.*, ac.cat_id, ac.cat_name, ac.cat_type, ac.sort_order',
-			'where'	=> $where,
-			'order'	=> array($filter['sort_by'] => $filter['sort_order']),
-			'limit'	=> $page->limit()
-		);
-		
-		$result = $db_article_view->article_select($option);
+		$result = $db_article->select(RC_DB::raw('a.*'), RC_DB::raw('ac.cat_id'), RC_DB::raw('ac.cat_name'), RC_DB::raw('ac.cat_type'), RC_DB::raw('ac.sort_order'))
+			->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
+			->take(15)->skip($page->start_id-1)->get();
 	
 		$arr = array();
 		if (!empty($result)) {

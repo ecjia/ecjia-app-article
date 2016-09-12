@@ -25,9 +25,9 @@ class article_cat_viewmodel extends Component_Model_View {
 		parent::__construct();
 	}
 	
-	public function article_cat_select($option) {
-		return $this->join(array('article_cat', 'article'))->field($option['field'])->where($option['where'])->group($option['group'])->order($option['order'])->select();
-	}
+// 	public function article_cat_select($option) {
+// 		return $this->join(array('article_cat', 'article'))->field($option['field'])->where($option['where'])->group($option['group'])->order($option['order'])->select();
+// 	}
 }
 
 // end
