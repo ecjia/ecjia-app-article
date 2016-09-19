@@ -27,11 +27,15 @@ class article_article_info_api extends Component_Event_Api {
 	 */
 	
 	private function article_info($options) {
-		$where = array();
-		$where['article_id'] = $options['id'];
-		$where['is_open']	  = empty($options['is_open']) ? 1 : intval($options['is_open']);
+		$article_id = intval($options['id']);
+		$is_open = empty($options['is_open']) ? 1 : intval($options['is_open']);
 		
-		return RC_Model::model('article/article_model')->find($where);
+		$db = RC_DB::table('article');
+		
+		$db->where('article_id', '=', $article_id);
+		$db->where('is_open', '=', $is_open);
+		$info = $db->first();
+		return $info;
 	}
 	
 }
