@@ -170,6 +170,9 @@ class admin_shophelp extends ecjia_admin {
 		
 		$cat_name = $this->db_article_cat->article_cat_field($cat_id, 'cat_name');
 		$article  = $this->db_article->article_find($article_id);
+		if (!empty($article['content'])) {
+			$article['content'] = stripslashes($article['content']);
+		}
 		
 		$this->assign('cat_id', $cat_id);
 		$this->assign('ur_here', RC_Lang::get('article::shophelp.article_edit'));

@@ -291,6 +291,9 @@ class admin extends ecjia_admin {
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$article = $this->db_article->article_find($id);
+		if (!empty($article['content'])) {
+			$article['content'] = stripslashes($article['content']);
+		}
 		
 		$extname = strtolower(substr($article['file_url'], strrpos($article['file_url'], '.') + 1));
 		$img_arr = array('jpg', 'jpeg', 'png', 'gif', 'bmp');

@@ -142,6 +142,9 @@ class admin_shopinfo extends ecjia_admin {
 		
 		$id = intval($_GET['id']);
 		$article = $this->db_article->article_find($id);
+		if (!empty($article['content'])) {
+			$article['content'] = stripslashes($article['content']);
+		}
 		
 		$this->assign('article', $article);
 		$this->assign('form_action', RC_Uri::url('article/admin_shopinfo/update'));
