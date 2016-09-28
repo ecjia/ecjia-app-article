@@ -259,7 +259,7 @@
 														    	<div class="h100 ecjiaf-wwb">{lang key='article::article.file_address'}{$article.file_url}</div>
 													       	{else}
 													       		<div class="t_c">
-																	<img class="w300 h300 t_c "  class="img-polaroid" src="{$article.image_url} " />
+																	<img class="w300 h300 t_c"  class="img-polaroid" src="{$article.image_url} " />
 																</div>
 													       		<span class="ecjiaf-db m_t5 m_b5 ecjiaf-wwb">{lang key='article::article.file_address'}{$article.file_url}</span>
 													       	{/if}

@@ -21,13 +21,56 @@
 		<div class="tabbable">
 			<form class="form-horizontal" action="{$form_action}" method="post" enctype="multipart/form-data" name="theForm" data-edit-url="{RC_Uri::url('article/admin_shopinfo/edit')}">
 				<div class="control-group formSep">
-					<div >
-						<input type="text" name="title" size="40" maxlength="60" class="span10"  value="{$article.title}"  placeholder="{lang key='article::shopinfo.pls_title'}"/> <span class="input-must">{lang key='system::system.require_field'}</span>
-					</div>
+					<input type="text" name="title" size="40" maxlength="60" class="span10" value="{$article.title}" placeholder="{lang key='article::shopinfo.pls_title'}"/> 
+					<span class="input-must">{lang key='system::system.require_field'}</span>
 				</div>
+				
 				<div class="control-group formSep">
 					<div>{ecjia:editor content=$article.content textarea_name='content'}</div>
 				</div>
+				
+				<div class="foldable-list move-mod-group">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#upload_thumb">
+								<strong>{lang key='article::article.upload_thumb'}</strong>
+							</a>
+						</div>
+						<div class="accordion-body collapse" id="upload_thumb">
+							<div class="accordion-inner">
+								<div class="control-group control-group-small m_t15">
+									{if $article.file_url neq ''}
+									<label class="control-label">{lang key='article::article.label_preview_image'}</label>
+									<div class="controls">
+							       		<div class="t_l">
+											<img class="w150 w150" class="img-polaroid" src="{$article.image_url} " />
+										</div>
+							       		<span class="ecjiaf-db m_t5 m_b5 ecjiaf-wwb">{lang key='article::article.label_image_address'}{$article.file_url}</span>
+										<a class="ajaxremove ecjiafc-red ecjiaf-db" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_image_confirm'}" href='{RC_Uri::url("article/admin_shopinfo/del_file", "id={$article.article_id}")}' title="{lang key='article::article.drop_image'}">
+								        {lang key='article::article.drop_image'}
+								        </a>
+								        <input name="file" value="{$article.file_url}" class="hide">
+									</div>
+									{else}
+									<label class="control-label">{lang key='article::article.label_upload_image'}</label>
+									<div class="controls">
+										<div data-provides="fileupload" class="fileupload fileupload-new">
+											<span class="btn btn-file">
+												<span class="fileupload-new">{lang key='article::article.select_image'}</span>
+												<span class="fileupload-exists">{lang key='article::article.modify_image'}</span>
+												<input type="file" name="file">
+											</span>
+											<span class="fileupload-preview"></span>
+											<a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">&times;</a>
+										</div>
+									</div>
+									{/if}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
 				<div class="foldable-list move-mod-group">
 					<div class="accordion-group">
 						<div class="accordion-heading">
@@ -37,8 +80,8 @@
 						</div>
 						<div class="accordion-body collapse" id="collapse001">
 							<div class="accordion-inner">
-							<div class="control-group control-group-small" >
-									<label class="control-label">{lang key='article::article.keyword'}：</label>
+								<div class="control-group control-group-small">
+									<label class="control-label">{lang key='article::article.keywords'}</label>
 									<div class="controls">
 										<input class="span12" type="text" name="keywords" value="{$article.keywords}" size="40" />
 										<br />
@@ -55,6 +98,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<p class="ecjiaf-tac">
 					<!-- {if $article.article_id} -->
 					<button class="btn btn-gebo" type="submit">{lang key='article::article.update'}</button>

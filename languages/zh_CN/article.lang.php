@@ -308,7 +308,15 @@ return array(
 	    'select_time'   		    => '请选择时间',
 	),
 	
-	'cat_manage'	=>	'文章分类管理'
+	'cat_manage'			=> '文章分类管理',
+	'upload_thumb'			=> '上传缩略图',
+	'label_upload_image'	=> '上传图片：',
+	'label_preview_image'	=> '预览图片：',
+	'select_image'			=> '选择图片',
+	'modify_image'			=> '修改图片',
+	'label_image_address'	=> '图片地址：',
+	'drop_image'			=> '删除图片',
+	'drop_image_confirm'	=> '您确定要删除该图片吗？',
 );
 
 //end

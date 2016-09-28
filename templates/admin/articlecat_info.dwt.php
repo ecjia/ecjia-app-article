@@ -23,7 +23,7 @@
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='article::article.cat_name'}：</label>
 					<div class="controls">
-						<input type="text" name="cat_name" maxlength="60" size = "30" value="{$cat.cat_name|escape}" />
+						<input type="text" name="cat_name" maxlength="60" size="30" value="{$cat.cat_name|escape}" />
 						<span class="input-must">{lang key='system::system.require_field'}</span>
 					</div>
 				</div>

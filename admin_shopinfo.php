@@ -28,6 +28,7 @@ class admin_shopinfo extends ecjia_admin {
 		RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'), array(), false, false);
 		RC_Script::enqueue_script('jquery-uniform');
 		RC_Script::enqueue_script('jquery-chosen');
+		RC_Script::enqueue_script('bootstrap-placeholder', RC_Uri::admin_url('statics/lib/dropper-upload/bootstrap-placeholder.js'), array(), false, true);
 
 		$js_lang = array(
 			'shopinfo_title_required' => RC_Lang::get('article::article.shopinfo_title_required'),
@@ -84,8 +85,6 @@ class admin_shopinfo extends ecjia_admin {
 		$this->assign('ur_here', RC_Lang::get('article::shopinfo.shopinfo_add'));
 		$this->assign('action_link', array('text' => RC_Lang::get('article::shopinfo.shop_information'), 'href'=> RC_Uri::url('article/admin_shopinfo/init')));
 		
-		$article['article_type'] = 0;
-		
 		$this->assign('form_action', RC_Uri::url('article/admin_shopinfo/insert'));
 		$this->display('shopinfo_info.dwt');
 	}
@@ -94,15 +93,30 @@ class admin_shopinfo extends ecjia_admin {
 	public function insert() {
 		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
 		
-		$title    = !empty($_POST['title'])       ? trim($_POST['title'])         : '';
-		$content  = !empty($_POST['content'])     ? trim($_POST['content'])       : '';
-		$keywords = !empty($_POST['keywords'])    ? trim($_POST['keywords'])      : '';
-		$desc     = !empty($_POST['description']) ? trim($_POST['description'])   : '';
+		$title    	= !empty($_POST['title'])       ? trim($_POST['title'])         : '';
+		$content  	= !empty($_POST['content'])     ? trim($_POST['content'])       : '';
+		$keywords	= !empty($_POST['keywords'])    ? trim($_POST['keywords'])      : '';
+		$desc    	= !empty($_POST['description']) ? trim($_POST['description'])   : '';
+		$file		= !empty($_FILES['file']) 		? $_FILES['file'] 				: '';
 		
  		$is_only = $this->db_article->article_count(array('title' => $title, 'cat_id' => 0));
-		
 		if ($is_only != 0) {
 			$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		
+		$file_name = '';
+		//判断用户是否选择了文件
+		if (!empty($file)&&((isset($file['error']) && $file['error'] == 0) || (!isset($file['error']) && $file['tmp_name'] != 'none'))) {
+			$upload = RC_Upload::uploader('file', array('save_path' => 'data/article', 'auto_sub_dirs' => true));
+			$upload->allowed_type(array('jpg', 'jpeg', 'png', 'gif', 'bmp'));
+			$upload->allowed_mime(array('image/jpeg', 'image/png', 'image/gif', 'image/x-png', 'image/pjpeg'));
+			$image_info = $upload->upload($file);
+			/* 判断是否上传成功 */
+			if (!empty($image_info)) {
+				$file_name = $upload->get_position($image_info);
+			} else {
+				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
 		}
 		
 		$data = array(
@@ -110,6 +124,7 @@ class admin_shopinfo extends ecjia_admin {
 			'cat_id'   		=> 0,
 			'content'  		=> $content,
 			'keywords'  	=> $keywords,
+			'file_url'		=> $file_name,
 			'description'  	=> $desc,
 			'add_time' 		=> RC_Time::gmtime(),
 		);
@@ -145,7 +160,12 @@ class admin_shopinfo extends ecjia_admin {
 		if (!empty($article['content'])) {
 			$article['content'] = stripslashes($article['content']);
 		}
-		
+
+		if (!empty($article['file_url']) && file_exists(RC_Upload::upload_path($article['file_url']))) {
+			$article['image_url'] = RC_Upload::upload_url($article['file_url']);
+		} else {
+			$article['image_url'] = RC_Uri::admin_url('statics/images/nopic.png');
+		}
 		$this->assign('article', $article);
 		$this->assign('form_action', RC_Uri::url('article/admin_shopinfo/update'));
 		
@@ -155,34 +175,54 @@ class admin_shopinfo extends ecjia_admin {
 	public function update() {
 		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
 		
-		$title    = !empty($_POST['title'])       ? trim($_POST['title'])         : '';
-		$content  = !empty($_POST['content'])     ? trim($_POST['content'])       : '';
-		$keywords = !empty($_POST['keywords'])    ? trim($_POST['keywords'])      : '';
-		$desc     = !empty($_POST['description']) ? trim($_POST['description'])   : '';
-		$old_title= !empty($_POST['old_title'])   ? trim($_POST['old_title'])     : '';
-		$id       = !empty($_POST['id'])          ? intval($_POST['id'])          : 0;
+		$title    	= !empty($_POST['title'])       ? trim($_POST['title'])         : '';
+		$content  	= !empty($_POST['content'])     ? trim($_POST['content'])       : '';
+		$keywords 	= !empty($_POST['keywords'])    ? trim($_POST['keywords'])      : '';
+		$desc     	= !empty($_POST['description']) ? trim($_POST['description'])   : '';
+		$old_title	= !empty($_POST['old_title'])   ? trim($_POST['old_title'])     : '';
+		$id       	= !empty($_POST['id'])          ? intval($_POST['id'])          : 0;
+		$file		= !empty($_FILES['file']) 		? $_FILES['file'] 				: '';
 		
 		if ($title != $old_title) {
-			$is_only = $this->db_article->article_count(array('title' => $title, 'cat_id' => 0));
+			$is_only = $this->db_article->article_count(array('title' => $title, 'cat_id' => 0, 'article_id' => array('neq' => $id)));
 			if ($is_only != 0) {
 				$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
+		
+		$old_file_name = $this->db_article->article_field($id, 'file_url');
+		//判断用户是否选择了文件
+		if (!empty($file)&&((isset($file['error']) && $file['error'] == 0) || (!isset($file['error']) && $file['tmp_name'] != 'none'))) {
+			$upload = RC_Upload::uploader('file', array('save_path' => 'data/article', 'auto_sub_dirs' => true));
+			$upload->allowed_type(array('jpg', 'jpeg', 'png', 'gif', 'bmp'));
+			$upload->allowed_mime(array('image/jpeg', 'image/png', 'image/gif', 'image/x-png', 'image/pjpeg'));
+			$image_info = $upload->upload($file);
+			
+			/* 判断是否上传成功 */
+			if (!empty($image_info)) {
+				$file_name = $upload->get_position($image_info);
+			} else {
+				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		} else {
+			$file_name = $old_file_name;
+		}
 
 		$data = array(
-		    'article_id'  => $id,
-			'title'       => $title,
-			'content'     => $content,
-			'keywords'    => $keywords,
-			'description' => $desc,
-			'add_time'    => RC_Time::gmtime()
+		    'article_id'  	=> $id,
+			'title'       	=> $title,
+			'content'     	=> $content,
+			'keywords'    	=> $keywords,
+			'file_url'		=> $file_name,
+			'description' 	=> $desc,
+			'add_time'    	=> RC_Time::gmtime()
 		);
-		if ($this->db_article->article_manage($data)) {
-			ecjia_admin::admin_log($title, 'edit', 'shopinfo');
-			
-			$links = array('text' => RC_Lang::get('article::shopinfo.back_list'), 'href' => RC_Uri::url('article/admin_shopinfo/init'));
-			$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleedit_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
-		}
+
+		$this->db_article->article_manage($data);
+		ecjia_admin::admin_log($title, 'edit', 'shopinfo');
+		
+		$links = array('text' => RC_Lang::get('article::shopinfo.back_list'), 'href' => RC_Uri::url('article/admin_shopinfo/init'));
+		$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleedit_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
 	}
 	
 	/**
@@ -192,12 +232,37 @@ class admin_shopinfo extends ecjia_admin {
 		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
 		
 		$id = intval($_GET['id']);
-		$title = $this->db_article->article_field(array('article_id' => $id), 'title');
+		$shop_info = $this->db_article->article_find($id);
 		
 		if ($this->db_article->article_delete($id)) {
-			ecjia_admin::admin_log(addslashes($title), 'remove', 'shopinfo');
+			if (!empty($shop_info['file_url']) && file_exists(RC_Upload::upload_path() . $shop_info['file_url'])) {
+				$disk = RC_Filesystem::disk();
+				$disk->delete(RC_Upload::upload_path() . $shop_info['file_url']);
+			}
+			ecjia_admin::admin_log(addslashes($shop_info['title']), 'remove', 'shopinfo');
 		}
-		$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.remove_success'), $title), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.remove_success'), $shop_info['title']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+	}
+	
+	/**
+	 * 删除附件
+	 */
+	public function del_file() {
+		$this->admin_priv('article_delete', ecjia::MSGTYPE_JSON);
+	
+		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+		$old_url = $this->db_article->article_field($id, 'file_url');
+	
+		$disk = RC_Filesystem::disk();
+		$disk->delete(RC_Upload::upload_path() . $old_url);
+	
+		$data = array(
+			'article_id'  => $id,
+			'file_url'    => '',
+		);
+		$this->db_article->article_manage($data);
+	
+		$this->showmessage(RC_Lang::get('article::article.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
 	}
 	
 	/**
