@@ -9,8 +9,6 @@ class admin extends ecjia_admin {
 	private $db_article;
 	private $db_article_cat;
 	private $db_article_view;
-	private $db_goods_articleview;
-	private $db_goods_article;
 	
 	public function __construct() {
 		parent::__construct();
@@ -22,8 +20,6 @@ class admin extends ecjia_admin {
 		$this->db_article 			= RC_Model::model('article/article_model');
 		$this->db_article_cat		= RC_Model::model('article/article_cat_model');
 		$this->db_article_view		= RC_Model::model('article/article_viewmodel');
-		$this->db_goods_articleview = RC_Model::model('article/article_goods_article_viewmodel');
-		$this->db_goods_article		= RC_Model::model('article/article_goods_article_model');
 		
 		/* 加载所需js */
 		RC_Script::enqueue_script('smoke');
