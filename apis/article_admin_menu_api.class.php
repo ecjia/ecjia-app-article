@@ -8,7 +8,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class article_admin_menu_api extends Component_Event_Api {
 
     public function call(&$options) {
-        $menus = ecjia_admin::make_admin_menu('07_content', RC_Lang::get('article::article.article_manage'), '', 7);
+        $menus = ecjia_admin::make_admin_menu('09_content', RC_Lang::get('article::article.article_manage'), '', 9);
         
         $submenus = array(
             ecjia_admin::make_admin_menu('01_article_list', RC_Lang::get('article::article.article_list'), RC_Uri::url('article/admin/init'), 1)->add_purview('article_manage'),
