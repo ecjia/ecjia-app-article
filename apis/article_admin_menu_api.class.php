@@ -20,7 +20,12 @@ class article_admin_menu_api extends Component_Event_Api {
         );
         
         $menus->add_submenu($submenus);
-        return $menus;
+        $menus = RC_Hook::apply_filters('article_admin_menu_api', $menus);
+        
+		if ($menus->has_submenus()) {
+		    return $menus;
+		}
+		return false;
     }
 }
 
