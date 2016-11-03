@@ -8,7 +8,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class article_admin_purview_api extends Component_Event_Api {
     public function call(&$options) {
         $purviews = array(
-        	array('action_name' => RC_Lang::get('article::article.article_manage'), 	'action_code' => 'article_update', 		'relevance' => ''),
+        	array('action_name' => RC_Lang::get('article::article.article_manage'), 	'action_code' => 'article_manage', 		'relevance' => ''),
         	array('action_name' => RC_Lang::get('article::article.article_update'), 	'action_code' => 'article_update', 		'relevance' => ''),
         	array('action_name' => RC_Lang::get('article::article.article_remove'), 	'action_code' => 'article_delete', 		'relevance' => ''),
         		
