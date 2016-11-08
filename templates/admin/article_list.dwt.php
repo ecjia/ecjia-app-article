@@ -18,7 +18,9 @@
 			<div>
 				<select class="noselect no_search w200" size="15" name="target_cat">
 					<option value="0">{lang key='article::article.all_cat'}</option>
-					<!-- {$cat_select} -->
+					<!-- {foreach from=$cat_select key=key item=val} -->
+					<option value="{$val.cat_id}" {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
+					<!-- {/foreach} -->
 				</select>
 			</div>
 			<div>
@@ -53,7 +55,9 @@
 		</div>
 		<select class="w220" name="cat_id" id="select-cat">
 			<option value="0">{lang key='article::article.all_cat'}</option>
-			<!-- {$cat_select} -->
+			<!-- {foreach from=$cat_select key=key item=val} -->
+			<option value="{$val.cat_id}" {if $smarty.get.cat_id eq $val.cat_id}selected{/if} {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
+			<!-- {/foreach} -->
 		</select>
 		<a class="btn m_l5 screen-btn">{lang key='article::article.filter'}</a>
 		<div class="choose_list f_r" >

@@ -270,7 +270,7 @@ class article_cat
 	 * @param integer $cat 指定的分类ID
 	 * @return array
 	 */
-	public function get_children_list($cat = 0) {
+	public static function get_children_list($cat = 0) {
 		return array_unique(array_merge(array($cat), array_keys(self::article_cat_list($cat, 0, false))));
 	}
 }

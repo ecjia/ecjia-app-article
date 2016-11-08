@@ -173,7 +173,9 @@
 														<div class="control span8">
 															<select name="article_cat">
 																<option value="0">{lang key='article::article.select_plz'}</option>
-																<!-- {$cat_select} -->
+																<!-- {foreach from=$cat_select key=key item=val} -->
+																<option value="{$val.cat_id}" {if $article.cat_id eq $val.cat_id}selected{/if} {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
+																<!-- {/foreach} -->
 															</select>
 														</div>
 													</div>
