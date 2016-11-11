@@ -253,6 +253,8 @@ class admin extends ecjia_admin {
 	 * 删除自定义栏目
 	 */
 	public function remove_term_meta() {
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		
 		$meta_id = !empty($_GET['meta_id']) ? intval($_GET['meta_id']) : 0;
 		RC_DB::table('term_meta')->where('meta_id', $meta_id)->delete();
 		

@@ -273,6 +273,7 @@ class admin_shophelp extends ecjia_admin {
 	 */
 	public function remove() {
 		$this->admin_priv('shophelp_manage', ecjia::MSGTYPE_JSON);
+		
 		$id = !empty($_GET['cat_id']) ? intval($_GET['cat_id']) : 0;
 		/* 非空的分类不允许删除 */
 		if ($this->db_article->article_count(array('cat_id' => $id)) != 0) {

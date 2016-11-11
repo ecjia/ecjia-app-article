@@ -18,6 +18,8 @@ class article_admin_purview_api extends Component_Event_Api {
         		
             array('action_name' => RC_Lang::get('article::article.shopinfo_manage'), 	'action_code' => 'shopinfo_manage', 	'relevance' => ''),
             array('action_name' => RC_Lang::get('article::article.shophelp_manage'), 	'action_code' => 'shophelp_manage', 	'relevance' => ''),
+        		
+        	array('action_name' =>__('文章自动发布'), 'action_code' => 'article_auto_manage', 'relevance' => ''),
      
         );
         return $purviews;

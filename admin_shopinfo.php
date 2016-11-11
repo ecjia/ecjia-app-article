@@ -248,7 +248,7 @@ class admin_shopinfo extends ecjia_admin {
 	 * 删除附件
 	 */
 	public function del_file() {
-		$this->admin_priv('article_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
 	
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$old_url = $this->db_article->article_field($id, 'file_url');

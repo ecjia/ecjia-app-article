@@ -42,7 +42,7 @@ class admin_article_auto extends ecjia_admin {
 	}
 
 	public function init() {
-		$this->admin_priv('article_auto_manage');
+		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_auto_release')));
 		
@@ -59,7 +59,7 @@ class admin_article_auto extends ecjia_admin {
 	}
 	
 	public function batch() {
-		$this->admin_priv('article_auto_update');
+		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
 		
 		$type         = !empty($_GET['type'])         ? $_GET['type']         : '';
 		$article_id   = !empty($_POST['article_id'])  ? $_POST['article_id']  : '';
@@ -114,7 +114,7 @@ class admin_article_auto extends ecjia_admin {
 	
 	//撤销
 	public function del() {
-		$this->admin_priv('article_auto_delete');
+		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
 		
 		$id       = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$title    = $this->db_article->article_field(array('article_id' => $id), 'title');
@@ -125,9 +125,8 @@ class admin_article_auto extends ecjia_admin {
 		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
-	
 	public function edit_starttime() {
-		$this->admin_priv('article_auto_update');
+		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
 		
 		$id		= !empty($_POST['pk']) 		? intval($_POST['pk']) 	: 0;
 		$value 	= !empty($_POST['value']) 	? trim($_POST['value']) : '';
@@ -157,7 +156,7 @@ class admin_article_auto extends ecjia_admin {
 	}
 	
 	public function edit_endtime() {
-		$this->admin_priv('article_auto_update');
+		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
 		
 		$id		= !empty($_POST['pk'])       ? intval($_POST['pk'])  : 0;
 		$value 	= !empty($_POST['value'])    ? trim($_POST['value']) : '';
