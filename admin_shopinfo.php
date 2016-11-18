@@ -132,7 +132,7 @@ class admin_shopinfo extends ecjia_admin {
 		//释放article_list缓存
 		$orm_article_db = RC_Model::model('article/orm_article_model');
 		$cat_id = 0;
-		$cache_article_list_key = 'article_list'.$cat_id;
+		$cache_article_list_key = 'article_list_'.$cat_id;
 		$cache_id_list = sprintf('%X', crc32($cache_article_list_key));
 		$orm_article_db->delete_cache_item($cache_id_list);
 
@@ -228,7 +228,7 @@ class admin_shopinfo extends ecjia_admin {
 		//释放article_list缓存
 		$orm_article_db = RC_Model::model('article/orm_article_model');
 		$cat_id = 0;
-		$cache_article_list_key = 'article_list'.$cat_id;
+		$cache_article_list_key = 'article_list_'.$cat_id;
 		$cache_id_list = sprintf('%X', crc32($cache_article_list_key));
 		$orm_article_db->delete_cache_item($cache_id_list);
 		ecjia_admin::admin_log($title, 'edit', 'shopinfo');
@@ -254,7 +254,7 @@ class admin_shopinfo extends ecjia_admin {
 			//释放article_list缓存
 			$orm_article_db = RC_Model::model('article/orm_article_model');
 			$cat_id = 0;
-			$cache_article_list_key = 'article_list'.$cat_id;
+			$cache_article_list_key = 'article_list_'.$cat_id;
 			$cache_id_list = sprintf('%X', crc32($cache_article_list_key));
 			$orm_article_db->delete_cache_item($cache_id_list);
 			
@@ -283,7 +283,7 @@ class admin_shopinfo extends ecjia_admin {
 		//释放article_list缓存
 		$orm_article_db = RC_Model::model('article/orm_article_model');
 		$cat_id = 0;
-		$cache_article_list_key = 'article_list'.$cat_id;
+		$cache_article_list_key = 'article_list_'.$cat_id;
 		$cache_id_list = sprintf('%X', crc32($cache_article_list_key));
 		$orm_article_db->delete_cache_item($cache_id_list);
 		

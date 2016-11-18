@@ -7,7 +7,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class help_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-    	$cache_article_key = 'article_list';
+    	$cache_article_key = 'article_list_';
     	$cache_id = sprintf('%X', crc32($cache_article_key));
     	$article_db = RC_Model::model('article/orm_article_model');
     	$out = $article_db->get_cache_item($cache_id);

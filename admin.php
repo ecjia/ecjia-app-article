@@ -182,7 +182,7 @@ class admin extends ecjia_admin {
 			$article_id = $this->db_article->article_manage($data);
 			/*释放文章缓存*/
 			$orm_article_db = RC_Model::model('article/orm_article_model');
-			$cache_article_info_key = 'article_info'.$article_id;
+			$cache_article_info_key = 'article_info_'.$article_id;
 			$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 			$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 			
@@ -214,7 +214,7 @@ class admin extends ecjia_admin {
 		RC_DB::table('term_meta')->insertGetId($data);
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
-		$cache_article_info_key = 'article_info'.$article_id;
+		$cache_article_info_key = 'article_info_'.$article_id;
 		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 
@@ -252,7 +252,7 @@ class admin extends ecjia_admin {
 		RC_DB::table('term_meta')->where('meta_id', $meta_id)->update($data);
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
-		$cache_article_info_key = 'article_info'.$article_id;
+		$cache_article_info_key = 'article_info_'.$article_id;
 		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 		
@@ -275,7 +275,7 @@ class admin extends ecjia_admin {
 		RC_DB::table('term_meta')->where('meta_id', $meta_id)->delete();
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
-		$cache_article_info_key = 'article_info'.$article_id;
+		$cache_article_info_key = 'article_info_'.$article_id;
 		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 		
@@ -418,7 +418,7 @@ class admin extends ecjia_admin {
 			
 			/*释放文章缓存*/
 			$orm_article_db = RC_Model::model('article/orm_article_model');
-			$cache_article_info_key = 'article_info'.$article_id;
+			$cache_article_info_key = 'article_info_'.$id;
 			$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 			$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 			
@@ -529,7 +529,7 @@ class admin extends ecjia_admin {
 		}
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
-		$cache_article_info_key = 'article_info'.$article_id;
+		$cache_article_info_key = 'article_info_'.$article_id;
 		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 		
@@ -562,7 +562,7 @@ class admin extends ecjia_admin {
 			$query = $this->db_article->article_manage($data);
 			/*释放文章缓存*/
 			$orm_article_db = RC_Model::model('article/orm_article_model');
-			$cache_article_info_key = 'article_info'.$id;
+			$cache_article_info_key = 'article_info_'.$id;
 			$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 			$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 	
@@ -591,7 +591,7 @@ class admin extends ecjia_admin {
 		$this->db_article->article_manage($data);
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
-		$cache_article_info_key = 'article_info'.$id;
+		$cache_article_info_key = 'article_info_'.$id;
 		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 
@@ -623,7 +623,7 @@ class admin extends ecjia_admin {
 			RC_DB::table('comment')->where('comment_type', 1)->where('id_value', $id)->delete();
 			/*释放文章缓存*/
 			$orm_article_db = RC_Model::model('article/orm_article_model');
-			$cache_article_info_key = 'article_info'.$id;
+			$cache_article_info_key = 'article_info_'.$id;
 			$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 			$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 			
@@ -654,7 +654,7 @@ class admin extends ecjia_admin {
 		$this->db_article->article_manage($data);
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
-		$cache_article_info_key = 'article_info'.$id;
+		$cache_article_info_key = 'article_info_'.$id;
 		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 		
@@ -691,7 +691,7 @@ class admin extends ecjia_admin {
 							$disk->delete(RC_Upload::upload_path() . $v['file_url']);
 						}
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info'.$v['article_id'];
+						$cache_article_info_key = 'article_info_'.$v['article_id'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						
@@ -708,7 +708,7 @@ class admin extends ecjia_admin {
 
 					foreach ($info as $v) {
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info'.$v['article_id'];
+						$cache_article_info_key = 'article_info_'.$v['article_id'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						
@@ -725,7 +725,7 @@ class admin extends ecjia_admin {
 
 					foreach ($info as $v) {
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info'.$v['article_id'];
+						$cache_article_info_key = 'article_info_'.$v['article_id'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						
@@ -750,7 +750,7 @@ class admin extends ecjia_admin {
 
 					foreach ($info as $v) {
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info'.$v['article_id'];
+						$cache_article_info_key = 'article_info_'.$v['article_id'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						

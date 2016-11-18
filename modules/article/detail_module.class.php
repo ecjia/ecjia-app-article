@@ -9,7 +9,7 @@ class detail_module extends api_front implements api_interface {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		
-		$cache_article_key = 'article_info'.$id;
+		$cache_article_key = 'article_info_'.$id;
 		$cache_id = sprintf('%X', crc32($cache_article_key));
 		
 		$article_db = RC_Model::model('article/orm_article_model');

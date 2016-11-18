@@ -15,7 +15,7 @@ class info_module extends api_front implements api_interface
     	$article_db->where('title' , '<>', '');
     	
     	$cat_id = 0;
-    	$cache_article_key = 'article_list'.$cat_id;
+    	$cache_article_key = 'article_list_'.$cat_id;
     	$cache_id = sprintf('%X', crc32($cache_article_key));
     	$orm_article_db = RC_Model::model('article/orm_article_model');
     	$list = $orm_article_db->get_cache_item($cache_id);
