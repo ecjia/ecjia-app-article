@@ -66,11 +66,11 @@ class admin_article_auto extends ecjia_admin {
 		$time 		  = !empty($_POST['select_time']) ? RC_Time::local_strtotime($_POST['select_time']) : '';
 		
 		if (empty($article_id)) {
-			$this->showmessage(RC_Lang::get('article::article.select_article_msg'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('article::article.select_article_msg'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 			
 		if (empty($time)) {
-			$this->showmessage(RC_Lang::get('article::article.choose_time'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('article::article.choose_time'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		if ($type == 'batch_start') {
@@ -109,7 +109,7 @@ class admin_article_auto extends ecjia_admin {
 				ecjia_admin::admin_log(RC_Lang::get('article::article.article_name_is').$v, $type, 'article');
 			}
 		}
-		$this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
+		return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
 	}
 	
 	//撤销
@@ -122,7 +122,7 @@ class admin_article_auto extends ecjia_admin {
 		$this->db_auto_manage->auto_manage_delete(array('item_id' => $id , 'type' => 'article'));
 		
 		ecjia_admin::admin_log(RC_Lang::get('article::article.article_name_is').$title, 'cancel', 'article_auto');
-		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	public function edit_starttime() {
@@ -136,7 +136,7 @@ class admin_article_auto extends ecjia_admin {
 			$val = RC_Time::local_strtotime($value);
 		}
 		if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) || $value == '0000-00-00' || $val <= 0) {
-			$this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$count = $this->db_auto_manage->is_only(array('item_id' => $id, 'type' => 'article'));
@@ -152,7 +152,7 @@ class admin_article_auto extends ecjia_admin {
 		} else {
             $this->db_auto_manage->auto_manage($data, array('item_id' => $id, 'type' => 'article'));
 		}
-		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
+		return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
 	}
 	
 	public function edit_endtime() {
@@ -166,7 +166,7 @@ class admin_article_auto extends ecjia_admin {
 			$val = RC_Time::local_strtotime($value);
 		}
 		if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) || $value == '0000-00-00' || $val <= 0) {
-			$this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$count = $this->db_auto_manage->is_only(array('item_id' => $id, 'type' => 'article'));
@@ -182,7 +182,7 @@ class admin_article_auto extends ecjia_admin {
 		} else {
             $this->db_auto_manage->auto_manage($data, array('item_id' => $id, 'type' => 'article'));
 		}
-		$this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
+		return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
 	}
 	
 	/**
