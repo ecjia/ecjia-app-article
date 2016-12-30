@@ -15,7 +15,7 @@ class admin_article_auto extends ecjia_admin {
 	public function __construct() {
 		parent::__construct();
 		
-		RC_Loader::load_app_func('global');
+		RC_Loader::load_app_func('admin_article');
 		assign_adminlog_contents();
 		
 		$this->db_article_view 	= RC_Loader::load_app_model('article_viewmodel');
