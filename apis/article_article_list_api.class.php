@@ -68,8 +68,6 @@ class article_article_list_api extends Component_Event_Api {
 		}
 		return array('arr' => $arr, 'page' => $page->show(15), 'desc' => $page->page_desc());
 	}
-	
 }
-
 
 // end

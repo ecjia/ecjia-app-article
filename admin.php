@@ -15,6 +15,7 @@ class admin extends ecjia_admin {
 
 		RC_Loader::load_app_class('article_cat', 'article', false);
 		RC_Loader::load_app_func('admin_article');
+		RC_Loader::load_app_func('global');
 		assign_adminlog_contents();
 		
 		$this->db_article 			= RC_Model::model('article/article_model');

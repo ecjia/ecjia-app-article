@@ -22,13 +22,6 @@ class article_cat
 	 * @return mix
 	 */
 	public static function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0) {
-// 		$option = array(
-// 			'field'	=> 'c.*, COUNT(s.cat_id) AS has_children, COUNT(a.article_id) AS article_num',
-// 			'where'	=> 'c.parent_id not in (1,2,3) and c.cat_id<>1',
-// 			'group'	=> 'c.cat_id',
-// 			'order'	=> array('parent_id' => 'asc', 'sort_order' => 'ASC'),
-// 		);
-// 		$res = RC_Model::model('article/article_cat_viewmodel')->article_cat_select($option);
 
 		$res = $db_article = RC_DB::table('article_cat as c')
 			->leftJoin('article_cat as s', RC_DB::raw('s.parent_id'), '=', RC_DB::raw('c.cat_id'))

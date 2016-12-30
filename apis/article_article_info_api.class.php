@@ -19,7 +19,6 @@ class article_article_info_api extends Component_Event_Api {
 		return $this->article_info($options);
 	}
 	
-	
 	/**
 	 * 取得文章信息
 	 * @param   array $options	条件参数
@@ -37,7 +36,6 @@ class article_article_info_api extends Component_Event_Api {
 		$info = $db->first();
 		return $info;
 	}
-	
 }
 
 
