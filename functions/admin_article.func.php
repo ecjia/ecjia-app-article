@@ -23,7 +23,7 @@ function get_article_info($article_id) {
 		/* 用户评论级别取整  */
 		$row['comment_rank'] = ceil($row['comment_rank']);
 		/* 修正添加时间显示  */
-		$row['add_time']     = RC_Time::local_date(ecjia::config('date_format'), $row['add_time']);
+		$row['add_time'] = RC_Time::local_date(ecjia::config('date_format'), $row['add_time']);
 
 		/* 作者信息如果为空，则用网站名称替换 */
 		if (empty($row['author']) || $row['author'] == '_SHOPHELP') {
