@@ -32,15 +32,11 @@ class article_viewmodel extends Component_Model_View {
 	}
 	
 	public function get_shop_help() {
-// 	    $res = $this->join('article_cat')
-// 	    ->where(array('ac.cat_type' => 5, 'ac.parent_id' => 3, 'a.is_open' => 1, 'a.open_type' => 0, 'cat_name is not null'))
-// 	    ->order(array('ac.sort_order' => 'ASC', 'a.article_id' => 'ASC'))
-// 	    ->select();
 	    $res = RC_DB::table('article')
-	    ->leftJoin('article_cat', 'article.cat_id', '=', 'article_cat.cat_id')
-	    ->where('cat_type', 5)->where('parent_id', 3)->where('is_open', 1)->where('open_type', 0)->whereNotNull('cat_name')
-	    ->orderBy('sort_order', 'ASC')->orderBy('article_id', 'ASC')
-	    ->get();
+    	    ->leftJoin('article_cat', 'article.cat_id', '=', 'article_cat.cat_id')
+    	    ->where('cat_type', 5)->where('parent_id', 3)->where('is_open', 1)->where('open_type', 0)->whereNotNull('cat_name')
+    	    ->orderBy('sort_order', 'ASC')->orderBy('article_id', 'ASC')
+    	    ->get();
 	    
 	    $arr = array();
 	    if (!empty($res)) {
@@ -61,7 +57,6 @@ class article_viewmodel extends Component_Model_View {
 	    }
 	    return $arr;
 	}
-	
 }
 
 // end

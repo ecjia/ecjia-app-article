@@ -1,5 +1,6 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 商店帮助列表
  * @author royalwang
@@ -25,9 +26,9 @@ class info_module extends api_front implements api_interface
     			$list = array();
     			foreach ($res as $row) {
     				$list[] =  array(
-    						'id'	=> $row['article_id'],
-    						'image' => !empty($row['file_url']) ? RC_Upload::upload_url($row['file_url']) : '',
-    						'title'	=> $row['title'],
+    					'id'	=> $row['article_id'],
+    					'image' => !empty($row['file_url']) ? RC_Upload::upload_url($row['file_url']) : '',
+    					'title'	=> $row['title'],
     				);
     			}
     		}
@@ -37,6 +38,5 @@ class info_module extends api_front implements api_interface
     	return $list;
 	}
 }
-
 
 // end

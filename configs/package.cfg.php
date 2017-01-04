@@ -1,5 +1,6 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 文章应用
  */
@@ -13,4 +14,5 @@ return array(
 	'version' 		=> '1.3.0',					/* 版本号 */
 	'copyright' 	=> 'ECJIA Copyright 2014.' 
 );
+
 // end

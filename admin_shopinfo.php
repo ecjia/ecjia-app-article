@@ -1,9 +1,10 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA 网店信息管理页面
  *  @author songqian
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_shopinfo extends ecjia_admin {
 	

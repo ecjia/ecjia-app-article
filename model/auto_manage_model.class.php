@@ -4,8 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class auto_manage_model extends Component_Model_Model {
 	public $table_name = '';
 	public function __construct() {
-// 		$this->db_config = RC_Config::load_config('database');
-// 		$this->db_setting = 'default';
 		$this->table_name = 'auto_manage';
 		parent::__construct();
 	}
@@ -30,7 +28,6 @@ class auto_manage_model extends Component_Model_Model {
 	public function auto_manage_field($where, $field, $bool=false) {
 		return $this->where($where)->get_field($field, $bool);
 	}
-
 }
 
 // end

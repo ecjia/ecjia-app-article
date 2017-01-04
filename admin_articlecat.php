@@ -1,9 +1,10 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA 文章分类管理程序 
  * @author songqian
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_articlecat extends ecjia_admin {
     private $db_article_cat;

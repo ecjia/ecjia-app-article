@@ -1,5 +1,6 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 文章管理语言项
  */
@@ -158,6 +159,5 @@ $LANG['batch_end_succeed'] = '批量取消成功';
 
 $LANG['back_list'] = '返回文章自动发布';
 $LANG['select_time'] = '请选定时间';
-
 
 // end

@@ -22,7 +22,6 @@ class orm_article_model extends Model {
 	{
 		return RC_Cache::app_cache_delete($cache_key, 'article');
 	}
-	
 }
 
 // end
