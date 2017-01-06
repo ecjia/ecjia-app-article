@@ -13,15 +13,15 @@ class admin_articlecat extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Loader::load_app_class('article_cat', 'article', false);
-		$this->db_article_cat 		= RC_Model::model('article/article_cat_model');
-		$this->db_article		 	= RC_Model::model('article/article_model');
+		$this->db_article_cat	= RC_Model::model('article/article_cat_model');
+		$this->db_article		= RC_Model::model('article/article_model');
 		
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('jquery-form');
 		RC_Script::enqueue_script('smoke');
 		RC_Script::enqueue_script('article_cat_info', RC_App::apps_url('statics/js/article_cat_info.js', __FILE__), array(), false, true);
-		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js') );
+		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		RC_Style::enqueue_style('chosen');
 		RC_Style::enqueue_style('uniform-aristo');
