@@ -4,9 +4,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 文章自动发布管理
  *  @author songqian
- *  
  */
-
 class admin_article_auto extends ecjia_admin {
     private $db_article_view;
     private $db_article;

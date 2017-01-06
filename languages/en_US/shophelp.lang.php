@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA Application language pack
  */
-
 return array(
 	'shophelp_add' 		=> 'Add new help',
 	'shophelp_cat' 		=> 'Help article category',

@@ -2,8 +2,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 获得指定的文章的详细信息--原global.func
- *  
+ * 获得指定的文章的详细信息
  * @access  private
  * @param   integer     $article_id
  * @return  array

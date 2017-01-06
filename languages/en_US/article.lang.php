@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA Application language pack
  */
-
 return array(
 	/**
 	 * ECJIA 文章列表字段信息

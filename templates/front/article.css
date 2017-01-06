@@ -8,7 +8,6 @@ Author URI: http://www.ecjia.com/
 Logo filename: logo.gif
 Template Type: type_0
 */
-
 body{
 	background:#fff; 
 	font-size:1em; 
@@ -18,7 +17,6 @@ body{
 	padding:0; 
 	color:#404040;
 }
-
 h1,h2,h3,h4,h5,h6,ul,li,dl,dt,dd,form,img,p{
 	border:none; list-style-type:none;
 }

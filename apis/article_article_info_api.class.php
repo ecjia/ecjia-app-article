@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 文章信息接口
  * @author will.chen
- *
  */
 class article_article_info_api extends Component_Event_Api {
 	

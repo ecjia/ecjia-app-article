@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 网店帮助语言文件
  */
-
 return array(
 	'shophelp_add' 		=> '添加新帮助文章',
 	'shophelp_cat' 		=> '帮助文章分类',

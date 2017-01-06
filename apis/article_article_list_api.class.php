@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 文章列表接口
  * @author will.chen
- *
  */
 class article_article_list_api extends Component_Event_Api {
 	
@@ -19,7 +18,6 @@ class article_article_list_api extends Component_Event_Api {
 		return $this->articleslist($options);
 	}
 	
-	
 	/**
 	 * 取得文章信息
 	 * @param   array $options	条件参数
@@ -32,12 +30,12 @@ class article_article_list_api extends Component_Event_Api {
 		$dbview = RC_DB::table('article as a')->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
 		
 		$filter = array();
-		$filter['keywords']	  = empty($options['keywords']) ? '' : trim($options['keywords']);
-		$filter['cat_id']     = empty($options['cat_id']) ? 0 : intval($options['cat_id']);
-		$filter['sort_by']    = empty($options['sort_by']) ? 'a.article_id' : trim($options['sort_by']);
-		$filter['sort_order'] = empty($options['sort_order']) ? 'DESC' : trim($options['sort_order']);
-		$filter['is_open']	  = empty($options['is_open']) ? 1 : intval($options['is_open']);
-		$filter['page_size']  = empty($options['page_size']) ? 15 : intval($options['page_size']);
+		$filter['keywords']	  = empty($options['keywords']) 	? '' : trim($options['keywords']);
+		$filter['cat_id']     = empty($options['cat_id']) 		? 0 : intval($options['cat_id']);
+		$filter['sort_by']    = empty($options['sort_by']) 		? 'a.article_id' : trim($options['sort_by']);
+		$filter['sort_order'] = empty($options['sort_order']) 	? 'DESC' : trim($options['sort_order']);
+		$filter['is_open']	  = empty($options['is_open']) 		? 1 : intval($options['is_open']);
+		$filter['page_size']  = empty($options['page_size']) 	? 15 : intval($options['page_size']);
 		$filter['current_page'] = empty($options['current_page']) ? 1 : intval($options['current_page']);
 		//不获取系统帮助文章的过滤
 		if (!empty($filter['keywords'])) {

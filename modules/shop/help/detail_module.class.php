@@ -1,10 +1,8 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
 
-class detail_module extends api_front implements api_interface
-{
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request)
-    {	
+class detail_module extends api_front implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
 		$id = $this->requestData('article_id', 0);
 		if ($id <= 0) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
@@ -28,9 +26,7 @@ class detail_module extends api_front implements api_interface
 	}
 }
 
-
-function get_article_info($article_id)
-{
+function get_article_info($article_id) {
 	/* 获得文章的信息 */
 	$db = RC_Loader::load_app_model('article_model', 'article');
     $row = $db->field('article_id as id, title, content')->find(array('is_open' => 1, 'article_id' => $article_id));

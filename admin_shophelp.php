@@ -5,7 +5,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * ECJIA 帮助信息管理程序
  *  @author songqian
  */
-
 class admin_shophelp extends ecjia_admin {
 	private $db_article_cat;
 	private $db_article;

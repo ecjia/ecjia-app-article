@@ -3,10 +3,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 文章分类类
- *        
  */
-class article_cat 
-{
+class article_cat {
 	/**
 	 * 获得指定分类下的子分类的数组
 	 *

@@ -4,12 +4,9 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 商店帮助列表
  * @author royalwang
- *
  */
-class info_module extends api_front implements api_interface
-{
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request)
-    {	
+class info_module extends api_front implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
     	$article_db = RC_DB::table('article');
     	$article_db->where('cat_id' , '=', 0);
     	$article_db->where('content' , '<>', '');
@@ -34,7 +31,6 @@ class info_module extends api_front implements api_interface
     		}
     		$orm_article_db->set_cache_item($cache_id, $list);
     	}
-     	
     	return $list;
 	}
 }
