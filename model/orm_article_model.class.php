@@ -44,9 +44,9 @@
 //
 //  ---------------------------------------------------------------------------------
 //
+use Royalcms\Component\Database\Eloquent\Model;
 defined('IN_ECJIA') or exit('No permission resources.');
 
-use Royalcms\Component\Database\Eloquent\Model;
 class orm_article_model extends Model {
 	protected $table = 'article';
 	
