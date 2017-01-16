@@ -3,7 +3,8 @@
     app.article_auto = {
         init: function () {
             $(".date").datepicker({
-                format: "yyyy-mm-dd"
+                format: "yyyy-mm-dd",
+                container : '.main_content',
             });
             app.article_auto.search();
  
