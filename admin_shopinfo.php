@@ -86,7 +86,7 @@ class admin_shopinfo extends ecjia_admin {
 	 * 网店信息文章列表
 	 */
 	public function init() {
-		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shopinfo_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::shopinfo.shop_information')));
@@ -112,7 +112,7 @@ class admin_shopinfo extends ecjia_admin {
 	 * 添加网店信息
 	 */
 	public function add() {
-		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shopinfo_manage');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::shopinfo.shopinfo_add')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -188,7 +188,7 @@ class admin_shopinfo extends ecjia_admin {
 	 * 编辑网店信息
 	 */
 	public function edit() {
-		$this->admin_priv('shopinfo_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shopinfo_manage');
 	
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::shopinfo.shopinfo_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(

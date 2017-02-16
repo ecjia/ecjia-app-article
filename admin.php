@@ -89,7 +89,7 @@ class admin extends ecjia_admin {
 	 * 文章列表
 	 */
 	public function init() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_manage');
 
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_list')));
@@ -133,7 +133,7 @@ class admin extends ecjia_admin {
 	 * 添加文章页面
 	 */
 	public function add() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update');
 		
 		RC_Script::enqueue_script('dropper-jq', RC_Uri::admin_url('statics/lib/dropper-upload/jquery.fs.dropper.js'), array(), false, true);
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('system::system.article_add')));
@@ -332,7 +332,7 @@ class admin extends ecjia_admin {
 	 * 编辑
 	 */
 	public function edit() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -483,7 +483,7 @@ class admin extends ecjia_admin {
 	 * 预览
 	 */
 	public function preview() {
-		$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_manage');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.preview_article')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -516,7 +516,7 @@ class admin extends ecjia_admin {
 	 * 关联商品
 	 */
 	public function link_goods() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_update');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.edit_link_goods')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(

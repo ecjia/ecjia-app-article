@@ -85,7 +85,7 @@ class admin_articlecat extends ecjia_admin {
 	 * 分类列表
 	 */
 	public function init() {
-		$this->admin_priv('article_cat_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.cat')));
@@ -119,7 +119,7 @@ class admin_articlecat extends ecjia_admin {
 	 * 添加文章分类
 	 */
 	public function add() {
-		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.articlecat_add')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -204,7 +204,7 @@ class admin_articlecat extends ecjia_admin {
 	 * 编辑文章分类
 	 */
 	public function edit() {
-		$this->admin_priv('article_cat_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_cat_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.articlecat_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(

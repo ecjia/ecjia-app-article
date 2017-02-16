@@ -84,7 +84,7 @@ class admin_shophelp extends ecjia_admin {
 	 * 网店帮助分类
 	 */
 	public function init() {
-		$this->admin_priv('shophelp_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shophelp_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::shophelp.help_cat')));
@@ -112,7 +112,7 @@ class admin_shophelp extends ecjia_admin {
 	 * 分类下的文章
 	 */
 	public function list_article() {
-		$this->admin_priv('shophelp_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shophelp_manage');
 	
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
@@ -144,7 +144,7 @@ class admin_shophelp extends ecjia_admin {
 	 * 添加文章
 	 */
 	public function add() {
-		$this->admin_priv('shophelp_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shophelp_manage');
 		
 		$cat_id = intval($_GET['cat_id']);
 		$cat_name = $this->db_article_cat->article_cat_field($cat_id, 'cat_name');
@@ -212,7 +212,7 @@ class admin_shophelp extends ecjia_admin {
 	 * 编辑文章
 	 */
 	public function edit() {
-		$this->admin_priv('shophelp_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('shophelp_manage');
 		
 		$article_id   = !empty($_GET['id'])       ? intval($_GET['id'])       : 0;
 		$cat_id       = !empty($_GET['cat_id'])   ? intval($_GET['cat_id'])   : 0;

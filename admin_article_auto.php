@@ -89,7 +89,7 @@ class admin_article_auto extends ecjia_admin {
 	}
 
 	public function init() {
-		$this->admin_priv('article_auto_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_auto_manage');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_auto_release')));
 		
