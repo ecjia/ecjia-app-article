@@ -66,6 +66,11 @@ class merchant extends ecjia_merchant {
 		$this->db_article 			= RC_Model::model('article/article_model');
 		$this->db_article_cat		= RC_Model::model('article/article_cat_model');
 		$this->db_article_view		= RC_Model::model('article/article_viewmodel');
+		RC_Style::enqueue_style('aristo', RC_Uri::admin_url('statics/lib/jquery-ui/css/Aristo/Aristo.css'), array(), false, false);
+		RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
+		RC_Style::enqueue_style('merchant_orders', RC_App::apps_url('statics/css/merchant_orders.css', __FILE__), array(), false, false);
+		RC_Style::enqueue_style('orders', RC_App::apps_url('statics/css/admin_orders.css', __FILE__), array());
+		
 		
 		/* 加载所需js */
 		RC_Script::enqueue_script('smoke');
@@ -73,16 +78,17 @@ class merchant extends ecjia_merchant {
 		RC_Script::enqueue_script('jquery-form');
 		RC_Script::enqueue_script('jquery-uniform');
 		RC_Script::enqueue_script('jquery-chosen');
-		RC_Script::enqueue_script('article_list', RC_App::apps_url('statics/js/article_list.js', __FILE__));
+// 		RC_Script::enqueue_script('article_list', RC_App::apps_url('statics/js/article_list.js', __FILE__));
 		RC_Style::enqueue_style('uniform-aristo');
 		RC_Style::enqueue_style('chosen');
 		RC_Script::enqueue_script('bootstrap-placeholder', RC_Uri::admin_url('statics/lib/dropper-upload/bootstrap-placeholder.js'), array(), false, true);
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
-		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
+// 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
+		RC_Style::enqueue_style('merchant', RC_App::apps_url('statics/css/mh_article.css', __FILE__), array());
 		
 		RC_Script::localize_script('article_list', 'js_lang', RC_Lang::get('article::article.js_lang'));
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_list'), RC_Uri::url('article/admin/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_list'), RC_Uri::url('article/merchant/init')));
 	}
 
 	/**
@@ -125,7 +131,6 @@ class merchant extends ecjia_merchant {
 		
 		$this->assign('form_action', RC_Uri::url('article/admin/batch'));
 		$this->assign('search_action', RC_Uri::url('article/admin/init'));
-
 		$this->display('article_list.dwt');
 	}
 
@@ -842,6 +847,7 @@ class merchant extends ecjia_merchant {
 		$filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
 	
 		$db_article = RC_DB::table('article as a')
+		    ->where('store_id', $_SESSION['store_id'])
 			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
 		
 		//不获取系统帮助文章的过滤
@@ -855,11 +861,13 @@ class merchant extends ecjia_merchant {
 		}
 		
 		$count = $db_article->select('article_id')->count();
-		$page = new ecjia_page($count, 15, 5);
+		$page = new ecjia_merchant_page($count, 15, 5);
 		
 		$result = $db_article->select(RC_DB::raw('a.*'), RC_DB::raw('ac.cat_id'), RC_DB::raw('ac.cat_name'), RC_DB::raw('ac.cat_type'), RC_DB::raw('ac.sort_order'))
 			->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
-			->take(15)->skip($page->start_id-1)->get();
+			->take(15)
+		    ->skip($page->start_id-1)
+		    ->get();
 	
 		$arr = array();
 		if (!empty($result)) {
@@ -870,7 +878,7 @@ class merchant extends ecjia_merchant {
 				$arr[] = $rows;
 			}
 		}
-		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc());
+		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'count' => $count);
 	}
 }
 

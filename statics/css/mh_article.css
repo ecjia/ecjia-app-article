@@ -1,0 +1,16 @@
+.form-control {
+	width : auto;
+}
+
+.chzn-container-single .chzn-single {
+	height: auto;
+	line-height: 34px;
+}
+
+.add_article {
+	margin-bottom: 1.5em;
+}
+
+.add_article a {
+	float: right;
+}

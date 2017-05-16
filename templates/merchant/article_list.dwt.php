@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-	ecjia.admin.article_list.init();
+// 	ecjia.admin.article_list.init();
 </script>
 <!-- {/block} -->
 
@@ -24,16 +24,16 @@
 				</select>
 			</div>
 			<div>
-				<a class="btn btn-gebo m_l5" data-toggle="ecjiabatch" data-name="article_id" data-idClass=".checkbox:checked" data-url="{$form_action}&sel_action=move_to&" data-msg="{lang key='article::article.move_confirm'}" data-noSelectMsg="{lang key='article::article.select_move_article'}" href="javascript:;" name="move_cat_ture">{lang key='article::article.begin_move'}</a>
+				<a class="btn btn-primary btn-gebo m_l5" data-toggle="ecjiabatch" data-name="article_id" data-idClass=".checkbox:checked" data-url="{$form_action}&sel_action=move_to&" data-msg="{lang key='article::article.move_confirm'}" data-noSelectMsg="{lang key='article::article.select_move_article'}" href="javascript:;" name="move_cat_ture">{lang key='article::article.begin_move'}</a>
 			</div>
 		</div>
 	</div>
 </div>
-<div>
+<div class="add_article">
 	<h3 class="heading">
 		<!-- {if $ur_here}{$ur_here}{/if} -->
 		<!-- {if $action_link} -->
-		<a class="btn plus_or_reply data-pjax" href="{$action_link.href}"  id="sticky_a"><i class="fontello-icon-plus"></i>{$action_link.text}</a>
+		<a class="btn btn-primary plus_or_reply data-pjax" href="{$action_link.href}"  id="sticky_a"><i class="fontello-icon-plus"></i>{$action_link.text}</a>
 		<!-- {/if} -->
 	</h3>
 </div>
@@ -42,7 +42,7 @@
 <div class="row-fluid batch" >
 	<form method="post" action="{$search_action}" name="searchForm">
 		<div class="btn-group f_l m_r5">
-			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fontello-icon-cog"></i>{lang key='article::article.batch'}
 				<span class="caret"></span>
 			</a>
@@ -59,10 +59,10 @@
 			<option value="{$val.cat_id}" {if $smarty.get.cat_id eq $val.cat_id}selected{/if} {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
 			<!-- {/foreach} -->
 		</select>
-		<a class="btn m_l5 screen-btn">{lang key='article::article.filter'}</a>
-		<div class="choose_list f_r" >
-			<input type="text" name="keywords" value="{$smarty.get.keywords}" placeholder="{lang key='article::article.enter_article_title'}"/>
-			<button class="btn search_articles" type="button">{lang key='system::system.button_search'}</button>
+		<a class="btn btn-primary m_l5 screen-btn">{lang key='article::article.filter'}</a>
+		<div class="choose_list f_r form-group" >
+			<input type="text" name="keywords" class="form-control" value="{$smarty.get.keywords}" placeholder="{lang key='article::article.enter_article_title'}"/>
+			<button class="btn btn-primary search_articles" type="button">{lang key='system::system.button_search'}</button>
 		</div>
 	</form>
 </div>

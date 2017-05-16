@@ -52,10 +52,10 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class article_merchant_menu_api extends Component_Event_Api {
 	public function call(&$options) {
-		$menus = ecjia_merchant::make_admin_menu('10_article_manage', __('文章管理'), '', 10)->add_icon('fa-article')->add_purview(array('mh_article_manage','mh_appeal_manage'))->add_base('article');
+		$menus = ecjia_merchant::make_admin_menu('10_article_manage', __('文章管理'), '', 10)->add_icon('fa-copy')->add_purview(array('mh_article_manage','mh_appeal_manage'))->add_base('article');
 		$submenus = array(
-			ecjia_merchant::make_admin_menu('01_article_list', __('文章列表'), RC_Uri::url('article/merchant/init'), 1)->add_purview('mh_article_manage')->add_icon('fa-article'), 
-			ecjia_merchant::make_admin_menu('02_add_article', __('添加文章'), RC_Uri::url('article/merchant/add'), 2)->add_purview('mh_add_article')->add_icon('fa-add-article')
+			ecjia_merchant::make_admin_menu('01_article_list', __('文章列表'), RC_Uri::url('article/merchant/init'), 1)->add_purview('mh_article_manage')->add_icon('fa-list'), 
+			ecjia_merchant::make_admin_menu('02_add_article', __('添加文章'), RC_Uri::url('article/merchant/add'), 2)->add_purview('mh_add_article')->add_icon('fa-indent')
 		);
         $menus->add_submenu($submenus);
         return $menus;
