@@ -15,7 +15,7 @@
 	</h2>
     </div>
 	{if $action_link}
-		<div class="pull-right"><a class="btn btn-primary data-pjax" href="{$action_link.href}" id="sticky_a" ><i class="fontello-icon-reply"></i>{$action_link.text}</a></div>
+		<div class="pull-right"><a class="btn btn-primary data-pjax" href="{$action_link.href}" id="sticky_a" ><i class="fa fa-reply"></i><i class="fontello-icon-reply"></i> {$action_link.text}</a></div>
 	{/if}
 	<div class="clearfix"></div>
 </div>

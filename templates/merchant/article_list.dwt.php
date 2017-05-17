@@ -35,7 +35,7 @@
 		<!-- {if $action_link} -->
 		<!-- {/if} -->
 	</h2>
-	<div class="pull-right"><a class="btn btn-primary data-pjax" href="{$action_link.href}"  id="sticky_a"><i class="fontello-icon-plus"></i>{$action_link.text}</a></div>
+	<div class="pull-right"><a class="btn btn-primary data-pjax" href="{$action_link.href}"  id="sticky_a"> <i class="fa fa-plus"></i><i class="fontello-icon-plus"></i> {$action_link.text}</a></div>
 	<div class="clearfix"></div>
 </div>
 
@@ -44,14 +44,15 @@
 	<form method="post" action="{$search_action}" name="searchForm">
 		<div class="btn-group f_l m_r5">
 			<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+			    <i class="fa fa-cogs"></i>
 				<i class="fontello-icon-cog"></i>{lang key='article::article.batch'}
 				<span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu">
-				<li><a class="button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_remove'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_drop_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-trash"></i>{lang key='article::article.drop_article'}</a></li>
-				<li><a class="button_hide"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_hide'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_hide_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye-off"></i>{lang key='article::article.hide'}</a></li>
-				<li><a class="button_show"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_show'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_display_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye"></i>{lang key='article::article.display'}</a></li>
-				<li><a class="batch-move-btn" href="javascript:;" data-move="data-operatetype" data-name="move_cat"><i class="fontello-icon-exchange"></i>{lang key='article::article.move_category'}</a></li>
+				<li><a class="button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_remove'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_drop_article'}" data-name="article_id" href="javascript:;"><i class="fa fa-trash-o"></i><i class="fontello-icon-trash"></i> {lang key='article::article.drop_article'}</a></li>
+				<li><a class="button_hide"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_hide'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_hide_article'}" data-name="article_id" href="javascript:;"><i class="fa fa-star"></i><i class="fontello-icon-eye-off"></i> {lang key='article::article.hide'}</a></li>
+				<li><a class="button_show"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_show'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_display_article'}" data-name="article_id" href="javascript:;"><i class="fa fa-star-o"></i><i class="fontello-icon-eye"></i> {lang key='article::article.display'}</a></li>
+				<li><a class="batch-move-btn" href="javascript:;" data-move="data-operatetype" data-name="move_cat"><i class="fa fa-mail-forward"></i><i class="fontello-icon-exchange"></i> {lang key='article::article.move_category'}</a></li>
 			</ul>
 		</div>
 		<select class="w220" name="cat_id" id="select-cat">
@@ -60,10 +61,10 @@
 			<option value="{$val.cat_id}" {if $smarty.get.cat_id eq $val.cat_id}selected{/if} {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
 			<!-- {/foreach} -->
 		</select>
-		<a class="btn btn-primary m_l5 screen-btn">{lang key='article::article.filter'}</a>
+		<a class="btn btn-primary m_l5 screen-btn"><i class="fa fa-search"></i> {lang key='article::article.filter'}</a>
 		<div class="choose_list f_r form-group" >
 			<input type="text" name="keywords" class="form-control" value="{$smarty.get.keywords}" placeholder="{lang key='article::article.enter_article_title'}"/>
-			<button class="btn btn-primary search_articles" type="button">{lang key='system::system.button_search'}</button>
+			<button class="btn btn-primary m_l5 screen-btn" type="button"><i class="fa fa-search"> {lang key='system::system.button_search'}</i></button>
 		</div>
 	</form>
 </div>

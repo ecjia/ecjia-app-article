@@ -8,10 +8,10 @@
 	</h2>
 	<div class="pull-right">
 	   {if $action_link}
-		<a class="btn btn-primary data-pjax" href="{$action_link.href}" id="sticky_a" ><i class="fontello-icon-reply"></i>{$action_link.text}</a>
+		<a class="btn btn-primary data-pjax" href="{$action_link.href}" id="sticky_a" ><i class="fa fa-reply"></i><i class="fontello-icon-reply"></i> {$action_link.text}</a>
 		{/if}
 		{if $action_linkedit}
-		<a class="btn btn-primary data-pjax" href="{$action_linkedit.href}" id="sticky_a" ><i class="fontello-icon-edit"></i>{$action_linkedit.text}</a>
+		<a class="btn btn-primary data-pjax" href="{$action_linkedit.href}" id="sticky_a" ><i class="fa fa-edit"></i><i class="fontello-icon-edit"></i> {$action_linkedit.text}</a>
 		{/if}
 	</div>	
 	<div class="clearfix"></div>
