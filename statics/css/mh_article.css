@@ -40,7 +40,7 @@
 
 .form-horizontal .control-label {
     float: left;
-    width: 135px;
+    width: 90px;
     padding-top: 5px;
     text-align: right;
 }
@@ -51,4 +51,8 @@
 
 .choose_list i:last-child, .choose_list span:last-child, .choose_list a.btn:last-child, .choose_list input:last-child {
 	line-height: 20px;
+}
+
+.panel-title {
+	color: #FFF;
 }

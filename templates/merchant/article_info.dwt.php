@@ -20,7 +20,7 @@
 	<div class="clearfix"></div>
 </div>
 
-<div class="row-fluid ">
+<div class="row-fluid main_content">
 	<div class="span12">
 		<div class="tabbable">
 			{if $action eq 'edit' && $has_goods}
@@ -52,11 +52,12 @@
 										</div>
 									</div>
 
-									<div class="foldable-list move-mod-group" id="goods_info_sort_seo">
-										<div class="accordion-group accordion-group panel panel-default">
-											<div class="panel-heading accordion-group-heading-relative">
-												<a data-toggle="collapse" data-target="#goods_info_area_seo">
-												    <h4 class="panel-title"><strong>{lang key='article::article.seo_optimization'}</strong></h4>
+									<div class="panel-group" id="goods_info_sort_seo">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_area_seo">
+												    <span class="glyphicon"></span>
+												    <h4 class="panel-title">{lang key='article::article.seo_optimization'}</h4>
 												</a>
 											</div>
 											<div class="accordion-body in collapse" id="goods_info_area_seo">
@@ -72,7 +73,7 @@
 													<div class="control-group control-group-small" >
 														<label class="control-label">{lang key='article::article.simple_description'}</label>
 														<div class="controls">
-															<textarea class="span10 h100" name="description" cols="40" rows="3">{$article.description}</textarea>
+															<textarea class="form-control" name="description" cols="40" rows="3">{$article.description}</textarea>
 														</div>
 													</div>
 												</div>
@@ -81,10 +82,11 @@
 									</div>
 
 									<!-- {if $action eq 'edit'} -->
-									<div class="foldable-list move-mod-group" id="goods_info_sort_note">
-										<div class="accordion-group accordion-group panel panel-default">
-											<div class="panel-heading accordion-group-heading-relative">
-												<a data-toggle="collapse" data-target="#goods_info_term_meta">
+									<div class="panel-group" id="goods_info_sort_note">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_term_meta">
+													<span class="glyphicon"></span>
 													<h4 class="panel-title"><strong>{lang key='article::article.custom_columns_success'}</strong></h4>
 												</a>
 											</div>
@@ -161,10 +163,11 @@
 								<!-- 右边 -->
 								<div class="right-bar move-mod">
 								<!-- 分类信息 发布-->
-									<div class="foldable-list move-mod-group" id="goods_info_sort_cat">
-										<div class="accordion-group accordion-group panel panel-default">
-											<div class="panel-heading accordion-group-heading-relative">
-												<a data-toggle="collapse" data-target="#goods_info_area_cat">
+									<div class="panel-group" id="goods_info_sort_cat">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_area_cat">
+													<span class="glyphicon"></span>
 													<h4 class="panel-title"><strong>{lang key='article::article.category_info'}</strong></h4>
 												</a>
 											</div>
@@ -187,19 +190,18 @@
 													<!-- {/if} -->
 
 													<!-- {if $article.cat_id >= 0} -->
-													<div class="control-group control-group-small" >
-														<label class="control-label">{lang key='article::article.is_top'}</label>
+													<div class="" >
+														<label class="">{lang key='article::article.is_top'}</label>
 														<div class="span8 chk_radio">
-															<input type="radio" class="uni_style" name="article_type" value="0" {if $article.article_type eq 0}checked{/if}><span>{lang key='article::article.common'}</span>
-															<input type="radio" class="uni_style" name="article_type" value="1" {if $article.article_type eq 1}checked{/if}><span>{lang key='article::article.top'}</span>
-														    <label></label>
+															<input type="radio" class="uni_style" name="article_type" value="0" {if $article.article_type eq 0}checked{/if} checked="true"><label for="open">{lang key='article::article.common'}</label>
+															<input type="radio" class="uni_style" name="article_type" value="1" {if $article.article_type eq 1}checked{/if}><label for="close">{lang key='article::article.top'}</label>
 														</div>
 													</div>
 													<div class="control-group control-group-small" >
 														<label class="control-label">{lang key='article::article.is_open_lable'}</label>
 														<div class="span8 chk_radio">
-															<input type="radio" class="uni_style" name="is_open" value="1" {if $article.is_open eq 1}checked{/if}><span>{lang key='article::article.isopen'}</span>
-															<input type="radio" class="uni_style" name="is_open" value="0" {if $article.is_open eq 0}checked{/if}><span>{lang key='article::article.isclose'}</span>
+															<input type="radio" class="uni_style" name="is_open" value="1" {if $article.is_open eq 1}checked{/if} checked="true"><label for="open">{lang key='article::article.isopen'}</label>
+															<input type="radio" class="uni_style" name="is_open" value="0" {if $article.is_open eq 0}checked{/if}><label for="close">{lang key='article::article.isclose'}</label>
 														</div>
 													</div>
 													<!-- {else} -->
@@ -221,10 +223,11 @@
 										</div>
 									</div>
 									<!-- 作者信息 -->
-									<div class="foldable-list move-mod-group" id="goods_info_sort_author">
-										<div class="accordion-group accordion-group panel panel-default">
-											<div class="panel-heading accordion-group-heading-relative">
-												<a data-toggle="collapse" data-target="#goods_info_area_author">
+									<div class="panel-group" id="goods_info_sort_author">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_area_author">
+													<span class="glyphicon"></span>
 													<h4 class="panel-title"><strong>{lang key='article::article.author_info'}</strong></h4>
 												</a>
 											</div>
@@ -247,10 +250,11 @@
 										</div>
 									</div>
 									<!-- 上传 -->
-									<div class="foldable-list move-mod-group" id="goods_info_sort_upfile">
-										<div class="accordion-group accordion-group panel panel-default">
-											<div class="panel-heading accordion-group-heading-relative">
-												<a data-toggle="collapse" data-target="#goods_info_area_upfile">
+									<div class="panel-group" id="goods_info_sort_upfile">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_area_upfile">
+													<span class="glyphicon"></span>
 													<h4 class="panel-title"><strong>{lang key='article::article.upload_file'}</strong></h4>
 												</a>
 											</div>
