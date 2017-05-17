@@ -3,18 +3,21 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-	ecjia.admin.article_info.init();
+// 	ecjia.admin.article_info.init();
 </script>
 <!-- {/block} -->
 
 <!-- {block name="home-content"} -->
-<div>
-	<h3 class="heading">
+<div class="page-header">
+    <div class="pull-left">
+        <h2>
 		<!-- {if $ur_here}{$ur_here}{/if} -->
-		{if $action_link}
-		<a class="btn plus_or_reply data-pjax" href="{$action_link.href}" id="sticky_a" ><i class="fontello-icon-reply"></i>{$action_link.text}</a>
-		{/if}
-	</h3>
+	</h2>
+    </div>
+	{if $action_link}
+		<div class="pull-right"><a class="btn btn-primary data-pjax" href="{$action_link.href}" id="sticky_a" ><i class="fontello-icon-reply"></i>{$action_link.text}</a></div>
+	{/if}
+	<div class="clearfix"></div>
 </div>
 
 <div class="row-fluid ">
@@ -35,25 +38,25 @@
 								<div class="left-bar move-mod">
 									<!--左边-->
 									<div class="control-group" >
-										<div>
-											<input type="text" name="title" class="span10"  value="{$article.title|escape}" placeholder="{lang key='article::article.enter_title_article_here'}" />
+										<div class="margin_up_down1">
+											<input type="text" name="title" class="span10 form-control"  value="{$article.title|escape}" placeholder="{lang key='article::article.enter_title_article_here'}" />
 											<span class="input-must">{lang key='system::system.require_field'}</span>
 										</div>
 									</div>
 
 									<div class="control-group" >
 									 	<label>{lang key='article::article.external_links'}</label>
-										<div>
-											<input type="text" name="link_url" class="span10" value="{if $article.link neq ''}{$article.link|escape}{else}http://{/if}" />
+										<div class="margin_up_down1">
+											<input type="text" name="link_url" class="span10 form-control" value="{if $article.link neq ''}{$article.link|escape}{else}http://{/if}" />
 											<br><span class="help-block">{lang key='article::article.links_help_block'}</span>
 										</div>
 									</div>
 
 									<div class="foldable-list move-mod-group" id="goods_info_sort_seo">
-										<div class="accordion-group">
-											<div class="accordion-heading">
-												<a class="accordion-toggle collapsed move-mod-head acc-in" data-toggle="collapse" data-target="#goods_info_area_seo">
-													<strong>{lang key='article::article.seo_optimization'}</strong>
+										<div class="accordion-group accordion-group panel panel-default">
+											<div class="panel-heading accordion-group-heading-relative">
+												<a data-toggle="collapse" data-target="#goods_info_area_seo">
+												    <h4 class="panel-title"><strong>{lang key='article::article.seo_optimization'}</strong></h4>
 												</a>
 											</div>
 											<div class="accordion-body in collapse" id="goods_info_area_seo">
@@ -61,7 +64,7 @@
 												<div class="control-group control-group-small" >
 														<label class="control-label">{lang key='article::article.keywords'}</label>
 														<div class="controls">
-															<input class="span12" type="text" name="keywords" value="{$article.keywords|escape}" size="40" />
+															<input class="span10 form-control" type="text" name="keywords" value="{$article.keywords|escape}" size="40" />
 															<br />
 															<p class="help-block w280 m_t5">{lang key='article::article.split'}</p>
 														</div>
@@ -69,7 +72,7 @@
 													<div class="control-group control-group-small" >
 														<label class="control-label">{lang key='article::article.simple_description'}</label>
 														<div class="controls">
-															<textarea class="span12 h100" name="description" cols="40" rows="3">{$article.description}</textarea>
+															<textarea class="span10 h100" name="description" cols="40" rows="3">{$article.description}</textarea>
 														</div>
 													</div>
 												</div>
@@ -108,7 +111,7 @@
 																	<a class="ajaxremove btn btn-danger m_t5" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_custom_columns_confirm'}" href='{url path="article/admin/remove_term_meta" args="meta_id={$term_meta.meta_id}"}'>{lang key='system::system.remove'}</a>
 
 																</td>
-																<td><textarea class="span12 h70" name="term_meta_value">{$term_meta.meta_value}</textarea></td>
+																<td><textarea class="span12 h70 form-control" name="term_meta_value">{$term_meta.meta_value}</textarea></td>
 															</tr>
 															<!-- {/foreach} -->
 														</tbody>
@@ -142,7 +145,7 @@
 																		<!-- {/if} -->
 																		<a class="btn m_t5" data-toggle="add_term_meta" href="javascript:;">{lang key='article::article.add_custom_columns'}</a>
 																	</td>
-																	<td><textarea class="span12" name="term_meta_value"></textarea></td>
+																	<td><textarea class="span12 form-control" name="term_meta_value"></textarea></td>
 																</tr>
 															</tbody>
 														</table>
@@ -159,10 +162,10 @@
 								<div class="right-bar move-mod">
 								<!-- 分类信息 发布-->
 									<div class="foldable-list move-mod-group" id="goods_info_sort_cat">
-										<div class="accordion-group">
-											<div class="accordion-heading">
-												<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_cat">
-													<strong>{lang key='article::article.category_info'}</strong>
+										<div class="accordion-group accordion-group panel panel-default">
+											<div class="panel-heading accordion-group-heading-relative">
+												<a data-toggle="collapse" data-target="#goods_info_area_cat">
+													<h4 class="panel-title"><strong>{lang key='article::article.category_info'}</strong></h4>
 												</a>
 											</div>
 											<div class="accordion-body in in_visable collapse" id="goods_info_area_cat">
@@ -189,6 +192,7 @@
 														<div class="span8 chk_radio">
 															<input type="radio" class="uni_style" name="article_type" value="0" {if $article.article_type eq 0}checked{/if}><span>{lang key='article::article.common'}</span>
 															<input type="radio" class="uni_style" name="article_type" value="1" {if $article.article_type eq 1}checked{/if}><span>{lang key='article::article.top'}</span>
+														    <label></label>
 														</div>
 													</div>
 													<div class="control-group control-group-small" >
@@ -208,9 +212,9 @@
 													<input type="hidden" name="old_title" value="{$article.title}"/>
 													<input type="hidden" name="id" value="{$article.article_id}" />
 													{if $article.article_id eq ''}
-													<button class="btn btn-gebo" type="submit">{lang key='article::article.issue'}</button>
+													<button class="btn btn-primary mar_b_l" type="submit">{lang key='article::article.issue'}</button>
 													{else}
-													<button class="btn btn-gebo" type="submit">{lang key='article::article.update'}</button>
+													<button class="btn btn-primary mar_b_l" type="submit">{lang key='article::article.update'}</button>
 													{/if}
 												</div>
 											</div>
@@ -218,10 +222,10 @@
 									</div>
 									<!-- 作者信息 -->
 									<div class="foldable-list move-mod-group" id="goods_info_sort_author">
-										<div class="accordion-group">
-											<div class="accordion-heading">
-												<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_author">
-													<strong>{lang key='article::article.author_info'}</strong>
+										<div class="accordion-group accordion-group panel panel-default">
+											<div class="panel-heading accordion-group-heading-relative">
+												<a data-toggle="collapse" data-target="#goods_info_area_author">
+													<h4 class="panel-title"><strong>{lang key='article::article.author_info'}</strong></h4>
 												</a>
 											</div>
 											<div class="accordion-body in in_visable collapse" id="goods_info_area_author">
@@ -229,13 +233,13 @@
 													<div class="control-group control-group-small" >
 														<label class="control-label">{lang key='article::article.author_name'}</label>
 														<div class="span8">
-															<input type="text" name="author"  value="{$article.author|escape}"/>
+															<input type="text" name="author" class="form-control" value="{$article.author|escape}"/>
 														</div>
 													</div>
 													<div class="control-group control-group-small" >
 														<label class="control-label">{lang key='article::article.author_email'}</label>
 														<div class="span8">
-															<input type="text" name="author_email"  value="{$article.author_email|escape}"/>
+															<input type="text" name="author_email" class="form-control" value="{$article.author_email|escape}"/>
 														</div>
 													</div>
 												</div>
@@ -244,10 +248,10 @@
 									</div>
 									<!-- 上传 -->
 									<div class="foldable-list move-mod-group" id="goods_info_sort_upfile">
-										<div class="accordion-group">
-											<div class="accordion-heading">
-												<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_upfile">
-													<strong>{lang key='article::article.upload_file'}</strong>
+										<div class="accordion-group accordion-group panel panel-default">
+											<div class="panel-heading accordion-group-heading-relative">
+												<a data-toggle="collapse" data-target="#goods_info_area_upfile">
+													<h4 class="panel-title"><strong>{lang key='article::article.upload_file'}</strong></h4>
 												</a>
 											</div>
 											<div class="accordion-body in in_visable collapse" id="goods_info_area_upfile">
@@ -293,7 +297,7 @@
 					</div>
 				</div>
 
-				<h3 class="heading">{lang key='article::article.tab_content'}</h3>
+				<div class="page-header"><div class="pull-left"><h3>{lang key='article::article.tab_content'}</h3></div><div class="clearfix"></div></div>
 				<div class="row-fluid">
 					<div class="span12">
 						{ecjia:editor content=$article.content textarea_name='content'}

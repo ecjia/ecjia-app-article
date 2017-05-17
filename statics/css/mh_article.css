@@ -14,3 +14,37 @@
 .add_article a {
 	float: right;
 }
+
+.row-fluid .span10 {
+	width: 82%;
+}
+
+.foldable-list .accordion-group .control-group-small .control-label {
+	width: auto;
+	float: left;
+	margin-left: 15px;
+	width: 75px;
+}
+
+.control-group-small {
+	margin: 1.5em 0;
+}
+
+.margin_up_down1 {
+	margin: 1em 0;
+}
+
+.m_t5 {
+	margin-left: 85px;
+}
+
+.form-horizontal .control-label {
+    float: left;
+    width: 70px;
+    padding-top: 5px;
+    text-align: right;
+}
+
+.mar_b_l {
+	margin: 0 0 10px 15px;
+}

@@ -111,7 +111,7 @@ class merchant extends ecjia_merchant {
 		);
 		
 		$this->assign('ur_here', RC_Lang::get('article::article.article_list'));
-		$this->assign('action_link', array('text' => RC_Lang::get('system::system.article_add'), 'href' => RC_Uri::url('article/admin/add')));
+		$this->assign('action_link', array('text' => RC_Lang::get('system::system.article_add'), 'href' => RC_Uri::url('article/merchant/add')));
 		
 		$result = ecjia_app::validate_application('goods');
 		if (!is_ecjia_error($result)) {
@@ -129,8 +129,8 @@ class merchant extends ecjia_merchant {
 		$article_list = $this->get_articles_list();
 		$this->assign('article_list', $article_list);
 		
-		$this->assign('form_action', RC_Uri::url('article/admin/batch'));
-		$this->assign('search_action', RC_Uri::url('article/admin/init'));
+		$this->assign('form_action', RC_Uri::url('article/merchant/batch'));
+		$this->assign('search_action', RC_Uri::url('article/merchant/init'));
 		$this->display('article_list.dwt');
 	}
 
@@ -169,7 +169,7 @@ class merchant extends ecjia_merchant {
 	 * 添加文章
 	 */
 	public function insert() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_add_article', ecjia::MSGTYPE_JSON);
 
 		$title 	      = !empty($_POST['title'])           ? trim($_POST['title'])         : '';
 		$cat_id       = !empty($_POST['article_cat'])     ? intval($_POST['article_cat']) : 0;
@@ -249,7 +249,7 @@ class merchant extends ecjia_merchant {
 	 * 添加自定义栏目
 	 */
 	public function insert_term_meta() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_add_article', ecjia::MSGTYPE_JSON);
 
 		$article_id   = !empty($_POST['article_id'])  ? intval($_POST['article_id'])              : 0;
 		$key          = !empty($_POST['key'])         ? htmlspecialchars(trim($_POST['key']))     : '';
