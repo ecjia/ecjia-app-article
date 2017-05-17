@@ -40,7 +40,7 @@
 
 .form-horizontal .control-label {
     float: left;
-    width: 90px;
+    width: 150px;
     padding-top: 5px;
     text-align: right;
 }
@@ -55,4 +55,8 @@
 
 .panel-title {
 	color: #FFF;
+}
+
+[type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
+	top: 0;
 }

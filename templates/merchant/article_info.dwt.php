@@ -31,8 +31,8 @@
 			</ul>
 			{/if}
 			<form class="form-horizontal" action="{$form_action}" method="post" enctype="multipart/form-data" name="infoForm" data-edit-url="{RC_Uri::url('article/merchant/edit')}">
-				<div class="tab-content">
-					<div class="tab-pane active" id="tab1">
+				<div class="tab-content panel">
+					<div class="tab-pane active panel-body" id="tab1">
 					<fieldset>
 							<div class="row-fluid edit-page editpage-rightbar">
 								<div class="left-bar move-mod">
@@ -190,8 +190,8 @@
 													<!-- {/if} -->
 
 													<!-- {if $article.cat_id >= 0} -->
-													<div class="" >
-														<label class="">{lang key='article::article.is_top'}</label>
+													<div class="control-group control-group-small" >
+														<label class="control-label">{lang key='article::article.is_top'}</label>
 														<div class="span8 chk_radio">
 															<input type="radio" class="uni_style" name="article_type" value="0" {if $article.article_type eq 0}checked{/if} checked="true"><label for="open">{lang key='article::article.common'}</label>
 															<input type="radio" class="uni_style" name="article_type" value="1" {if $article.article_type eq 1}checked{/if}><label for="close">{lang key='article::article.top'}</label>
