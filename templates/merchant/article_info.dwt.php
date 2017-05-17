@@ -27,10 +27,10 @@
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab1" data-toggle="tab">{lang key='article::article.tab_general'}</a></li>
 				<!--<li><a href="#tab2" data-toggle="tab">{lang key='article::article.tab_content'}</a></li> -->
-				<li><a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$smarty.get.id}"}'>{lang key='article::article.tab_goods'}</a></li>
+				<li><a class="data-pjax" href='{url path="article/merchant/link_goods" args="id={$smarty.get.id}"}'>{lang key='article::article.tab_goods'}</a></li>
 			</ul>
 			{/if}
-			<form class="form-horizontal" action="{$form_action}" method="post" enctype="multipart/form-data" name="infoForm" data-edit-url="{RC_Uri::url('article/admin/edit')}">
+			<form class="form-horizontal" action="{$form_action}" method="post" enctype="multipart/form-data" name="infoForm" data-edit-url="{RC_Uri::url('article/merchant/edit')}">
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab1">
 					<fieldset>
@@ -82,10 +82,10 @@
 
 									<!-- {if $action eq 'edit'} -->
 									<div class="foldable-list move-mod-group" id="goods_info_sort_note">
-										<div class="accordion-group">
-											<div class="accordion-heading">
-												<a class="accordion-toggle collapsed acc-in move-mod-head" data-toggle="collapse" data-target="#goods_info_term_meta">
-													<strong>{lang key='article::article.custom_columns_success'}</strong>
+										<div class="accordion-group accordion-group panel panel-default">
+											<div class="panel-heading accordion-group-heading-relative">
+												<a data-toggle="collapse" data-target="#goods_info_term_meta">
+													<h4 class="panel-title"><strong>{lang key='article::article.custom_columns_success'}</strong></h4>
 												</a>
 											</div>
 											<div class="accordion-body in" id="goods_info_term_meta">
@@ -100,7 +100,7 @@
 																<td>{lang key='article::article.value'}</td>
 															</tr>
 														</thead>
-														<tbody class="term_meta_edit" data-id="{$article.article_id}" data-active="{url path='article/admin/update_term_meta'}">
+														<tbody class="term_meta_edit" data-id="{$article.article_id}" data-active="{url path='article/merchant/update_term_meta'}">
 															<!-- {foreach from=$data_term_meta item=term_meta} -->
 															<tr>
 																<td>
@@ -108,7 +108,7 @@
 
 																	<input type="hidden" name="term_meta_id" value="{$term_meta.meta_id}">
 																	<a class="data-pjax btn m_t5" data-toggle="edit_term_meta" href="javascript:;">{lang key='article::article.update'}</a>
-																	<a class="ajaxremove btn btn-danger m_t5" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_custom_columns_confirm'}" href='{url path="article/admin/remove_term_meta" args="meta_id={$term_meta.meta_id}"}'>{lang key='system::system.remove'}</a>
+																	<a class="ajaxremove btn btn-danger m_t5" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_custom_columns_confirm'}" href='{url path="article/merchant/remove_term_meta" args="meta_id={$term_meta.meta_id}"}'>{lang key='system::system.remove'}</a>
 
 																</td>
 																<td><textarea class="span12 h70 form-control" name="term_meta_value">{$term_meta.meta_value}</textarea></td>
@@ -119,9 +119,9 @@
 													<!-- {/if} -->
 
  													<!-- 编辑区域 -->
- 													<label><b>{lang key='article::article.add_custom_columns'}：</b></label>
+ 													<label class="control-label"><b>{lang key='article::article.add_custom_columns'}：</b></label>
 
- 													<div class="term_meta_add" data-id="{$article.article_id}" data-active="{url path='article/admin/insert_term_meta'}">
+ 													<div class="term_meta_add" data-id="{$article.article_id}" data-active="{url path='article/merchant/insert_term_meta'}">
 														<table class="table smpl_tbl ">
 															<thead>
 																<tr>
@@ -129,7 +129,7 @@
 																	<td>{lang key='article::article.value'}</td>
 																</tr>
 															</thead>
-															<tbody class="term_meta_edit" data-id="{$article.article_id}" data-active="{url path='article/admin/update_term_meta'}">
+															<tbody class="term_meta_edit" data-id="{$article.article_id}" data-active="{url path='article/merchant/update_term_meta'}">
 																<tr>
 																	<td>
  																		<!-- {if $term_meta_key_list} -->
@@ -269,7 +269,7 @@
 																</div>
 													       		<span class="ecjiaf-db m_t5 m_b5 ecjiaf-wwb">{lang key='article::article.file_address'}{$article.file_url}</span>
 													       	{/if}
-															<a class="ajaxremove ecjiafc-red ecjiaf-db" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_file_confirm'}" href='{RC_Uri::url("article/admin/delfile","id={$article.article_id}")}' title="{lang key='article::article.drop_file'}">
+															<a class="ajaxremove ecjiafc-red ecjiaf-db" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_file_confirm'}" href='{RC_Uri::url("article/merchant/delfile","id={$article.article_id}")}' title="{lang key='article::article.drop_file'}">
 													        {lang key='article::article.drop_file'}
 													        </a>
 													        <input name="file_name" value="{$article.file_url}" class="hide">

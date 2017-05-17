@@ -29,13 +29,14 @@
 		</div>
 	</div>
 </div>
-<div class="add_article">
-	<h3 class="heading">
+<div class="page-header">
+	<h2 class="pull-left">
 		<!-- {if $ur_here}{$ur_here}{/if} -->
 		<!-- {if $action_link} -->
-		<a class="btn btn-primary plus_or_reply data-pjax" href="{$action_link.href}"  id="sticky_a"><i class="fontello-icon-plus"></i>{$action_link.text}</a>
 		<!-- {/if} -->
-	</h3>
+	</h2>
+	<div class="pull-right"><a class="btn btn-primary data-pjax" href="{$action_link.href}"  id="sticky_a"><i class="fontello-icon-plus"></i>{$action_link.text}</a></div>
+	<div class="clearfix"></div>
 </div>
 
 <!-- 批量操作和搜索 -->

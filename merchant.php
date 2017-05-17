@@ -154,13 +154,13 @@ class merchant extends ecjia_merchant {
 		);
 		
 		$this->assign('ur_here', RC_Lang::get('system::system.article_add'));
-		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => RC_Uri::url('article/admin/init')));
+		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => RC_Uri::url('article/merchant/init')));
 		$article = array();
 		$article['is_open'] = 1;
 		$this->assign('article', $article);
 		$this->assign('cat_select', article_cat::article_cat_list(0, 0, false));
 		
-		$this->assign('form_action', RC_Uri::url('article/admin/insert'));
+		$this->assign('form_action', RC_Uri::url('article/merchant/insert'));
 
 		$this->display('article_info.dwt');
 	}
@@ -505,8 +505,8 @@ class merchant extends ecjia_merchant {
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		
 		$this->assign('ur_here', RC_Lang::get('article::article.preview_article'));
-		$this->assign('action_linkedit', array('text' => RC_Lang::get('article::article.article_editbtn'), 'href' => RC_Uri::url('article/admin/edit', array('id' => $id))));
-		$this->assign('action_link', array('text' => RC_Lang::get('article::article.back_article_list'), 'href' => RC_Uri::url('article/admin/init')));
+		$this->assign('action_linkedit', array('text' => RC_Lang::get('article::article.article_editbtn'), 'href' => RC_Uri::url('article/merchant/edit', array('id' => $id))));
+		$this->assign('action_link', array('text' => RC_Lang::get('article::article.back_article_list'), 'href' => RC_Uri::url('article/merchant/init')));
 		
 		$article = $this->db_article->article_find($id);
 		$article['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $article['add_time']);
