@@ -33,7 +33,7 @@
     				<td align="right">
     					<span>
     						<a class="data-pjax no-underline" href='{RC_Uri::url("article/admin_notice/edit", "id={$item.article_id}")}' title="{lang key='system::system.edit'}"><i class="fontello-icon-edit"></i></a>
-    						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{lang key='article::shopinfo.drop_shopinfo_confirm'}" href='{RC_Uri::url("article/admin_notice/remove", "id={$item.article_id}")}' title="{lang key='system::system.remove'}"><i class="fontello-icon-trash"></i></a>
+    						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_article_confirm'}" href='{RC_Uri::url("article/admin_notice/remove", "id={$item.article_id}")}' title="{lang key='system::system.remove'}"><i class="fontello-icon-trash"></i></a>
     					</span>
     				</td>
     			</tr>

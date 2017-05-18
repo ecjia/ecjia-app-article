@@ -268,7 +268,7 @@ return array(
 	'related_download'				=> '相关下载',
 	'total'							=> '共',
 	'piece'							=> '篇',
-	'drop_article_confirm'			=> '您确定要删除该帮助文章吗？',
+	'drop_article_confirm'			=> '您确定要删除该文章吗？',
 	'time_format_error'				=> '时间格式不正确',
 	'article_name_is'				=> '文章名称为 ',
 	
