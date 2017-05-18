@@ -362,6 +362,7 @@ return array(
 	'label_image_address'	=> '图片地址：',
 	'drop_image'			=> '删除图片',
 	'drop_image_confirm'	=> '您确定要删除该图片吗？',
+	'store_notice'			=> '商家公告',
 );
 
 //end
