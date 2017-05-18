@@ -2,7 +2,7 @@
 <!-- {extends file="ecjia-merchant.dwt.php"} -->
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-// 	ecjia.admin.article_info.init();
+	ecjia.merchant.article_info.init();
 </script>
 <!-- {/block} -->
 <!-- {block name="home-content"} -->
@@ -23,7 +23,7 @@
 <div class="row edit-page">
 	<div class="col-lg-12">
 		<section class="panel">
-			<div class="tabbable">
+			<div class="panel-body panel-body-small">
 				{if $action eq 'edit' && $has_goods}
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tab1" data-toggle="tab">{lang key='article::article.tab_general'}</a></li>
@@ -62,12 +62,12 @@
 												</div>
 												<div class="accordion-body in collapse" id="goods_info_area_seo">
 													<div class="panel-body">
-														<div class="form-group">
+														<div class="form-group m_b0">
 															<label class="control-label col-lg-2 p_l0">{lang key='article::article.keywords'}</label>
 															<div class="col-lg-9 p_l0">
 																<input class="span10 form-control" type="text" name="keywords" value="{$article.keywords|escape}" size="40"/>
 																<br/>
-																<p class="help-block w280 m_t5">
+																<p class="help-block">
 																	{lang key='article::article.split'}
 																</p>
 															</div>
@@ -93,14 +93,14 @@
 													</a>
 												</div>
 												<div class="accordion-body in" id="goods_info_term_meta">
-													<div class="accordion-inner">
+													<div class="panel-body">
 														<!-- 自定义栏目模板区域 START -->
 														<!-- {if $data_term_meta} -->
 														<label><b>{lang key='article::article.edit_custom_columns_success'}：</b></label>
 														<table class="table smpl_tbl ">
 														<thead>
 														<tr>
-															<td class="span4">
+															<td class="">
 																{lang key='article::article.name'}
 															</td>
 															<td>
@@ -111,11 +111,15 @@
 														<tbody class="term_meta_edit" data-id="{$article.article_id}" data-active="{url path='article/merchant/update_term_meta'}">
 														<!-- {foreach from=$data_term_meta item=term_meta} -->
 														<tr>
-															<td>
-																<input class="span12" type="text" name="term_meta_key" value="{$term_meta.meta_key}"/>
+															<td class="col-lg-6">
+																<div class="col-lg-12 p_l0">
+																	<input class="form-control" type="text" name="term_meta_key" value="{$term_meta.meta_key}"/>
+																</div>
 																<input type="hidden" name="term_meta_id" value="{$term_meta.meta_id}">
-																<a class="data-pjax btn m_t5" data-toggle="edit_term_meta" href="javascript:;">{lang key='article::article.update'}</a>
-																<a class="ajaxremove btn btn-danger m_t5" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_custom_columns_confirm'}" href='{url path="article/merchant/remove_term_meta" args="meta_id={$term_meta.meta_id}"}'>{lang key='system::system.remove'}</a>
+																<div class="clear_both m_t5">
+																	<a class="data-pjax btn btn-info m_t5" data-toggle="edit_term_meta" href="javascript:;">{lang key='article::article.update'}</a>
+																	<a class="ajaxremove btn btn-danger m_t5" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_custom_columns_confirm'}" href='{url path="article/merchant/remove_term_meta" args="meta_id={$term_meta.meta_id}"}'>{lang key='system::system.remove'}</a>
+																</div>
 															</td>
 															<td>
 																<textarea class="span12 h70 form-control" name="term_meta_value">{$term_meta.meta_value}</textarea>
@@ -131,7 +135,7 @@
 															<table class="table smpl_tbl ">
 															<thead>
 															<tr>
-																<td class="span4">
+																<td class="col-lg-6">
 																	{lang key='article::article.name'}
 																</td>
 																<td>
@@ -143,19 +147,21 @@
 															<tr>
 																<td>
 																	<!-- {if $term_meta_key_list} -->
-																	<select class="span12" data-toggle="change_term_meta_key">
-																		<!-- {foreach from=$term_meta_key_list item=meta_key} -->
-																		<option value="{$meta_key.meta_key}">{$meta_key.meta_key}</option>
-																		<!-- {/foreach} -->
-																	</select>
-																	<input class="span12 hide" type="text" name="term_meta_key" value="{$term_meta_key_list.0.meta_key}"/>
-																	<div>
+																	<div class="controls col-lg-12 p_l0 m_b5">
+																		<select class="form-control" data-toggle="change_term_meta_key">
+																			<!-- {foreach from=$term_meta_key_list item=meta_key} -->
+																			<option value="{$meta_key.meta_key}">{$meta_key.meta_key}</option>
+																			<!-- {/foreach} -->
+																		</select>
+																		<input class="form-control hide" type="text" name="term_meta_key" value="{$term_meta_key_list.0.meta_key}"/>
+																	</div>
+																	<div class="clear_both">
 																		<a data-toggle="add_new_term_meta" href="javascript:;">{lang key='article::article.add_new_columns'}</a>
 																	</div>
 																	<!-- {else} -->
 																	<input class="form-control" type="text" name="term_meta_key" value=""/>
 																	<!-- {/if} -->
-																	<a class="btn btn-primary" data-toggle="add_term_meta" href="javascript:;">{lang key='article::article.add_custom_columns'}</a>
+																	<a class="btn btn-primary m_t5" data-toggle="add_term_meta" href="javascript:;">{lang key='article::article.add_custom_columns'}</a>
 																</td>
 																<td>
 																	<textarea class="span12 form-control" name="term_meta_value"></textarea>
@@ -255,7 +261,7 @@
 																<input type="text" name="author" class="form-control" value="{$article.author|escape}"/>
 															</div>
 														</div>
-														<div class="form-group">
+														<div class="form-group m_b0">
 															<label class="control-label col-lg-4">{lang key='article::article.author_email'}</label>
 															<div class="col-lg-7">
 																<input type="text" name="author_email" class="form-control" value="{$article.author_email|escape}"/>
@@ -326,7 +332,7 @@
 					</div>
 					<div class="row-fluid panel-body">
 						<div class="span12">
-							{ecjia:editor content=$article.content textarea_name='content'}
+							{ecjia:editor content=$article.content textarea_name='content' is_teeny=0}
 						</div>
 					</div>
 				</form>

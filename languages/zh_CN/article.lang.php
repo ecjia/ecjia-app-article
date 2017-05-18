@@ -338,18 +338,19 @@ return array(
 	'about_edit_shopinfo'	=> '关于编辑网店信息帮助文档',
 	
 	'js_lang' => array(
-		'select_moved_article'		=> '请选择需要转移的文章！',
-		'article_title_required'	=> '请输入文章标题！',
+		'select_moved_article'		=> '请选择需要转移的文章',
+		'article_title_required'	=> '请输入文章标题',
 		'back_select_term'			=> '返回选择栏目',
 		'select_goods_empty'		=> '未搜索到商品信息',
 		'editable_miss_parameters'	=> 'editable缺少参数',
 		'edit_info'					=> '编辑信息',
 		'operate_selected_confirm'  => '您确定要操作所有选中项吗？',
-		'noSelectMsg'				=> '请先选中操作项！',
-		'batch_miss_parameters'		=> '批量操作缺少参数！',
+		'noSelectMsg'				=> '请先选中操作项',
+		'batch_miss_parameters'		=> '批量操作缺少参数',
 		'ok'						=> '确定',
 		'cancel'					=> '取消',
 	    'select_time'   		    => '请选择时间',
+	    'no_select_cat'				=> '请选择文章分类',
 	),
 	
 	'cat_manage'			=> '文章分类管理',

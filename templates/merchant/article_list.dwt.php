@@ -3,28 +3,30 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-// 	ecjia.admin.article_list.init();
+	ecjia.merchant.article_list.init();
 </script>
 <!-- {/block} -->
 
 <!-- {block name="home-content"} -->
-<div class="modal hide fade" id="movetype">
-	<div class="modal-header">
-		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='article::article.move_to_category'}</h3>
-	</div>
-	<div class="modal-body h300">
-		<div class="row-fluid  ecjiaf-tac">
-			<div>
-				<select class="noselect no_search w200" size="15" name="target_cat">
-					<option value="0">{lang key='article::article.all_cat'}</option>
-					<!-- {foreach from=$cat_select key=key item=val} -->
-					<option value="{$val.cat_id}" {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
-					<!-- {/foreach} -->
-				</select>
+<div class="modal fade" id="movetype">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal">×</button>
+				<h3>{lang key='article::article.move_to_category'}</h3>
 			</div>
-			<div>
-				<a class="btn btn-primary btn-gebo m_l5" data-toggle="ecjiabatch" data-name="article_id" data-idClass=".checkbox:checked" data-url="{$form_action}&sel_action=move_to&" data-msg="{lang key='article::article.move_confirm'}" data-noSelectMsg="{lang key='article::article.select_move_article'}" href="javascript:;" name="move_cat_ture">{lang key='article::article.begin_move'}</a>
+			<div class="modal-body h400 form-horizontal">
+				<div class="form-group ecjiaf-tac">
+					<select class="noselect w200 ecjiaf-ib form-control" size="15" name="target_cat">
+						<option value="0">{lang key='article::article.all_cat'}</option>
+						<!-- {foreach from=$cat_select key=key item=val} -->
+						<option value="{$val.cat_id}" {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
+						<!-- {/foreach} -->
+					</select>
+				</div>
+				<div class="form-group t_c">
+					<a class="btn btn-primary btn-gebo m_l5" data-toggle="ecjiabatch" data-name="article_id" data-idClass=".checkbox:checked" data-url="{$form_action}&sel_action=move_to&" data-msg="{lang key='article::article.move_confirm'}" data-noSelectMsg="{lang key='article::article.select_move_article'}" href="javascript:;" name="move_cat_ture">{lang key='article::article.begin_move'}</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -66,7 +68,7 @@
 					<a class="btn btn-primary m_l5 screen-btn"><i class="fa fa-search"></i> {lang key='article::article.filter'}</a>
 					<div class="f_r form-group" >
 						<input type="text" name="keywords" class="form-control" value="{$smarty.get.keywords}" placeholder="{lang key='article::article.enter_article_title'}"/>
-						<a class="btn btn-primary m_l5 screen-btn"><i class="fa fa-search"></i> 筛选</a>
+						<a class="btn btn-primary m_l5 search_articles"><i class="fa fa-search"></i> 筛选</a>
 					</div>
 				</form>
 			</div>
