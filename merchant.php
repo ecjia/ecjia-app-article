@@ -66,25 +66,16 @@ class merchant extends ecjia_merchant {
 		$this->db_article 			= RC_Model::model('article/article_model');
 		$this->db_article_cat		= RC_Model::model('article/article_cat_model');
 		$this->db_article_view		= RC_Model::model('article/article_viewmodel');
-		RC_Style::enqueue_style('aristo', RC_Uri::admin_url('statics/lib/jquery-ui/css/Aristo/Aristo.css'), array(), false, false);
-		RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
-		RC_Style::enqueue_style('merchant_orders', RC_App::apps_url('statics/css/merchant_orders.css', __FILE__), array(), false, false);
-		RC_Style::enqueue_style('orders', RC_App::apps_url('statics/css/admin_orders.css', __FILE__), array());
 		
 		
-		/* 加载所需js */
-		RC_Script::enqueue_script('smoke');
 		RC_Script::enqueue_script('jquery-validate');
-		RC_Script::enqueue_script('jquery-form');
-// 		RC_Script::enqueue_script('jquery-uniform');
-		RC_Script::enqueue_script('jquery-chosen');
-// 		RC_Script::enqueue_script('article_list', RC_App::apps_url('statics/js/article_list.js', __FILE__));
 		RC_Style::enqueue_style('uniform-aristo');
-		RC_Style::enqueue_style('chosen');
-		RC_Script::enqueue_script('bootstrap-placeholder', RC_Uri::admin_url('statics/lib/dropper-upload/bootstrap-placeholder.js'), array(), false, true);
-		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
-// 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
-		RC_Style::enqueue_style('merchant', RC_App::apps_url('statics/css/mh_article.css', __FILE__), array());
+		RC_Script::enqueue_script('jquery-stepy');
+		RC_Script::enqueue_script('jquery-form');
+		RC_Script::enqueue_script('smoke');
+		
+		RC_Script::enqueue_script('ecjia-mh-bootstrap-fileupload-js');
+		RC_Style::enqueue_style('ecjia-mh-bootstrap-fileupload-css');
 		
 		RC_Script::localize_script('article_list', 'js_lang', RC_Lang::get('article::article.js_lang'));
 		
