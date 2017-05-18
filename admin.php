@@ -114,7 +114,7 @@ class admin extends ecjia_admin {
 		
 		/* 文章筛选时保留筛选的分类cat_id */
 		$cat_id = isset($_GET['cat_id']) ? intval($_GET['cat_id']) : 0;
-		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false));
+		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false, 0, 1));
 	
 		/* 取得过滤条件 */
 		$filter = array();
@@ -157,7 +157,7 @@ class admin extends ecjia_admin {
 		$this->assign('article_type', $article_type);
 
 		$this->assign('article', $article);
-		$this->assign('cat_select', article_cat::article_cat_list(0, 0, false));
+		$this->assign('cat_select', article_cat::article_cat_list(0, 0, false, 0, 1));
 		
 		$this->assign('form_action', RC_Uri::url('article/admin/insert'));
 
@@ -405,7 +405,7 @@ class admin extends ecjia_admin {
 		$this->assign('term_meta_key_list', $term_meta_key_list);
 	
 		$this->assign('action',	'edit');
-		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id'], false));
+		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id'], false, 0, 1));
 		$this->assign('article', $article);
 		$this->assign('form_action', RC_Uri::url('article/admin/update'));
 
@@ -541,8 +541,6 @@ class admin extends ecjia_admin {
 		$article['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $article['add_time']);
 		
 		$this->assign('article', $article);
-		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id']));
-
 		$this->display('preview.dwt');
 	}
 
