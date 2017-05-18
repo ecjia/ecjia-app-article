@@ -79,7 +79,7 @@ class article_article_list_api extends Component_Event_Api {
 		$filter['cat_id']     = empty($options['cat_id']) 		? 0 : intval($options['cat_id']);
 		$filter['sort_by']    = empty($options['sort_by']) 		? 'a.article_id' : trim($options['sort_by']);
 		$filter['sort_order'] = empty($options['sort_order']) 	? 'DESC' : trim($options['sort_order']);
-		$filter['is_open']	  = empty($options['is_open']) 		? 1 : intval($options['is_open']);
+		$filter['article_approved']	  = empty($options['article_approved'])	? 1 : intval($options['article_approved']);
 		$filter['page_size']  = empty($options['page_size']) 	? 15 : intval($options['page_size']);
 		$filter['current_page'] = empty($options['current_page']) ? 1 : intval($options['current_page']);
 		//不获取系统帮助文章的过滤
@@ -91,7 +91,7 @@ class article_article_list_api extends Component_Event_Api {
 			$dbview->whereIn(RC_DB::raw('a.cat_id'),article_cat::get_children_list($filter['cat_id']));
 		}
 		/* 是否显示 will.chen*/
-		$dbview->where(RC_DB::raw('a.is_open'), '=', $filter['is_open']);
+		$dbview->where(RC_DB::raw('a.article_approved'), '=', $filter['article_approved']);
 		
 		/* 文章总数 */
 		$filter['record_count'] = '';
@@ -112,6 +112,8 @@ class article_article_list_api extends Component_Event_Api {
 		}
 		return array('arr' => $arr, 'page' => $page->show(15), 'desc' => $page->page_desc());
 	}
+
+
 }
 
 // end

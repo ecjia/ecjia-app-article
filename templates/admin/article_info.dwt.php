@@ -185,23 +185,29 @@
 
 													<!-- {if $article.cat_id >= 0} -->
 													<div class="control-group control-group-small" >
-														<label class="control-label">{lang key='article::article.is_top'}</label>
-														<div class="span8 chk_radio">
-															<input type="radio" class="uni_style" name="article_type" value="0" {if $article.article_type eq 0}checked{/if}><span>{lang key='article::article.common'}</span>
-															<input type="radio" class="uni_style" name="article_type" value="1" {if $article.article_type eq 1}checked{/if}><span>{lang key='article::article.top'}</span>
+														<label class="control-label">{t}文章类型：{/t}</label>
+														<div class="control span8">
+															<select name="article_type">
+																<option value="article">{lang key='article::article.select_plz'}</option>
+																<!-- {foreach from=$article_type key=key item=val} -->
+																<option value="{$val.article_type}" {if $article.article_type eq $val.article_type}selected{/if}>{$val.article_type_name}</option>
+																<!-- {/foreach} -->
+															</select>
 														</div>
 													</div>
 													<div class="control-group control-group-small" >
-														<label class="control-label">{lang key='article::article.is_open_lable'}</label>
+														<label class="control-label">状态审核：</label>
 														<div class="span8 chk_radio">
-															<input type="radio" class="uni_style" name="is_open" value="1" {if $article.is_open eq 1}checked{/if}><span>{lang key='article::article.isopen'}</span>
-															<input type="radio" class="uni_style" name="is_open" value="0" {if $article.is_open eq 0}checked{/if}><span>{lang key='article::article.isclose'}</span>
+															<input type="radio" class="uni_style" name="article_approved" value="1" {if $article.article_approved eq 1}checked{/if}><span>{t}通过{/t}</span>
+															<input type="radio" class="uni_style" name="article_approved" value="0" {if $article.article_approved eq 0}checked{/if}><span>{t}待审核{/t}</span>
+															<input type="radio" class="uni_style" name="article_approved" value="trash" {if $article.article_approved eq 'trash'}checked{/if}><span>{t}回收站{/t}</span>
+															<input type="radio" class="uni_style" name="article_approved" value="spam" {if $article.article_approved eq 'spam'}checked{/if}><span>{t}垃圾文章{/t}</span>
 														</div>
 													</div>
 													<!-- {else} -->
 													<div style="display:none;">
-														<input type="hidden" name="article_type" value="0" />
-														<input type="hidden" name="is_open" value="1" />
+														<input type="hidden" name="article_type" value="article" />
+														<input type="hidden" name="article_approved" value="1" />
 													</div>
 													<!-- {/if} -->
 
@@ -280,6 +286,46 @@
 														{/if}
 													</div>
 												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 上传文章封面 -->
+									<div class="foldable-list move-mod-group" id="article_cover_image_upfile">
+										<div class="accordion-group">
+											<div class="accordion-heading">
+												<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#article_cover_upfile">
+													<strong>文章封面</strong>
+												</a>
+											</div>
+											<div class="accordion-body in in_visable collapse" id="article_cover_upfile">
+												{if !$article.cover_image}
+													<div class="accordion-inner" style="padding:16px 15px;">
+														<div class="fileupload fileupload-new m_b0" data-provides="fileupload">
+															<div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px; line-height: 50px;"></div>
+															<span class="btn btn-file">
+																<span  class="fileupload-new">浏览</span>
+																<span  class="fileupload-exists">修改</span>
+																<input type='file' name='cover_image' size="35"/>
+															</span>
+															<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+														</div>
+													</div>
+												{else}
+												<div class="fileupload fileupload-new" data-provides="fileupload">
+												    <div class="t_c">
+														<img class="w200 h200"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$article.cover_image}">
+													</div>
+													<div class="t_c">
+														图片地址： {$article.cover_image}<br><br>
+														<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+														<span class="btn btn-file">
+															<span  class="fileupload-new">更换图片</span>
+															<span  class="fileupload-exists">修改</span>
+															<input type='file' name='cover_image' size="35"/>
+														</span>
+													</div>
+												</div>
+											   {/if}
 											</div>
 										</div>
 									</div>

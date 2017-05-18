@@ -13,11 +13,11 @@
 		<button class="close" data-dismiss="modal">×</button>
 		<h3>{lang key='article::article.move_to_category'}</h3>
 	</div>
-	<div class="modal-body h350">
+	<div class="modal-body h300">
 		<div class="row-fluid  ecjiaf-tac">
 			<div>
 				<select class="noselect no_search w200" size="15" name="target_cat">
-					<option value="0" disabled>{lang key='article::article.all_cat'}</option>
+					<option value="0">{lang key='article::article.all_cat'}</option>
 					<!-- {foreach from=$cat_select key=key item=val} -->
 					<option value="{$val.cat_id}" {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
 					<!-- {/foreach} -->
@@ -48,8 +48,8 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li><a class="button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_remove'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_drop_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-trash"></i>{lang key='article::article.drop_article'}</a></li>
-				<li><a class="button_hide"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_hide'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_hide_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye-off"></i>{lang key='article::article.hide'}</a></li>
-				<li><a class="button_show"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_show'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_display_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye"></i>{lang key='article::article.display'}</a></li>
+				<li><a class="button_hide"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_hide'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="请选择要移到回收站的文章" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye-off"></i>回收站</a></li>
+				<li><a class="button_show"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_show'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="请选择要通过的文章" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye"></i>审核通过</a></li>
 				<li><a class="batch-move-btn" href="javascript:;" data-move="data-operatetype" data-name="move_cat"><i class="fontello-icon-exchange"></i>{lang key='article::article.move_category'}</a></li>
 			</ul>
 		</div>
@@ -76,7 +76,7 @@
 				    <th>{lang key='article::article.title'}</th>
 				    <th class="w200">{lang key='article::article.cat'}</th>
 				    <th class="w250">{lang key='article::article.add_time'}</th>
-				    <th class="w100">{lang key='article::article.is_open'}</th>
+				    <th class="w100">{t}审核状态{/t}</th>
 			  	</tr>
 			</thead>
 			<tbody>
@@ -99,10 +99,26 @@
 					     </div>
 					</td>
 				    <td><span><!-- {if $list.cat_id > 0} -->{$list.cat_name|escape:html}<!-- {else} -->{lang key='article::article.reserve'}<!-- {/if} --></span></td>
-				    <td><span>{$list.date}</span><br><span>{if $list.article_type eq 0}{lang key='article::article.common'}{else}{lang key='article::article.top'}{/if}</span></td>
+				    <td><span>{$list.date}</span><br><span>
+						{if $list.article_type eq 'article'} {lang key='article::article.common'}
+						{elseif $list.article_type eq 'redirect'} {t}跳转链接{/t}
+						{elseif $list.article_type eq 'download'} {t}点击标题直接下载{/t}
+						{elseif $list.article_type eq 'related'} {t}文章内容底部相关下载{/t}
+					    {/if}</span>
+				   </td>
 				    <td>
-			    	<i class="{if $list.is_open eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url="{RC_Uri::url('article/admin/toggle_show')}" data-id="{$list.article_id}" ></i>
-				    </td>
+						<span class="cursor_pointer review_static" data-trigger="editable" data-value="{$list.article_approved}" data-type="select"  data-url="{RC_Uri::url('article/admin/review')}" data-name="sort_order" data-pk="{$list.article_id}" data-title="请选择审核状态">
+							<!-- {if $list.article_approved eq 1} -->
+								审核通过
+							<!-- {elseif $list.article_approved eq 0} -->
+								待审核
+							<!-- {elseif $list.article_approved eq 'trash'} -->
+								回收站
+							<!-- {elseif $list.article_approved eq 'spam'} -->
+								垃圾文章
+							<!-- {/if} -->
+						</span>
+					</td>
 				</tr>
 				<!-- {foreachelse} -->
 				   <tr><td class="no-records" colspan="5">{lang key='system::system.no_records'}</td></tr>
