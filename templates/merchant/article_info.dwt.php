@@ -48,7 +48,7 @@
 										<div class="form-group m_b0">
 											<label class="controls col-lg-11">{lang key='article::article.external_links'}</label>
 											<div class="controls col-lg-11">
-												<input type="text" name="link_url" class="span10 form-control" value="{if $article.link neq ''}{$article.link|escape}{else}http://{/if}"/>
+												<input type="text" name="link" class="span10 form-control" value="{if $article.link neq ''}{$article.link|escape}{else}http://{/if}"/>
 												<div class="help-block">{lang key='article::article.links_help_block'}</div>
 											</div>
 										</div>
@@ -300,14 +300,14 @@
 															<a class="ajaxremove ecjiafc-red ecjiaf-db" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_file_confirm'}" href='{RC_Uri::url("article/merchant/delfile","id={$article.article_id}")}' title="{lang key='article::article.drop_file'}">
 														        {lang key='article::article.drop_file'}
 															</a>
-															<input name="file_name" value="{$article.file_url}" class="hide">
+															<input name="file_url" value="{$article.file_url}" class="hide">
 														{else}
 														
 						 								<div class="fileupload fileupload-new m_b0" data-provides="fileupload">
 						                                    <span class="btn btn-primary btn-file btn-sm">
 						                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i>浏览</span>
 						                                        <span class="fileupload-exists"> 修改</span>
-						                                        <input type="file" class="default" name="cover_image" />
+						                                        <input type="file" class="default" name="file_url" />
 						                                    </span>
 						                                    <span class="fileupload-preview"></span>
 						                                    <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="index.php-uid=1&page=form_extended.html#">&times;</a>

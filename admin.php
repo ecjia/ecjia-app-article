@@ -843,7 +843,7 @@ class admin extends ecjia_admin {
 			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
 		
 		//不获取系统帮助文章的过滤
-		$db_article->where(RC_DB::raw('a.cat_id'), '!=', '0')->where(RC_DB::raw('ac.cat_type'), '!=', 5);
+		$db_article->where(RC_DB::raw('a.cat_id'), '!=', '0')->where(RC_DB::raw('ac.cat_type'), 1);
 		
 		if (!empty($filter['keywords'])) {
 			$db_article ->where(RC_DB::raw('title'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');

@@ -13,11 +13,11 @@
 		<button class="close" data-dismiss="modal">×</button>
 		<h3>{lang key='article::article.move_to_category'}</h3>
 	</div>
-	<div class="modal-body h300">
+	<div class="modal-body h350">
 		<div class="row-fluid  ecjiaf-tac">
 			<div>
 				<select class="noselect no_search w200" size="15" name="target_cat">
-					<option value="0">{lang key='article::article.all_cat'}</option>
+					<option value="0" disabled>{lang key='article::article.all_cat'}</option>
 					<!-- {foreach from=$cat_select key=key item=val} -->
 					<option value="{$val.cat_id}" {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
 					<!-- {/foreach} -->
