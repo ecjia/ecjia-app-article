@@ -21,7 +21,7 @@
 		<div class="tabbable">
 			<form class="form-horizontal" action="{$form_action}" method="post" enctype="multipart/form-data" name="theForm">
 				<div class="control-group formSep">
-					<input type="text" name="title" size="40" maxlength="60" class="span10" value="{$article.title}" placeholder="请输入商家公告标题"/> 
+					<input type="text" name="title" size="40" maxlength="60" class="span10" value="{$article.title}" placeholder="{lang key='article::article.article_title_required'}"/> 
 					<span class="input-must">{lang key='system::system.require_field'}</span>
 				</div>
 				

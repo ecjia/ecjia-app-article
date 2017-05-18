@@ -47,13 +47,14 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECJIA 商家公告
+ * ECJIA 商家公告/系统信息
  */
 class admin_notice extends ecjia_admin {
 	
 	public function __construct() {
 		parent::__construct();
 		
+		RC_Loader::load_app_func('admin_article');
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('jquery-form');
@@ -67,7 +68,11 @@ class admin_notice extends ecjia_admin {
 		RC_Script::enqueue_script('bootstrap-placeholder', RC_Uri::admin_url('statics/lib/dropper-upload/bootstrap-placeholder.js'), array(), false, true);
 		RC_Script::enqueue_script('store_notice', RC_App::apps_url('statics/js/store_notice.js', __FILE__), array(), false, true);
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('商家公告', RC_Uri::url('article/admin_notice/init')));
+		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 6;
+		$data = get_cat_type_info($cat_type, $id);
+		
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text'], $data['url']));
 	}
 	
 	/**
@@ -76,11 +81,14 @@ class admin_notice extends ecjia_admin {
 	public function init() {
 		$this->admin_priv('store_notice_manage');
 		
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('商家公告'));
+		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 0;
+		$data = get_cat_type_info($cat_type);
 		
-		$this->assign('ur_here', '商家公告');
-		$this->assign('action_link', array('text' => '发布商家公告', 'href'=> RC_Uri::url('article/admin_notice/add')));
+		ecjia_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text']));
+		
+		$this->assign('ur_here', $data['text']);
+		$this->assign('action_link', array('text' => $data['text_add'], 'href'=> $data['url_add']));
 		$this->assign('list', $this->get_notice_list());
 		
 		$this->display('article_notice_list.dwt');
@@ -92,12 +100,15 @@ class admin_notice extends ecjia_admin {
 	public function add() {
 		$this->admin_priv('store_notice_update');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('发布商家公告'));
+		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 0;
+		$data = get_cat_type_info($cat_type);
 		
-		$this->assign('ur_here', '发布商家公告');
-		$this->assign('action_link', array('text' => '商家公告', 'href'=> RC_Uri::url('article/admin_notice/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text_add']));
 		
-		$this->assign('form_action', RC_Uri::url('article/admin_notice/insert'));
+		$this->assign('ur_here', $data['text']);
+		$this->assign('action_link', array('text' => $data['text'], 'href'=> $data['url']));
+		
+		$this->assign('form_action', $data['url_insert']);
 		$this->display('article_notice_info.dwt');
 	}
 	
@@ -109,11 +120,12 @@ class admin_notice extends ecjia_admin {
 		$keywords	= !empty($_POST['keywords'])    ? trim($_POST['keywords'])      : '';
 		$desc    	= !empty($_POST['description']) ? trim($_POST['description'])   : '';
 		$file		= !empty($_FILES['file']) 		? $_FILES['file'] 				: '';
+		$cat_type	= !empty($_GET['cat_type'])		? intval($_GET['cat_type'])		: 6;
 		
  		$is_only = RC_DB::table('article as a')
      			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
      			->where('title', $title)
-     			->where(RC_DB::raw('ac.cat_type'), 6)
+     			->where(RC_DB::raw('ac.cat_type'), $cat_type)
      			->count();
  			
 		if ($is_only != 0) {
@@ -134,7 +146,7 @@ class admin_notice extends ecjia_admin {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
-		$cat_id = RC_DB::table('article_cat')->where('cat_type', 6)->pluck('cat_id');
+		$cat_id = RC_DB::table('article_cat')->where('cat_type', $cat_type)->pluck('cat_id');
 		
 		$data = array(
 			'title' 	   	=> $title,
@@ -157,13 +169,20 @@ class admin_notice extends ecjia_admin {
 	public function edit() {
 		$this->admin_priv('store_notice_update');
 	
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑商家公告'));
+		$id = intval($_GET['id']);
+		$info = RC_DB::table('article as a')
+			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
+			->where(RC_DB::raw('a.article_id'), $id)
+			->selectRaw('a.*, ac.cat_type')
+			->first();
 		
-		$this->assign('ur_here', '编辑商家公告');
-		$this->assign('action_link', array('text' => '商家公告', 'href'=> RC_Uri::url('article/admin_notice/init')));
+		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : $info['cat_type'];
+		$data = get_cat_type_info($cat_type);
 		
-		$id   = intval($_GET['id']);
-		$info = RC_DB::table('article')->where('article_id', $id)->first();
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text']));
+		
+		$this->assign('ur_here', $data['text']);
+		$this->assign('action_link', array('text' => $data['text'], 'href'=> $data['url']));
 
 		if (!empty($info['content'])) {
 			$info['content'] = stripslashes($info['content']);
@@ -175,7 +194,7 @@ class admin_notice extends ecjia_admin {
 			$info['image_url'] = RC_Uri::admin_url('statics/images/nopic.png');
 		}
 		$this->assign('article', $info);
-		$this->assign('form_action', RC_Uri::url('article/admin_notice/update'));
+		$this->assign('form_action', $data['url_update']);
 		
 		$this->display('article_notice_info.dwt');
 	}
@@ -189,11 +208,12 @@ class admin_notice extends ecjia_admin {
 		$desc     	= !empty($_POST['description']) ? trim($_POST['description'])   : '';
 		$id       	= !empty($_POST['id'])          ? intval($_POST['id'])          : 0;
 		$file		= !empty($_FILES['file']) 		? $_FILES['file'] 				: '';
-
+		$cat_type	= !empty($_GET['cat_type'])		? intval($_GET['cat_type'])		: 6;
+		
 		$is_only = RC_DB::table('article as a')
 			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
 			->where('title', $title)
-			->where(RC_DB::raw('ac.cat_type'), 6)
+			->where(RC_DB::raw('ac.cat_type'), $cat_type)
 			->where(RC_DB::raw('a.article_id'), '!=', $id)
 			->count();
 		
@@ -236,7 +256,7 @@ class admin_notice extends ecjia_admin {
 	}
 	
 	/**
-	 * 删除网店信息
+	 * 删除文章
 	 */
 	public function remove() {
 		$this->admin_priv('store_notice_delete', ecjia::MSGTYPE_JSON);
@@ -267,7 +287,7 @@ class admin_notice extends ecjia_admin {
 		$disk->delete(RC_Upload::upload_path() . $old_url);
 	
 		$data = array(
-			'file_url'    => '',
+			'file_url' => '',
 		);
 		RC_DB::table('article')->where('article_id', $id)->update($data);
 	
@@ -275,12 +295,19 @@ class admin_notice extends ecjia_admin {
 	}
 	
 	/**
-	 * 获取网店信息文章
+	 * 获取文章列表
 	 */
 	private function get_notice_list($cat_id = 0) {
-	    $data = RC_DB::table('article as a')
+		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 6;
+
+		$db_article = RC_DB::table('article as a');
+		if (!empty($cat_type)) {
+			$db_article->where(RC_DB::raw('ac.cat_type'), $cat_type);
+		}
+		
+	    $data = $db_article
      			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
-     			->where(RC_DB::raw('ac.cat_type'), 6)
+     			->where(RC_DB::raw('ac.cat_type'), $cat_type)
      			->get();
 	    
 	    $list = array();
