@@ -143,9 +143,9 @@
 																		<input class="span12 hide" type="text" name="term_meta_key" value="{$term_meta_key_list.0.meta_key}" />
 																		<div><a data-toggle="add_new_term_meta" href="javascript:;">{lang key='article::article.add_new_columns'}</a></div>
  																		<!-- {else} -->
-																		<input class="span12" type="text" name="term_meta_key" value="" />
+																		<input class="form-control" type="text" name="term_meta_key" value="" />
 																		<!-- {/if} -->
-																		<a class="btn m_t5" data-toggle="add_term_meta" href="javascript:;">{lang key='article::article.add_custom_columns'}</a>
+																		<a class="btn btn-primary" data-toggle="add_term_meta" href="javascript:;">{lang key='article::article.add_custom_columns'}</a>
 																	</td>
 																	<td><textarea class="span12 form-control" name="term_meta_value"></textarea></td>
 																</tr>
