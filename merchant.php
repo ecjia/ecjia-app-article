@@ -107,7 +107,7 @@ class merchant extends ecjia_merchant {
 		
 		/* 文章筛选时保留筛选的分类cat_id */
 		$cat_id = isset($_GET['cat_id']) ? intval($_GET['cat_id']) : 0;
-		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false));
+		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false, 0, 1));
 	
 		$article_list = $this->get_articles_list();
 		$this->assign('article_list', $article_list);
@@ -142,7 +142,7 @@ class merchant extends ecjia_merchant {
 		$this->assign('ur_here', RC_Lang::get('system::system.article_add'));
 		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => RC_Uri::url('article/merchant/init')));
 		
-		$this->assign('cat_select', article_cat::article_cat_list(0, 0, false));
+		$this->assign('cat_select', article_cat::article_cat_list(0, 0, false, 0, 1));
 		$this->assign('form_action', RC_Uri::url('article/merchant/insert'));
 		
 		//加载配置中分类数据
@@ -410,7 +410,7 @@ class merchant extends ecjia_merchant {
 		$this->assign('term_meta_key_list', $term_meta_key_list);
 	
 		$this->assign('action',	'edit');
-		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id'], false));
+		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id'], false, 0, 1));
 		$this->assign('article', $article);
 		$this->assign('form_action', RC_Uri::url('article/merchant/update'));
 
@@ -576,7 +576,6 @@ class merchant extends ecjia_merchant {
 			return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR, $links);
 		}
 		$this->assign('article', $article);
-		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id']));
 
 		$this->display('preview.dwt');
 	}
