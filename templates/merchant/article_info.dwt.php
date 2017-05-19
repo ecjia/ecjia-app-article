@@ -116,12 +116,12 @@
 										<div class="panel-group" id="goods_info_sort_note">
 											<div class="panel panel-info">
 												<div class="panel-heading">
-													<a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#goods_info_term_meta">
+													<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_term_meta">
 													<span class="glyphicon"></span>
 													<h4 class="panel-title"><strong>{lang key='article::article.custom_columns_success'}</strong></h4>
 													</a>
 												</div>
-												<div class="accordion-body collapse" id="goods_info_term_meta">
+												<div class="accordion-body in collapse" id="goods_info_term_meta">
 													<div class="panel-body">
 														<!-- 自定义栏目模板区域 START -->
 														<!-- {if $data_term_meta} -->
@@ -129,7 +129,7 @@
 														<table class="table smpl_tbl ">
 														<thead>
 														<tr>
-															<td class="">
+															<td>
 																{lang key='article::article.name'}
 															</td>
 															<td>
@@ -177,7 +177,7 @@
 																<td>
 																	<!-- {if $term_meta_key_list} -->
 																	<div class="controls col-lg-12 p_l0 m_b5">
-																		<select class="form-control" data-toggle="change_term_meta_key">
+																		<select class="form-control col-lg-12" data-toggle="change_term_meta_key">
 																			<!-- {foreach from=$term_meta_key_list item=meta_key} -->
 																			<option value="{$meta_key.meta_key}">{$meta_key.meta_key}</option>
 																			<!-- {/foreach} -->
@@ -268,6 +268,13 @@
 												</div>
 												<div class="accordion-body in in_visable collapse" id="goods_info_area_upfile">
 													<div class="panel-body">
+														<!-- {if $article.file_url neq ''} -->
+														<span class="ecjiaf-db m_t5 m_b5 ecjiaf-wwb">{lang key='article::article.file_address'}</span>
+														<span class="m_b10">{$article.file_url}</span>
+														<a class="ajaxremove ecjiafc-red ecjiaf-db" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_file_confirm'}" href='{RC_Uri::url("article/merchant/drop_file","id={$article.article_id}&type=file_url")}'>
+															{lang key='article::article.drop_file'}
+														</a>
+														<!-- {else} -->
 						 								<div class="fileupload fileupload-new m_b0" data-provides="fileupload">
 						                                    <span class="btn btn-primary btn-file btn-sm">
 						                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i>浏览</span>
@@ -277,6 +284,7 @@
 						                                    <span class="fileupload-preview"></span>
 						                                    <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="index.php-uid=1&page=form_extended.html#">&times;</a>
 						                                </div>
+						                                <!-- {/if} -->
 													</div>
 												</div>
 											</div>
@@ -293,20 +301,24 @@
 												</div>
 												<div class="accordion-body in in_visable collapse" id="goods_info_area_upfile">
 													<div class="panel-body">
-						 								<div class="fileupload fileupload-new m_b0" data-provides="fileupload">
-						 									<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 60px;max-height: 60px;line-height: 10px;"></div>
+														<div class="fileupload fileupload-{if $article.cover_image}exists{else}new{/if}" data-provides="fileupload">
+						                                    {if $article.cover_image}
+						                                    <div class="fileupload-{if $article.cover_image}exists{else}new{/if} thumbnail" style="max-width: 60px;">
+						                                        <img src="{$article.cover_image}" style="width:50px; height:50px;"/>
+						                                    </div>
+						                                    {/if}
+						                                    <div class="fileupload-preview fileupload-{if $article.cover_image}new{else}exists{/if} thumbnail" style="max-width: 60px;max-height: 60px;line-height: 10px;"></div>
 						                                    <span class="btn btn-primary btn-file btn-sm">
 						                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i>浏览</span>
 						                                        <span class="fileupload-exists"> 修改</span>
 						                                        <input type="file" class="default" name="cover_image" />
 						                                    </span>
-						                                    <a class="btn btn-danger btn-sm fileupload-exists" {if $data.shop_nav_background}data-toggle="ajaxremove"{else}data-dismiss="fileupload"{/if} href="{url path='article/merchant/delfile' args="code=shop_nav_background"}" >删除</a>
+						                                    <a class="btn btn-danger btn-sm fileupload-exists" {if $article.cover_image}data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_image_confirm'}" {else}data-dismiss="fileupload"{/if} href='{RC_Uri::url("article/merchant/drop_file","id={$article.article_id}&type=cover_image")}'>删除</a>
 						                                </div>
 													</div>
 												</div>
 											</div>
 										</div>
-										
 									</div>
 								</div>
 							</fieldset>

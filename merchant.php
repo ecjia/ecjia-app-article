@@ -391,6 +391,10 @@ class merchant extends ecjia_merchant {
 			$article['content'] = stripslashes($article['content']);
 		}
 		
+		if (!empty($article['cover_image'])) {
+			$article['cover_image'] = RC_Upload::upload_url($article['cover_image']);
+		}
+		
 		$data_term_meta = RC_DB::table('term_meta')->select('meta_id', 'meta_key', 'meta_value')
 			->where('object_id', $id)
 			->where('object_type', 'ecjia.article')
@@ -734,7 +738,7 @@ class merchant extends ecjia_merchant {
 	/**
 	 * 删除附件
 	 */
-	public function delfile() {
+	public function drop_file() {
 		$this->admin_priv('article_delete', ecjia::MSGTYPE_JSON);
 
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
@@ -754,7 +758,7 @@ class merchant extends ecjia_merchant {
 		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 		
-		return $this->showmessage(RC_Lang::get('article::article.delete_attachment_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/merchant/edit', array('id' => $id))));
+		return $this->showmessage(RC_Lang::get('article::article.delete_attachment_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 
 	/**
