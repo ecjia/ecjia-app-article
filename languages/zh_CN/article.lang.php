@@ -365,6 +365,12 @@ return array(
 	'store_notice'				=> '商家公告',
 	'system_info'				=> '系统信息',
 	'article_title_required'	=> '请输入文章标题',
+	'article_cover'				=> '文章封面',
+	'label_cat_type'			=> '文章类型：',
+	'content_required'			=> '请输入文章内容',
+	'link_required'				=> '请输入链接',
+	'file_required'				=> '请上传文件',
+	'article_required'			=> '没有找到该文章',
 );
 
 //end

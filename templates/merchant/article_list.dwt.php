@@ -54,8 +54,6 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li><a class="button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_remove'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_drop_article'}" data-name="article_id" href="javascript:;"><i class="fa fa-trash-o"></i><i class="fontello-icon-trash"></i> {lang key='article::article.drop_article'}</a></li>
-							<li><a class="button_hide"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_hide'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_hide_article'}" data-name="article_id" href="javascript:;"><i class="fa fa-star"></i><i class="fontello-icon-eye-off"></i> {lang key='article::article.hide'}</a></li>
-							<li><a class="button_show"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/merchant/batch' args='sel_action=button_show'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_display_article'}" data-name="article_id" href="javascript:;"><i class="fa fa-star-o"></i><i class="fontello-icon-eye"></i> {lang key='article::article.display'}</a></li>
 							<li><a class="batch-move-btn" href="javascript:;" data-move="data-operatetype" data-name="move_cat"><i class="fa fa-mail-forward"></i><i class="fontello-icon-exchange"></i> {lang key='article::article.move_category'}</a></li>
 						</ul>
 					</div>

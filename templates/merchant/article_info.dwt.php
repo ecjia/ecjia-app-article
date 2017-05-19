@@ -52,6 +52,35 @@
 												<div class="help-block">{lang key='article::article.links_help_block'}</div>
 											</div>
 										</div>
+										
+										<!-- 作者信息 -->
+										<div class="panel-group" id="goods_info_sort_author">
+											<div class="panel panel-info">
+												<div class="panel-heading">
+													<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_area_author">
+													<span class="glyphicon"></span>
+													<h4 class="panel-title"><strong>{lang key='article::article.author_info'}</strong></h4>
+													</a>
+												</div>
+												<div class="accordion-body in in_visable collapse" id="goods_info_area_author">
+													<div class="panel-body">
+														<div class="form-group">
+															<label class="control-label col-lg-2 p_l0">{lang key='article::article.author_name'}</label>
+															<div class="col-lg-9 p_l0">
+																<input type="text" name="author" class="form-control" value="{$article.author|escape}"/>
+															</div>
+														</div>
+														<div class="form-group m_b0">
+															<label class="control-label col-lg-2 p_l0">{lang key='article::article.author_email'}</label>
+															<div class="col-lg-9 p_l0">
+																<input type="text" name="author_email" class="form-control" value="{$article.author_email|escape}"/>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
 										<div class="panel-group" id="goods_info_sort_seo">
 											<div class="panel panel-info">
 												<div class="panel-heading">
@@ -87,12 +116,12 @@
 										<div class="panel-group" id="goods_info_sort_note">
 											<div class="panel panel-info">
 												<div class="panel-heading">
-													<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_term_meta">
+													<a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#goods_info_term_meta">
 													<span class="glyphicon"></span>
 													<h4 class="panel-title"><strong>{lang key='article::article.custom_columns_success'}</strong></h4>
 													</a>
 												</div>
-												<div class="accordion-body in" id="goods_info_term_meta">
+												<div class="accordion-body collapse" id="goods_info_term_meta">
 													<div class="panel-body">
 														<!-- 自定义栏目模板区域 START -->
 														<!-- {if $data_term_meta} -->
@@ -191,11 +220,10 @@
 												</div>
 												<div class="panel-collapse collapse in" id="goods_info_area_cat">
 													<div class="panel-body">
-														<!-- {if $article.cat_id >= 0} -->
 														<div class="form-group">
 															<label class="control-label col-lg-4">{lang key='article::article.cat_lable'}</label>
-															<div class="controls col-lg-7">
-																<select class="form-control" name="article_cat">
+															<div class="controls col-lg-8 p_l0">
+																<select class="form-control" name="cat_id">
 																	<option value="0">{lang key='article::article.select_plz'}</option>
 																	<!-- {foreach from=$cat_select key=key item=val} -->
 																	<option value="{$val.cat_id}" {if $article.cat_id eq $val.cat_id}selected{/if} {if $val.level}style="padding-left:{$val.level*20}px"{/if}>{$val.cat_name}</option>
@@ -203,35 +231,20 @@
 																</select>
 															</div>
 														</div>
-														<!-- {else} -->
-														<input type="hidden" name="article_cat" value="-1"/>
-														<!-- {/if} -->
-														<!-- {if $article.cat_id >= 0} -->
+														
 														<div class="form-group">
-															<label class="control-label col-lg-4">{lang key='article::article.is_top'}</label>
-															<div class="col-lg-7">
-																<input type="radio" class="uni_style" name="article_type" value="0" {if $article.article_type eq 0}checked{/if} checked="true"><label for="open">{lang key='article::article.common'}</label>
-																<input type="radio" class="uni_style" name="article_type" value="1" {if $article.article_type eq 1}checked{/if}><label for="close">{lang key='article::article.top'}</label>
+															<label class="control-label col-lg-4">{lang key='article::article.label_cat_type'}</label>
+															<div class="controls col-lg-8 p_l0">
+																<select class="form-control" name="article_type">
+																	<!-- {foreach from=$article_type key=key item=val} -->
+																	<option value="{$val.article_type}" {if $article.article_type eq $val.article_type}selected{/if}>{$val.article_type_name}</option>
+																	<!-- {/foreach} -->
+																</select>
 															</div>
 														</div>
-														<div class="form-group">
-															<label class="control-label col-lg-4">{lang key='article::article.is_open_lable'}</label>
-															<div class="col-lg-7">
-																<input type="radio" class="uni_style" name="is_open" value="1" {if $article.is_open eq 1}checked{/if} checked="true"><label for="open">{lang key='article::article.isopen'}</label>
-																<input type="radio" class="uni_style" name="is_open" value="0" {if $article.is_open eq 0}checked{/if}><label for="close">{lang key='article::article.isclose'}</label>
-															</div>
-														</div>
-														<!-- {else} -->
-														<div style="display:none;">
-															<input type="hidden" name="article_type" value="0"/>
-															<input type="hidden" name="is_open" value="1"/>
-														</div>
-														<!-- {/if} -->
-														<input type="hidden" name="old_title" value="{$article.title}"/>
-														<input type="hidden" name="id" value="{$article.article_id}"/>
 														
 														<div class="form-group m_b0">
-															<label class="control-label col-lg-7">
+															<label class="control-label col-lg-6 m_l10">
 																{if $article.article_id eq ''}
 																<button class="btn btn-info" type="submit">{lang key='article::article.issue'}</button>
 																{else}
@@ -244,35 +257,7 @@
 											</div>
 										</div>
 										
-										<!-- 作者信息 -->
-										<div class="panel-group" id="goods_info_sort_author">
-											<div class="panel panel-info">
-												<div class="panel-heading">
-													<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_area_author">
-													<span class="glyphicon"></span>
-													<h4 class="panel-title"><strong>{lang key='article::article.author_info'}</strong></h4>
-													</a>
-												</div>
-												<div class="accordion-body in in_visable collapse" id="goods_info_area_author">
-													<div class="panel-body">
-														<div class="form-group">
-															<label class="control-label col-lg-4">{lang key='article::article.author_name'}</label>
-															<div class="col-lg-7">
-																<input type="text" name="author" class="form-control" value="{$article.author|escape}"/>
-															</div>
-														</div>
-														<div class="form-group m_b0">
-															<label class="control-label col-lg-4">{lang key='article::article.author_email'}</label>
-															<div class="col-lg-7">
-																<input type="text" name="author_email" class="form-control" value="{$article.author_email|escape}"/>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										<!-- 上传 -->
+										<!-- 上传文件 -->
 										<div class="panel-group" id="goods_info_sort_upfile">
 											<div class="panel panel-info">
 												<div class="panel-heading">
@@ -283,26 +268,6 @@
 												</div>
 												<div class="accordion-body in in_visable collapse" id="goods_info_area_upfile">
 													<div class="panel-body">
-														{if $article.file_url neq ''}
-															{if $article.is_file}
-																<div class="t_c">
-																	<img class="w100 f_l" src="{$article.image_url} "/>
-																</div>
-																<div class="h100 ecjiaf-wwb">
-																	{lang key='article::article.file_address'}{$article.file_url}
-																</div>
-														    {else}
-																<div class="t_c">
-																	<img class="w300 h300 t_c" class="img-polaroid" src="{$article.image_url} "/>
-																</div>
-																<span class="ecjiaf-db m_t5 m_b5 ecjiaf-wwb">{lang key='article::article.file_address'}{$article.file_url}</span>
-														    {/if}
-															<a class="ajaxremove ecjiafc-red ecjiaf-db" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_file_confirm'}" href='{RC_Uri::url("article/merchant/delfile","id={$article.article_id}")}' title="{lang key='article::article.drop_file'}">
-														        {lang key='article::article.drop_file'}
-															</a>
-															<input name="file_url" value="{$article.file_url}" class="hide">
-														{else}
-														
 						 								<div class="fileupload fileupload-new m_b0" data-provides="fileupload">
 						                                    <span class="btn btn-primary btn-file btn-sm">
 						                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i>浏览</span>
@@ -312,11 +277,36 @@
 						                                    <span class="fileupload-preview"></span>
 						                                    <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="index.php-uid=1&page=form_extended.html#">&times;</a>
 						                                </div>
-														{/if}
 													</div>
 												</div>
 											</div>
 										</div>
+										
+										<!-- 上传文件 -->
+										<div class="panel-group" id="goods_info_sort_upfile">
+											<div class="panel panel-info">
+												<div class="panel-heading">
+													<a class="accordion-toggle" data-toggle="collapse" data-target="#goods_info_area_upfile">
+													<span class="glyphicon"></span>
+													<h4 class="panel-title"><strong>{lang key='article::article.article_cover'}</strong></h4>
+													</a>
+												</div>
+												<div class="accordion-body in in_visable collapse" id="goods_info_area_upfile">
+													<div class="panel-body">
+						 								<div class="fileupload fileupload-new m_b0" data-provides="fileupload">
+						 									<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 60px;max-height: 60px;line-height: 10px;"></div>
+						                                    <span class="btn btn-primary btn-file btn-sm">
+						                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i>浏览</span>
+						                                        <span class="fileupload-exists"> 修改</span>
+						                                        <input type="file" class="default" name="cover_image" />
+						                                    </span>
+						                                    <a class="btn btn-danger btn-sm fileupload-exists" {if $data.shop_nav_background}data-toggle="ajaxremove"{else}data-dismiss="fileupload"{/if} href="{url path='article/merchant/delfile' args="code=shop_nav_background"}" >删除</a>
+						                                </div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
 									</div>
 								</div>
 							</fieldset>
@@ -335,6 +325,8 @@
 							{ecjia:editor content=$article.content textarea_name='content' is_teeny=0}
 						</div>
 					</div>
+					
+					<input type="hidden" name="id" value="{$article.article_id}" />
 				</form>
 			</div>
 		</section>
