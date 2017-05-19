@@ -56,6 +56,7 @@ class merchant extends ecjia_merchant {
         
 		RC_Loader::load_app_class('article_cat', 'article', false);
 		RC_Loader::load_app_func('merchant_article');
+		RC_Loader::load_app_func('merchant_goods', 'goods');
 		RC_Loader::load_app_func('global');
 		assign_adminlog_contents();
 		
@@ -616,7 +617,7 @@ class merchant extends ecjia_merchant {
 			->get();
 
 		$this->assign('link_goods_list', $linked_goods);
-		$this->assign('cat_list', RC_Api::api('goods', 'get_goods_category'));
+		$this->assign('cat_list', merchant_cat_list(0, 0, false));
 
 		$this->display('link_goods.dwt');
 	}
@@ -837,19 +838,25 @@ class merchant extends ecjia_merchant {
 	 * 搜索商品，仅返回名称及ID
 	 */
 	public function get_goods_list() {
-	    $filter = $_GET['JSON'];
-	    $arr = RC_Api::api('goods', 'get_goods_list', $filter);
-	    $opt = array();
-	    if (!empty($arr)) {
-	        foreach ($arr AS $key => $val) {
-	            $opt[] = array(
-	                'value' => $val['goods_id'],
-	                'text'  => $val['goods_name'],
-	                'data'  => $val['shop_price']
-	            );
-	        }
-	    }
-	    return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $opt));
+		$filter = $_GET['JSON'];
+		/*商家条件*/
+		if (!empty($_SESSION['store_id']) && $_SESSION['store_id'] > 0) {
+			$filter['store_id'] = $_SESSION['store_id'];
+		}
+		$filter['is_on_sale'] = 1;
+		$filter['is_delete'] = 0;
+		$arr = get_merchant_goods_list($filter);
+		$opt = array();
+		if (!empty($arr)) {
+			foreach ($arr AS $key => $val) {
+				$opt[] = array(
+					'value' => $val['goods_id'],
+					'text'  => $val['goods_name'],
+					'data'  => $val['shop_price']
+				);
+			}
+		}
+		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $opt));
 	}
 	
 	/**
