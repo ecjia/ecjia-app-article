@@ -301,7 +301,7 @@
 												</div>
 												<div class="accordion-body in in_visable collapse" id="goods_info_area_upfile">
 													<div class="panel-body">
-														<div class="fileupload fileupload-{if $article.cover_image}exists{else}new{/if}" data-provides="fileupload">
+														<div class="fileupload fileupload-{if $article.cover_image}exists{else}new{/if} m_b0" data-provides="fileupload">
 						                                    {if $article.cover_image}
 						                                    <div class="fileupload-{if $article.cover_image}exists{else}new{/if} thumbnail" style="max-width: 60px;">
 						                                        <img src="{$article.cover_image}" style="width:50px; height:50px;"/>

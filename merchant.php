@@ -109,12 +109,11 @@ class merchant extends ecjia_merchant {
 		$cat_id = isset($_GET['cat_id']) ? intval($_GET['cat_id']) : 0;
 		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false));
 	
-		/* 取得过滤条件 */
-		$filter = array();
-		$this->assign('filter', $filter);
-		
 		$article_list = $this->get_articles_list();
 		$this->assign('article_list', $article_list);
+		$this->assign('type_count', $article_list['count']);
+		$this->assign('filter', $article_list['filter']);
+		$this->assign('type', $article_list['filter']['type']);
 		
 		$this->assign('form_action', RC_Uri::url('article/merchant/batch'));
 		$this->assign('search_action', RC_Uri::url('article/merchant/init'));
@@ -863,13 +862,14 @@ class merchant extends ecjia_merchant {
 		$filter['cat_id']     = empty($_GET['cat_id'])        ? 0                 : intval($_GET['cat_id']);
 		$filter['sort_by']    = empty($_GET['sort_by'])       ? 'a.article_id'    : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
+		$filter['type']   	  = empty($_GET['type'])      	  ? ''                : trim($_GET['type']);
 	
 		$db_article = RC_DB::table('article as a')
 		    ->where('store_id', $_SESSION['store_id'])
 			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
 		
 		//不获取系统帮助文章的过滤
-		$db_article->where(RC_DB::raw('a.cat_id'), '!=', '0')->where(RC_DB::raw('ac.cat_type'), '!=', 5);
+		$db_article->where(RC_DB::raw('ac.cat_type'), 1);
 		
 		if (!empty($filter['keywords'])) {
 			$db_article ->where(RC_DB::raw('title'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
@@ -878,7 +878,30 @@ class merchant extends ecjia_merchant {
 			$db_article ->whereIn(RC_DB::raw('a.cat_id'), article_cat::get_children_list($filter['cat_id']));
 		}
 		
+		$type_count = $db_article->select(RC_DB::raw('count(*) as count'),
+			RC_DB::raw('SUM(IF(a.article_approved = 1, 1, 0)) as has_checked'),
+			RC_DB::raw('SUM(IF(a.article_approved = 0, 1, 0)) as wait_check'),
+			RC_DB::raw('SUM(IF(a.article_approved = "trash", 1, 0)) as trash'),
+			RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as unpass'))->first();
+
+		if ($filter['type'] == 'has_checked') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 1);
+		}
+
+		if ($filter['type'] == 'wait_check') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 0);
+		}
+
+		if ($filter['type'] == 'trash') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 'trash');
+		}
+
+		if ($filter['type'] == 'unpass') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 'spam');
+		}
+		
 		$count = $db_article->select('article_id')->count();
+
 		$page = new ecjia_merchant_page($count, 15, 5);
 		
 		$result = $db_article->select(RC_DB::raw('a.*'), RC_DB::raw('ac.cat_id'), RC_DB::raw('ac.cat_name'), RC_DB::raw('ac.cat_type'), RC_DB::raw('ac.sort_order'))
@@ -896,7 +919,7 @@ class merchant extends ecjia_merchant {
 				$arr[] = $rows;
 			}
 		}
-		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'count' => $count);
+		return array('arr' => $arr, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'count' => $type_count);
 	}
 }
 

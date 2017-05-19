@@ -45,6 +45,17 @@
 	<div class="col-lg-12">
 		<div class="panel">
 			<div class="panel-body panel-body-small">
+				<ul class="nav nav-pills pull-left">
+					<li class="{if $type eq ''}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.all'} <span class="badge badge-info">{if $type_count.count}{$type_count.count}{else}0{/if}</span> </a></li>
+					<li class="{if $type eq 'has_checked'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="type=has_checked{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.has_checked'}<span class="badge badge-info">{if $type_count.has_checked}{$type_count.has_checked}{else}0{/if}</span> </a></li>
+					<li class="{if $type eq 'wait_check'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="type=wait_check{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.wait_check'}<span class="badge badge-info">{if $type_count.wait_check}{$type_count.wait_check}{else}0{/if}</span> </a></li>
+					<li class="{if $type eq 'trash'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="type=trash{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.trash'}<span class="badge badge-info">{if $type_count.trash}{$type_count.trash}{else}0{/if}</span> </a></li>
+					<li class="{if $type eq 'unpass'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="type=unpass{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.unpass'}<span class="badge badge-info">{if $type_count.unpass}{$type_count.unpass}{else}0{/if}</span> </a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="panel-body panel-body-small">
 				<form class="form-inline" method="post" action="{$search_action}" name="searchForm">
 					<div class="btn-group f_l m_r5">
 						<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
@@ -84,7 +95,6 @@
 						    <th>{lang key='article::article.title'}</th>
 						    <th class="w200">{lang key='article::article.cat'}</th>
 						    <th class="w250">{lang key='article::article.add_time'}</th>
-						    <th class="w100">{lang key='article::article.is_open'}</th>
 					  	</tr>
 					</thead>
 					<tbody>
@@ -111,9 +121,6 @@
 							</td>
 						    <td><span><!-- {if $list.cat_id > 0} -->{$list.cat_name|escape:html}<!-- {else} -->{lang key='article::article.reserve'}<!-- {/if} --></span></td>
 						    <td><span>{$list.date}</span><br><span>{if $list.article_type eq 0}{lang key='article::article.common'}{else}{lang key='article::article.top'}{/if}</span></td>
-						    <td>
-					    	<i class="{if $list.is_open eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url="{RC_Uri::url('article/merchant/toggle_show')}" data-id="{$list.article_id}" ></i>
-						    </td>
 						</tr>
 						<!-- {foreachelse} -->
 						   <tr><td class="no-records" colspan="5">{lang key='system::system.no_records'}</td></tr>
