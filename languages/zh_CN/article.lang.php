@@ -373,7 +373,7 @@ return array(
 	'article_required'			=> '没有找到该文章',
 	
 	'all'			=> '全部',
-	'has_checked'	=> '已审核',
+	'has_checked'	=> '通过审核',
 	'wait_check'	=> '待审核',
 	'trash'			=> '回收站',
 	'unpass'		=> '未通过审核',
