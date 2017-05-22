@@ -172,7 +172,8 @@ class merchant extends ecjia_merchant {
 		
 		$cat_id       = !empty($_POST['cat_id'])     	? intval($_POST['cat_id']) 		: 0;
 		$article_type = !empty($_POST['article_type'])  ? trim($_POST['article_type'])	: 'article';
-
+		$suggest_type = !empty($_POST['suggest_type'])  ? trim($_POST['suggest_type'])  : 0;
+		
 		$file_name = '';
 		//获取上传文件的信息
 		$file = !empty($_FILES['file_url']) ? $_FILES['file_url'] : '';
@@ -251,6 +252,7 @@ class merchant extends ecjia_merchant {
 			'file_url'     => $file_name,
 			'cover_image'  => $cover_image,
 			'article_approved' => $store_info['manage_mode'] == 'self' ? 1 : 0, //自营店铺默认通过审核
+			'suggest_type' => $suggest_type,
 		);
 		$article_id = RC_DB::table('article')->insertGetId($data);
 		
@@ -439,7 +441,8 @@ class merchant extends ecjia_merchant {
 		
 		$cat_id       = !empty($_POST['cat_id'])     	? intval($_POST['cat_id']) 		: 0;
 		$article_type = !empty($_POST['article_type'])  ? trim($_POST['article_type'])	: 'article';
-		
+		$suggest_type = !empty($_POST['suggest_type'])  ? trim($_POST['suggest_type'])  : 0;
+
 		$article = get_merchant_article_info($id);
 		if (empty($article)) {
 			return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -529,7 +532,9 @@ class merchant extends ecjia_merchant {
 			'add_time'     => RC_Time::gmtime(),
 			'file_url'     => $file_name,
 			'cover_image'  => $cover_image,
+			'suggest_type' => $suggest_type,
 		);
+
 		$query = RC_DB::table('article')->where('store_id', $_SESSION['store_id'])->where('article_id', $id)->update($data);
 		
 		/*释放文章缓存*/
