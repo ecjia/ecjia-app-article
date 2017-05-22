@@ -112,6 +112,7 @@ class merchant extends ecjia_merchant {
 	
 		$article_list = $this->get_articles_list();
 		$this->assign('article_list', $article_list);
+		
 		$this->assign('type_count', $article_list['count']);
 		$this->assign('filter', $article_list['filter']);
 		$this->assign('type', $article_list['filter']['type']);

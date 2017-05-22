@@ -71,7 +71,7 @@ return array(
 	'upload_file' 			=> '上传文件',
 	'file_url' 				=> '或输入文件地址',
 	'invalid_file'  		=> '上传文件格式不正确',
-	'article_name_exist' 	=> '有相同的文章名称存在！',
+	'article_name_exist' 	=> '有相同的文章名称存在',
 	'select_plz'  			=> '请选择...',
 	'external_links'	 	=> '外部链接：',
 	
@@ -81,7 +81,7 @@ return array(
 	'isclose' 				=> '不显示',
 	'no_article'   			=> '您现在还没有任何文章',
 	'no_select_article'   	=> '您没有选择任何文章',
-	'no_select_act'   		=> '请选择文章分类！',
+	'no_select_act'   		=> '请选择文章分类',
 	
 	'display'   	=> '显示文章内容',
 	'download'  	=> '下载文件',
@@ -197,7 +197,7 @@ return array(
     'batch_setup'           => '批量设置',
     
 	'add_custom_columns_success'	=> '添加自定义栏目成功',
-	'miss_parameters_faild'			=> '缺少关键参数，更新失败！',
+	'miss_parameters_faild'			=> '缺少关键参数，更新失败',
 	'update_custom_columns_success'	=> '更新自定义栏目成功',
 	'drop_custom_columns_success' 	=> '删除自定义栏目成功',
 	'edit_link_goods'				=> '编辑关联商品',
@@ -209,12 +209,12 @@ return array(
 	'move_article'					=> '转移文章 ',
 	'to_category'					=> '至分类  ',
 	'move_to_category'				=> '转移文章至分类',
-	'select_move_article'			=> '请先选中要转移的文章！',
+	'select_move_article'			=> '请先选中要转移的文章',
 	'begin_move'					=> '开始转移',
 	'confirm_drop'					=> '您确定要这么做吗？',
-	'select_drop_article'			=> '请先选中要删除的文章！',
-	'select_hide_article'			=> '请先选中要隐藏的文章！',
-	'select_display_article'		=> '请先选中要显示的文章！',
+	'select_drop_article'			=> '请先选中要删除的文章',
+	'select_hide_article'			=> '请先选中要隐藏的文章',
+	'select_display_article'		=> '请先选中要显示的文章',
 	'drop_article'					=> '删除文章',
 	'display'						=> '显示',
 	'hide'							=> '隐藏',
@@ -305,7 +305,7 @@ return array(
 	'about_link_goods'		=> '关于关联商品帮助文档',
 	
 	//文章分类
-	'cat_name_required'		=> '请输入文章分类名称！',
+	'cat_name_required'		=> '请输入文章分类名称',
 	
 	//文章分类帮助
 	'article_cat_help'		=> '欢迎访问ECJia智能后台文章分类页面，系统中所有的文章分类都会显示在此列表中。',
@@ -315,7 +315,7 @@ return array(
 	'edit_cat_help'			=> '欢迎访问ECJia智能后台编辑文章分类页面，可以在此页面编辑相应的文章分类信息。',
 	'about_edit_cat'		=> '关于编辑文章分类帮助文档',
 	
-	'shophelp_title_required' => '请输入帮助文章标题！',
+	'shophelp_title_required' => '请输入帮助文章标题',
 	
 	//网店帮助
 	'shophelp_help'			=> '欢迎访问ECJia智能后台网店帮助列表页面，系统中所有的网店帮助都会显示在此列表中。',
@@ -327,7 +327,7 @@ return array(
 	'edit_shophelp_help'	=> '欢迎访问ECJia智能后台编辑帮助文章页面，可以在此页面编辑相应的帮助文章信息。',
 	'about_edit_shophelp'	=> '关于编辑帮助文章帮助文档',
 	
-	'shopinfo_title_required' => '请输入网店标题！',
+	'shopinfo_title_required' => '请输入网店标题',
 	
 	//网店信息
 	'shopinfo_help'			=> '欢迎访问ECJia智能后台网店信息页面，系统中所有的网店信息都会显示在此列表中。',
