@@ -75,7 +75,7 @@
 											<li class="ms-elem-selection">
 												<input type="hidden" value="{$link_goods.goods_id}" name="article_id[]" />
 												<!-- {$link_goods.goods_name} -->
-												<span class="edit-list"><i class="fontello-icon-minus-circled ecjiafc-red del"></i></span>
+												<span class="edit-list"><i class="fa fa-times ecjiafc-red del"></i></span>
 											</li>
 											<!-- {/foreach} -->
 										</ul>
