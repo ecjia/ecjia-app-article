@@ -180,6 +180,7 @@ class admin extends ecjia_admin {
 		$content      		= !empty($_POST['content'])         ? trim($_POST['content'])       : '';
 		$link_url     		= !empty($_POST['link_url'])        ? trim($_POST['link_url'])      : '';
 		$description  		= !empty($_POST['description'])     ? trim($_POST['description'])   : '';
+		$suggest_type  		= !empty($_POST['suggest_type'])     ? trim($_POST['suggest_type'])   : 0;
 		
 		/*文章类型相关条件*/
 		if (($article_type == 'article') && empty($content)) {
@@ -252,6 +253,7 @@ class admin extends ecjia_admin {
 				'cover_image'  		=> $cover_image,
 				'link'         		=> $link_url,
 				'description'  		=> $description,
+				'suggest_type'		=> $suggest_type
 			);
 			
 			$article_id = $this->db_article->article_manage($data);
@@ -440,6 +442,7 @@ class admin extends ecjia_admin {
 		$content      		= !empty($_POST['content'])         ? trim($_POST['content'])       : '';
 		$link_url     		= !empty($_POST['link_url'])        ? trim($_POST['link_url'])      : '';
 		$description  		= !empty($_POST['description'])     ? trim($_POST['description'])   : '';
+		$suggest_type  		= !empty($_POST['suggest_type'])     ? trim($_POST['suggest_type'])   : 0;
 		
 		/*文章类型相关条件*/
 		if (($article_type == 'article') && empty($content)) {
@@ -520,7 +523,8 @@ class admin extends ecjia_admin {
 				'file_url'     		=> $file_name,
 				'link'         		=> $link_url,
 				'cover_image'		=> $cover_image,
-				'description'  		=> $description
+				'description'  		=> $description,
+				'suggest_type'		=> $suggest_type
 			);
 			$query = $this->db_article->article_manage($data);
 			

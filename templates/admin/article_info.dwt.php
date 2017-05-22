@@ -222,6 +222,13 @@
 														</div>
 													</div>
 													<div class="control-group control-group-small" >
+														<label class="control-label">推荐类型：</label>
+														<div class="span8 chk_radio">
+															<input type="radio" class="uni_style" name="suggest_type" value="stickie" {if $article.suggest_type eq 'stickie'}checked{/if}><span>{t}置顶{/t}</span>
+															<input type="radio" class="uni_style" name="suggest_type" value="0" {if $article.suggest_type eq 0}checked{/if}><span>{t}默认{/t}</span>
+														</div>
+													</div>
+													<div class="control-group control-group-small" >
 														<label class="control-label">状态审核：</label>
 														<div class="span8 chk_radio">
 															<input type="radio" class="uni_style" name="article_approved" value="1" {if $article.article_approved eq 1}checked{/if}><span>{t}通过{/t}</span>
