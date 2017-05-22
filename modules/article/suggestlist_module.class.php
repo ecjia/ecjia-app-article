@@ -47,82 +47,60 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 文章列表类
+ * 精选文章列表
+ * @author zrl
  */
-class article_list {
-	/**
-	 * 取得文章信息
-	 * @param   array $options	条件参数
-	 * @return  array   文章列表
-	 */
-	
-	public static function article_lists($options) {
-	
-		$dbview = RC_DB::table('article as a')
-		->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
-	
-		$filter = array();
-		$filter['cat_id']     = empty($options['cat_id']) 		? 0 : intval($options['cat_id']);
-		$filter['sort_by']    = empty($options['sort_by']) 		? 'a.add_time' : trim($options['sort_by']);
-		$filter['sort_order'] = empty($options['sort_order']) 	? 'DESC' : trim($options['sort_order']);
-		$filter['size']  	  = empty($options['size']) 		? 15 : intval($options['size']);
-		$filter['page'] 	  = empty($options['page']) 		? 1 : intval($options['page']);
-		
-		if (!empty($options['suggest_type'])) {
-			$dbview->where(RC_DB::raw('a.suggest_type'), $options['suggest_type']);
+class suggestlist_module extends api_front implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+    	
+    	RC_Loader::load_app_class('article_list', 'article', false);
+		$type	 = $this->requestData('type', 'stickie');//置顶的
+		$types   = array('stickie', '0');
+		if (!in_array('stickie', $types)) {
+			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
+		/* 获取数量 */
+		$size = $this->requestData('pagination.count', 15);
+		$page = $this->requestData('pagination.page', 1);
 		
-		if ($filter['cat_id'] && ($filter['cat_id'] > 0)) {
-			$dbview->whereIn(RC_DB::raw('a.cat_id'),self::GetIds($filter['cat_id']));
-		}
-		/*显示审核通过的*/
-		if ($options['article_approved'] && $options['article_approved'] == 1) {
-			$dbview->where(RC_DB::raw('a.article_approved'), '=', 1);
-		}
-		
-		/* 文章总数 */
-		$filter['record_count'] = '';
-		$count = $dbview->select('article_id')->count();
-		$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
-	
-		$result = $dbview->selectRaw('a.*, ac.cat_name, ac.cat_type, ac.sort_order')
-		->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])->take($filter['size'])->skip($page_row->start_id - 1)->get();
-		$pager = array(
-				'total' => $page_row->total_records,
-				'count' => $page_row->total_records,
-				'more'	=> $page_row->total_pages <= $filter['page'] ? 0 : 1,
+		$options = array(
+				'size'			=> $size,
+				'page'			=> $page,
+				'suggest_type'  => $type,
+				'sort_by'		=> 'a.add_time',
+				'sort_order'	=> 'DESC',
+				'article_approved'		=> 1
 		);
-		return array('list' => $result, 'page' => $pager);
-	}
-	
-	
-	/**
-	 * 子分类ids
-	 * @return string
-	 */
-	public static function GetIds($parent_id){
-		if($parent_id){
-			if(is_array($parent_id)){
-				$parent_id = join(',', $parent_id);
-				$data = RC_Model::model('article/article_cat_model')->in(array('parent_id'=>$parent_id))->get_field('cat_id',true);
-			}else{
-				$data = RC_Model::model('article/article_cat_model')->where(array('parent_id'=>$parent_id))->get_field('cat_id',true);
-			}
-			if(!empty($data)){
-				$datas = self::GetIds($data) ? array_merge($data,self::GetIds($data)) : $data;
-			}else{
-				$datas = array('0' =>$parent_id);
-			}
-			//含分类自己
-			if (is_array($parent_id)) {
-				$datas = array_merge($parent_id, $datas);
-			} else{
-				$datas = array_merge(array($parent_id), $datas);
+		
+		$article_data =article_list::article_lists($options);
+				
+		$arr = array();
+		if(!empty($article_data['list'])) {
+			foreach ($article_data['list'] as $rows) {
+				$rows['add_time'] = RC_Time::local_date(ecjia::config('date_format'), $rows['add_time']);
+				if ($rows['store_id'] > 0) {
+					$store_logo =  RC_DB::table('merchants_config')->where('store_id', $rows['store_id'])->where('code', 'shop_logo')->pluck('value');
+					$store_name = RC_DB::table('store_franchisee')->where('store_id', $rows['store_id'])->pluck('merchants_name');
+				}
+				$arr[] = array(
+						'article_id' 		=> intval($rows['article_id']),
+						'article_type' 		=> $rows['article_type'],
+						'add_time'			=> RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']),
+						'title'				=> $rows['title'],
+						'description'		=> !empty($rows['description']) ? $rows['description'] : '',
+						'click_count'		=> $rows['click_count'],
+						'cover_image'		=> !empty($rows['cover_image']) ? RC_Upload::upload_url($rows['cover_image']) : '',
+						'file_url'			=> !empty($rows['file_url']) ? RC_Upload::upload_url($rows['file_url']) : '',
+						'link_url'			=> !empty($rows['link_url']) ? $rows['link_url'] : '',
+						'store_info'		=> array(
+													'store_id' 		=> $rows['store_id'] > 0 ? $rows['store_id'] : 0,
+													'store_name' 	=> $rows['store_id'] > 0 ? $store_name : '自营',
+													'store_logo'	=> $rows['store_id'] > 0 ? RC_Upload::upload_url($store_logo) : ''
+												)
+				);
 			}
 		}
-		return $datas;
+		return array('data' => $arr, 'pager' => $article_data['page']);
 	}
-}	
-
-
+}
 // end
