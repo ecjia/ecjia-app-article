@@ -26,7 +26,7 @@
 			<div class="panel-body panel-body-small">
 				{if $action eq 'edit' && $has_goods}
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#tab1" data-toggle="tab">{lang key='article::article.tab_general'}</a></li>
+					<li class="active"><a href="javascript:;" data-toggle="tab">{lang key='article::article.tab_general'}</a></li>
 					<!--<li><a href="#tab2" data-toggle="tab">{lang key='article::article.tab_content'}</a></li>
 					 -->
 					<li><a class="data-pjax" href='{url path="article/merchant/link_goods" args="id={$smarty.get.id}"}'>{lang key='article::article.tab_goods'}</a></li>

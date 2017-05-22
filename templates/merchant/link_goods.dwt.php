@@ -26,7 +26,7 @@
 		<div class="panel">
 			<div class="panel-body panel-body-small">
 				<ul class="nav nav-tabs">
-					<li><a class="data-pjax" href='{url path="article/merchant/edit" args="id={$smarty.get.id}"}#tab1'>{lang key='article::article.tab_general'}</a></li>
+					<li><a class="data-pjax" href='{url path="article/merchant/edit" args="id={$smarty.get.id}"}'>{lang key='article::article.tab_general'}</a></li>
 					<li class="active"><a href="javascript:;">{lang key='article::article.tab_goods'}</a></li>
 				</ul>
 			</div>
