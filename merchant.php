@@ -77,6 +77,8 @@ class merchant extends ecjia_merchant {
 		RC_Script::localize_script('merchant_article_list', 'js_lang', RC_Lang::get('article::article.js_lang'));
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_list'), RC_Uri::url('article/merchant/init')));
+		ecjia_merchant_screen::get_current_screen()->set_parentage('article', 'article/merhcant.php');
+		
 	}
 
 	/**
