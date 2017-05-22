@@ -182,6 +182,10 @@ class admin extends ecjia_admin {
 		$description  		= !empty($_POST['description'])     ? trim($_POST['description'])   : '';
 		$suggest_type  		= !empty($_POST['suggest_type'])     ? trim($_POST['suggest_type'])   : 0;
 		
+		if (empty($description)) {
+			return $this->showmessage('文章描述不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+		}
+		
 		/*文章类型相关条件*/
 		if (($article_type == 'article') && empty($content)) {
 			return $this->showmessage('文章类型为普通文章时，文章内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
@@ -443,6 +447,10 @@ class admin extends ecjia_admin {
 		$link_url     		= !empty($_POST['link_url'])        ? trim($_POST['link_url'])      : '';
 		$description  		= !empty($_POST['description'])     ? trim($_POST['description'])   : '';
 		$suggest_type  		= !empty($_POST['suggest_type'])     ? trim($_POST['suggest_type'])   : 0;
+		
+		if (empty($description)) {
+			return $this->showmessage('文章描述不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+		}
 		
 		/*文章类型相关条件*/
 		if (($article_type == 'article') && empty($content)) {
