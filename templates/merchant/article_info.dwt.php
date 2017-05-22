@@ -125,7 +125,7 @@
 													<div class="panel-body">
 														<!-- 自定义栏目模板区域 START -->
 														<!-- {if $data_term_meta} -->
-														<label><b>{lang key='article::article.edit_custom_columns_success'}：</b></label>
+														<label><b>{lang key='article::article.label_edit_custom_columns'}</b></label>
 														<table class="table smpl_tbl ">
 														<thead>
 														<tr>
@@ -159,7 +159,7 @@
 														</table>
 														<!-- {/if} -->
 														<!-- 编辑区域 -->
-														<label class="control-label"><b>{lang key='article::article.add_custom_columns'}：</b></label>
+														<label class="control-label"><b>{lang key='article::article.label_add_custom_columns'}</b></label>
 														<div class="term_meta_add" data-id="{$article.article_id}" data-active="{url path='article/merchant/insert_term_meta'}">
 															<table class="table smpl_tbl ">
 															<thead>

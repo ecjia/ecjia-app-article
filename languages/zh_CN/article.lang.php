@@ -377,6 +377,12 @@ return array(
 	'wait_check'	=> '待审核',
 	'trash'			=> '回收站',
 	'unpass'		=> '未通过审核',
+	'label_author'	=> '文章作者：',
+	'label_add_time'=> '添加时间：',
+	'not_available'	=> '暂无',
+	
+	'label_add_custom_columns' 	=> '添加自定义栏目：',
+	'label_edit_custom_columns'	=> '编辑自定义栏目：',
 );
 
 //end
