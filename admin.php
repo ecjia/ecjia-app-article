@@ -180,7 +180,15 @@ class admin extends ecjia_admin {
 		$content      		= !empty($_POST['content'])         ? trim($_POST['content'])       : '';
 		$link_url     		= !empty($_POST['link_url'])        ? trim($_POST['link_url'])      : '';
 		$description  		= !empty($_POST['description'])     ? trim($_POST['description'])   : '';
-    		
+		
+		/*文章类型相关条件*/
+		if (($article_type == 'article') && empty($content)) {
+			return $this->showmessage('文章类型为普通文章时，文章内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+		}
+		if (($article_type == 'redirect') && (strstr($link_url, 7) == false)) {
+			return $this->showmessage('文章类型为跳转链接时，外部链接不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+		}
+			
 		$is_only = $this->db_article->article_count(array('title' => $title));
 		if ($is_only > 0) {
 			return $this->showmessage(sprintf(RC_Lang::get('article::article.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
@@ -223,7 +231,13 @@ class admin extends ecjia_admin {
 					return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 			}
-			
+			/*文章类型相关条件*/
+			if (($article_type == 'download') && empty($file_name)) {
+				return $this->showmessage('文章类型为点击标题直接下载时，上传文件不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+			}
+			if (($article_type == 'related') && (empty($file_name) || empty($content))) {
+				return $this->showmessage('文章类型为内容底部相关下载时，文章内容和上传文件都不能为空！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+			}
 			$data = array(
 				'title'        		=> $title,
 				'cat_id'  	   		=> $cat_id,
@@ -427,6 +441,14 @@ class admin extends ecjia_admin {
 		$link_url     		= !empty($_POST['link_url'])        ? trim($_POST['link_url'])      : '';
 		$description  		= !empty($_POST['description'])     ? trim($_POST['description'])   : '';
 		
+		/*文章类型相关条件*/
+		if (($article_type == 'article') && empty($content)) {
+			return $this->showmessage('文章类型为普通文章时，文章内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+		}
+		if (($article_type == 'redirect') && (strstr($link_url, 7) == false)) {
+			return $this->showmessage('文章类型为跳转链接时，外部链接不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+		}
+		
 		$is_only = $this->db_article->article_count(array('title' => $title, 'article_id' => array('neq' => $id)));
 		
 		if ($is_only != 0) {
@@ -478,7 +500,13 @@ class admin extends ecjia_admin {
 			} else {
 				$cover_image = $old_pic;
 			}
-			
+			/*文章类型相关条件*/
+			if (($article_type == 'download') && empty($file_name)) {
+				return $this->showmessage('文章类型为点击标题直接下载时，上传文件不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+			}
+			if (($article_type == 'related') && (empty($file_name) || empty($content))) {
+				return $this->showmessage('文章类型为内容底部相关下载时，文章内容和上传文件都不能为空！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+			}
 			$data = array(
 			    'article_id'   		=> $id,
 				'title'        		=> $title,

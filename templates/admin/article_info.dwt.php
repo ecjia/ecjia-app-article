@@ -153,6 +153,32 @@
 										</div>
 									</div>
 									<!-- {/if} -->
+									<!-- 作者信息 -->
+									<div class="foldable-list move-mod-group" id="goods_info_sort_author">
+										<div class="accordion-group">
+											<div class="accordion-heading">
+												<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_author">
+													<strong>{lang key='article::article.author_info'}</strong>
+												</a>
+											</div>
+											<div class="accordion-body in in_visable collapse" id="goods_info_area_author">
+												<div class="accordion-inner">
+													<div class="control-group control-group-small" >
+														<label class="control-label">{lang key='article::article.author_name'}</label>
+														<div class="span8">
+															<input type="text" name="author"  value="{$article.author|escape}"/>
+														</div>
+													</div>
+													<div class="control-group control-group-small" >
+														<label class="control-label">{lang key='article::article.author_email'}</label>
+														<div class="span8">
+															<input type="text" name="author_email"  value="{$article.author_email|escape}"/>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 								
 								<!-- 右边 -->
@@ -218,32 +244,6 @@
 													{else}
 													<button class="btn btn-gebo" type="submit">{lang key='article::article.update'}</button>
 													{/if}
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- 作者信息 -->
-									<div class="foldable-list move-mod-group" id="goods_info_sort_author">
-										<div class="accordion-group">
-											<div class="accordion-heading">
-												<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_author">
-													<strong>{lang key='article::article.author_info'}</strong>
-												</a>
-											</div>
-											<div class="accordion-body in in_visable collapse" id="goods_info_area_author">
-												<div class="accordion-inner">
-													<div class="control-group control-group-small" >
-														<label class="control-label">{lang key='article::article.author_name'}</label>
-														<div class="span8">
-															<input type="text" name="author"  value="{$article.author|escape}"/>
-														</div>
-													</div>
-													<div class="control-group control-group-small" >
-														<label class="control-label">{lang key='article::article.author_email'}</label>
-														<div class="span8">
-															<input type="text" name="author_email"  value="{$article.author_email|escape}"/>
-														</div>
-													</div>
 												</div>
 											</div>
 										</div>
