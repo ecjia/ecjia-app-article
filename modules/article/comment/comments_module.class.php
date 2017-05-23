@@ -53,7 +53,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class comments_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	
-    	//RC_Loader::load_app_class('article_list', 'article', false);
 		$article_id	 = $this->requestData('article_id', 0);
 		if ($article_id <= 0) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
@@ -95,6 +94,8 @@ class comments_module extends api_front implements api_interface {
 				} else {
 					$rows['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
 				}
+				/*用户头像*/
+				$avatar_img = '';
 				if ($rows['user_id'] > 0) {
 					$avatar_img =  RC_DB::table('users')->where('user_id', $rows['user_id'])->pluck('avatar_img');
 				}
@@ -108,7 +109,7 @@ class comments_module extends api_front implements api_interface {
 						'add_time'			=> $rows['add_time'],
 				);
 				
-				$list[] = array(
+				$list = array(
 						'total_count' => intval($total_count),
 						'list' => $arr
 				);
