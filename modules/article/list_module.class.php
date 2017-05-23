@@ -72,11 +72,10 @@ class list_module extends api_front implements api_interface {
 		);
 		
 		$article_data =article_list::article_lists($options);
-				
+	    			
 		$arr = array();
 		if(!empty($article_data['list'])) {
 			foreach ($article_data['list'] as $rows) {
-				$rows['add_time'] = RC_Time::local_date(ecjia::config('date_format'), $rows['add_time']);
 				if ($rows['store_id'] > 0) {
 					$store_logo =  RC_DB::table('merchants_config')->where('store_id', $rows['store_id'])->where('code', 'shop_logo')->pluck('value');
 					$store_name = RC_DB::table('store_franchisee')->where('store_id', $rows['store_id'])->pluck('merchants_name');
@@ -84,7 +83,7 @@ class list_module extends api_front implements api_interface {
 				$arr[] = array(
 						'article_id' 		=> intval($rows['article_id']),
 						'article_type' 		=> $rows['article_type'],
-						'add_time'			=> RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']),
+						'add_time'			=> RC_Time::local_date(ecjia::config('date_format'), $rows['add_time']),
 						'title'				=> $rows['title'],
 						'description'		=> !empty($rows['description']) ? $rows['description'] : '',
 						'click_count'		=> $rows['click_count'],

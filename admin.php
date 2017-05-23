@@ -532,7 +532,8 @@ class admin extends ecjia_admin {
 				'link'         		=> $link_url,
 				'cover_image'		=> $cover_image,
 				'description'  		=> $description,
-				'suggest_type'		=> $suggest_type
+				'suggest_type'		=> $suggest_type,
+				'edit_time'			=> RC_Time::gmtime()
 			);
 			$query = $this->db_article->article_manage($data);
 			

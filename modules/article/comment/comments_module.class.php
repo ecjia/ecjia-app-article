@@ -47,16 +47,15 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 精选文章列表
+ * 某一文章的评价列表
  * @author zrl
  */
-class suggestlist_module extends api_front implements api_interface {
+class comments_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	
-    	RC_Loader::load_app_class('article_list', 'article', false);
-		$type	 = $this->requestData('type', 'stickie');//置顶的
-		$types   = array('stickie', '0');
-		if (!in_array('stickie', $types)) {
+    	//RC_Loader::load_app_class('article_list', 'article', false);
+		$article_id	 = $this->requestData('article_id', 0);
+		if ($article_id <= 0) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		/* 获取数量 */
@@ -64,42 +63,91 @@ class suggestlist_module extends api_front implements api_interface {
 		$page = $this->requestData('pagination.page', 1);
 		
 		$options = array(
-				'size'			=> $size,
-				'page'			=> $page,
-				'suggest_type'  => $type,
-				'sort_by'		=> 'a.add_time',
-				'sort_order'	=> 'DESC',
-				'article_approved'		=> 1
+				'size'				=> $size,
+				'page'				=> $page,
+				'article_id'		=> $article_id,
+				'sort_by'			=> 'dc.add_time',
+				'sort_order'		=> 'DESC',
+				'comment_approved'	=> 1
 		);
 		
-		$article_data =article_list::article_lists($options);
-				
+		$comments =article_comments($options);
+		$time = RC_Time::gmtime();
 		$arr = array();
-		if(!empty($article_data['list'])) {
-			foreach ($article_data['list'] as $rows) {
-				if ($rows['store_id'] > 0) {
-					$store_logo =  RC_DB::table('merchants_config')->where('store_id', $rows['store_id'])->where('code', 'shop_logo')->pluck('value');
-					$store_name = RC_DB::table('store_franchisee')->where('store_id', $rows['store_id'])->pluck('merchants_name');
+		if(!empty($comments['list'])) {
+			foreach ($comments['list'] as $rows) {
+				$time_gap = $time - $rows['add_time'];
+				if ($time_gap <= 60) {
+					//1分钟及以内
+					$rows['add_time'] = '刚刚';
+				} elseif ($time_gap < 12*60*60){
+					if (($time_gap < 60*60) && $time_gap > 60) {
+						//大于1分钟，小于60分钟
+						$time = $time_gap/60;
+						$time = intval($time);
+						$rows['add_time'] = $time.'分钟前';
+					} else{
+						//大于60分钟，小于12小时
+						$time = $time_gap/3600;
+						$time = intval($time);
+						$rows['add_time'] = $time.'小时前';
+					}
+				} else {
+					$rows['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
 				}
+				if ($rows['user_id'] > 0) {
+					$avatar_img =  RC_DB::table('users')->where('user_id', $rows['user_id'])->pluck('avatar_img');
+				}
+				
+				$total_count = RC_DB::table('discuss_comments')->where('article_id', $article_id)->count('id');
 				$arr[] = array(
-						'article_id' 		=> intval($rows['article_id']),
-						'article_type' 		=> $rows['article_type'],
-						'add_time'			=> RC_Time::local_date(ecjia::config('date_format'), $rows['add_time']),
-						'title'				=> $rows['title'],
-						'description'		=> !empty($rows['description']) ? $rows['description'] : '',
-						'click_count'		=> $rows['click_count'],
-						'cover_image'		=> !empty($rows['cover_image']) ? RC_Upload::upload_url($rows['cover_image']) : '',
-						'file_url'			=> !empty($rows['file_url']) ? RC_Upload::upload_url($rows['file_url']) : '',
-						'link_url'			=> !empty($rows['link_url']) ? $rows['link_url'] : '',
-						'store_info'		=> array(
-													'store_id' 		=> $rows['store_id'] > 0 ? $rows['store_id'] : 0,
-													'store_name' 	=> $rows['store_id'] > 0 ? $store_name : '自营',
-													'store_logo'	=> $rows['store_id'] > 0 ? RC_Upload::upload_url($store_logo) : ''
-												)
+						'id' 				=> intval($rows['id']),
+						'author' 			=> !empty($rows['user_name']) ? $rows['user_name'] : '匿名用户',
+						'avatar_img'		=> !empty($avatar_img) ? RC_Upload::upload_url($avatar_img) : '',
+						'content'			=> !empty($rows['content']) ? trim($rows['content']) : '',
+						'add_time'			=> $rows['add_time'],
+				);
+				
+				$list[] = array(
+						'total_count' => intval($total_count),
+						'list' => $arr
 				);
 			}
 		}
-		return array('data' => $arr, 'pager' => $article_data['page']);
+		return array('data' => $list, 'pager' => $comments['page']);
 	}
+	
+	
+}
+
+function article_comments($options) {
+	$dbview = RC_DB::table('discuss_comments as dc');
+	/*获得文章评论*/
+	$article_id		      = empty($options['article_id']) 	? 0 : intval($options['article_id']);
+	$sort_by	   		  = empty($options['sort_by']) 		? 'dc.add_time' : trim($options['sort_by']);
+	$sort_order 		  = empty($options['sort_order']) 	? 'DESC' : trim($options['sort_order']);
+	$size			  	  = empty($options['size']) 		? 15 : intval($options['size']);
+	$page			 	  = empty($options['page']) 		? 1 : intval($options['page']);
+	
+	if ($options['article_id'] && ($options['article_id'] > 0)) {
+		$dbview->where(RC_DB::raw('dc.article_id'), $options['article_id']);
+	}
+	/*显示审核通过的*/
+	if ($options['comment_approved'] && $options['comment_approved'] == 1) {
+		$dbview->where(RC_DB::raw('dc.comment_approved'), '=', 1);
+	}
+	
+	/*文章评论总数 */
+	$count = $dbview->select('id')->count();
+	$page_row = new ecjia_page($count, $size, 6, '', $page);
+	
+	$result = $dbview->selectRaw('dc.*')
+	->orderby(RC_DB::raw($sort_by), $sort_order)->take($size)->skip($page_row->start_id - 1)->get();
+	$pager = array(
+			'total' => $page_row->total_records,
+			'count' => $page_row->total_records,
+			'more'	=> $page_row->total_pages <= $page ? 0 : 1,
+	);
+	return array('list' => $result, 'page' => $pager);
 }
 // end
