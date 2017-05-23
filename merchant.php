@@ -898,7 +898,7 @@ class merchant extends ecjia_merchant {
     	    ->where(RC_DB::raw('dc.article_id'), $id);
 
 	    if (!empty($filter['keywords'])) {
-	        $db_dc->where(RC_DB::raw('title'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
+	        $db_dc->whereRaw('(dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or dc.user_name like "%'.mysql_like_quote($filter['keywords']).'%")');
 	    }
 	    
 	    $count = $db_dc->select('id')->count();

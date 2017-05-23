@@ -390,6 +390,7 @@ return array(
     'comment_detail'            => '评论详情',
     'label_comment_time'        => '评论时间',
     'article_comment_list'      => '文章评论列表',
+    'enter_comment_username'    => '请输入用户名或评论关键字',
 );
 
 //end
