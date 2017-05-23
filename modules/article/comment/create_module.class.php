@@ -47,81 +47,45 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 文章列表类
+ * 评价文章
+ * @author zrl
+ *
  */
-class article_list {
-	/**
-	 * 取得文章信息
-	 * @param   array $options	条件参数
-	 * @return  array   文章列表
-	 */
-	
-	public static function article_lists($options) {
-	
-		$dbview = RC_DB::table('article as a')
-		->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
-	
-		$filter = array();
-		$filter['cat_id']     = empty($options['cat_id']) 		? 0 : intval($options['cat_id']);
-		$filter['sort_by']    = empty($options['sort_by']) 		? 'a.add_time' : trim($options['sort_by']);
-		$filter['sort_order'] = empty($options['sort_order']) 	? 'DESC' : trim($options['sort_order']);
-		$filter['size']  	  = empty($options['size']) 		? 15 : intval($options['size']);
-		$filter['page'] 	  = empty($options['page']) 		? 1 : intval($options['page']);
-		
-		if (!empty($options['suggest_type'])) {
-			$dbview->where(RC_DB::raw('a.suggest_type'), $options['suggest_type']);
+class create_module extends api_front implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+    	//如果用户登录获取其session
+    	$this->authSession();
+		$user_id = $_SESSION['user_id'];
+		if ($user_id < 1) {
+			return new ecjia_error(100, 'Invalid session');
 		}
 		
-		if ($filter['cat_id'] && ($filter['cat_id'] > 0)) {
-			//含分类自己
-			$parent_ids = self::GetIds($filter['cat_id']);
-			if (!empty($parent_ids) && is_array($parent_ids)) {
-				$datas = array_merge(array($filter['cat_id']), $parent_ids);
-			}
-			$dbview->whereIn(RC_DB::raw('a.cat_id'), $datas);
+		$user_name 		= $_SESSION['user_name'];
+		$article_id		= $this->requestData('article_id', 0);//30
+		$content 		= $this->requestData('content');
+		if ( $article_id <= 0 || empty($content)) {
+			return new ecjia_error('invalid_parameter', '参数错误！');
 		}
-		/*显示审核通过的*/
-		if ($options['article_approved'] && $options['article_approved'] == 1) {
-			$dbview->where(RC_DB::raw('a.article_approved'), '=', 1);
-		}
-		
-		/* 文章总数 */
-		$filter['record_count'] = '';
-		$count = $dbview->select('article_id')->count();
-		$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
-	
-		$result = $dbview->selectRaw('a.*, ac.cat_name, ac.cat_type, ac.sort_order')
-		->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])->take($filter['size'])->skip($page_row->start_id - 1)->get();
-		$pager = array(
-				'total' => $page_row->total_records,
-				'count' => $page_row->total_records,
-				'more'	=> $page_row->total_pages <= $filter['page'] ? 0 : 1,
-		);
-		return array('list' => $result, 'page' => $pager);
-	}
-	
-	
-	/**
-	 * 子分类ids
-	 * @return string
-	 */
-	public static function GetIds($parent_id){
-		if($parent_id){
-			if(is_array($parent_id)){
-				$parent_id = join(',', $parent_id);
-				$data = RC_Model::model('article/article_cat_model')->in(array('parent_id'=>$parent_id))->get_field('cat_id',true);
-			}else{
-				$data = RC_Model::model('article/article_cat_model')->where(array('parent_id'=>$parent_id))->get_field('cat_id',true);
-			}
-			if(!empty($data)){
-				$datas = self::GetIds($data) ? array_merge($data,self::GetIds($data)) : $data;
-			}else{
-				$datas = array('0' =>$parent_id);
-			}
-		}
-		return $datas;
-	}
-}	
+		$email = RC_DB::table('users')->where('user_id', $_SESSION['user_id'])->pluck('email');
+		$store_id = RC_DB::table('article')->where('article_id', $article_id)->pluck('store_id');
 
+		if (!empty($content) && !empty($article_id) ) {
+		    $data = array(
+		        'article_id'			=> $article_id,
+		        'user_name'				=> $user_name,
+		        'email'  				=> $email,
+		        'content'				=> trim($content),
+		        'user_type'	    		=> $_SESSION['user_id'] > 0 ? '商城会员' : '游客',
+		        'add_time'				=> RC_Time::gmtime(),
+		        'ip_address'			=> RC_Ip::client_ip(),
+		        'parent_id'				=> 0,
+		        'store_id'				=> $store_id,
+		        'comment_approved'   	=> 0,
+		    );
+		    $comment_id = RC_DB::table('discuss_comments')->insertGetId($data);
+		}
+		return array();
+	}
+}
 
 // end
