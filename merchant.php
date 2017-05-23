@@ -871,9 +871,56 @@ class merchant extends ecjia_merchant {
 	 * 文章评论列表
 	 */
 	public function article_comment() {
+		$id = !empty($_GET['id']) ? $_GET['id'] : '';
 		
+		ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_comment_list')));
+		$this->assign('ur_here', RC_Lang::get('article::article.article_comment_list'));
 		
-		$this->display('article_comment_list.dwt');
+		$article_comment_list = $this->get_article_comment_list($id);
+		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment'));
+		$this->assign('article_list', RC_Uri::url('article/merchant/init'));
+		$this->assign('data', $article_comment_list);
+        $this->display('article_comment_list.dwt');
+	}
+	
+	
+	/**
+	 * 获取文章评论列表
+	 */
+	private function get_article_comment_list($id) {
+	    $filter = array();
+	    $filter['keywords']   = empty($_GET['keywords'])      ? ''                : trim($_GET['keywords']);
+	    $filter['sort_by']    = empty($_GET['sort_by'])       ? 'dc.id'    : trim($_GET['sort_by']);
+	    $filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
+	    
+	    $db_dc = RC_DB::table('discuss_comments as dc')
+    	    ->leftJoin('article as a', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
+    	    ->where(RC_DB::raw('dc.article_id'), $id);
+
+	    if (!empty($filter['keywords'])) {
+	        $db_dc->where(RC_DB::raw('title'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
+	    }
+	    
+	    $count = $db_dc->select('id')->count();
+	    $page  = new ecjia_merchant_page($count, 15, 5);
+
+	    $result = $db_dc
+    	    ->select(RC_DB::raw('dc.*'), RC_DB::raw('a.title'))
+    	    ->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
+	        ->take(15)
+		    ->skip($page->start_id-1)
+		    ->get();
+
+	    $arr = array();
+	    if (!empty($result)) {
+	        foreach ($result as $rows) {
+	            if (isset($rows['add_time'])) {
+	                $rows['date'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
+	            }
+	            $arr[] = $rows;
+	        }
+	    }
+	    return array('arr' => $arr,  'page' => $page->show(2), 'desc' => $page->page_desc(), 'article_id' => $id);
 	}
 	
 	/**
@@ -952,6 +999,7 @@ class merchant extends ecjia_merchant {
 				$arr[] = $rows;
 			}
 		}
+		
 		return array('arr' => $arr, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'count' => $type_count);
 	}
 }

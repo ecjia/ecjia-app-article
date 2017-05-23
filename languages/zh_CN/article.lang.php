@@ -386,6 +386,10 @@ return array(
 	'label_edit_custom_columns'	=> '编辑自定义栏目：',
 	'label_suggest_type'		=> '推荐类型：',
 	'article_comment'			=> '文章评论',
+    'user_name'                 => '用户名',
+    'comment_detail'            => '评论详情',
+    'label_comment_time'        => '评论时间',
+    'article_comment_list'      => '文章评论列表',
 );
 
 //end

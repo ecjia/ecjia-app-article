@@ -17,8 +17,13 @@
                 e.preventDefault();
                 var url = $("form[name='searchForm']").attr('action');
                 var keywords = $("input[name='keywords']").val();
+                var id = $("input[name='article_id']").val();
                 if (keywords != '') {
-                    url += '&keywords=' + keywords;
+                	if (id != '') {
+                		url += '&keywords=' + keywords + '&id=' + id;
+                	} else {
+                        url += '&keywords=' + keywords;
+                	}
                 }
                 ecjia.pjax(url);
             });
