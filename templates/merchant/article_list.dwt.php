@@ -119,6 +119,9 @@
 									{if $has_goods}
 									<a class="data-pjax" href='{url path="article/merchant/link_goods" args="id={$list.article_id}"}' title="{lang key='article::article.tab_goods'}">{lang key='article::article.tab_goods'}</a>&nbsp;|&nbsp; 
 									{/if}
+									{if $list.have_comment eq 1}
+									<a class="data-pjax" href='{RC_Uri::url("article/merchant/article_comment", "id={$list.article_id}")}' title="{lang key='article::article.view'}">{lang key='article::article.article_comment'}</a>&nbsp;|&nbsp;
+									{/if}
 									{if $list.cat_id gt 0}
 									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_confirm'}" href='{RC_Uri::url("article/merchant/remove", "id={$list.article_id}")}' title="{lang key='system::system.remove'}">{lang key='system::system.drop'}</a>
 									{/if}

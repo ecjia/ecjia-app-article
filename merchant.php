@@ -868,6 +868,15 @@ class merchant extends ecjia_merchant {
 	}
 	
 	/**
+	 * 文章评论列表
+	 */
+	public function article_comment() {
+		
+		
+		$this->display('article_comment_list.dwt');
+	}
+	
+	/**
 	 * 获取文章列表
 	 */
 	private function get_articles_list() {
@@ -879,7 +888,7 @@ class merchant extends ecjia_merchant {
 		$filter['type']   	  = empty($_GET['type'])      	  ? ''                : trim($_GET['type']);
 	
 		$db_article = RC_DB::table('article as a')
-		    ->where('store_id', $_SESSION['store_id'])
+		    ->where(RC_DB::raw('a.store_id'), $_SESSION['store_id'])
 			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
 		
 		//不获取系统帮助文章的过滤
@@ -929,6 +938,16 @@ class merchant extends ecjia_merchant {
 			foreach ($result as $rows) {
 				if (isset($rows['add_time'])) {
 					$rows['date'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
+				}
+				$rows['have_comment'] = 0;
+				$have_comment = RC_DB::table('article as a')
+					->leftJoin('comment as c', RC_DB::raw('c.id_value'), '=', RC_DB::raw('a.article_id'))
+					->where(RC_DB::raw('c.comment_type'), 1)
+					->where(RC_DB::raw('c.id_value'), $rows['article_id'])
+					->select(RC_DB::raw('c.comment_id'))
+					->get();
+				if (!empty($have_comment)) {
+					$rows['have_comment'] = 1;
 				}
 				$arr[] = $rows;
 			}

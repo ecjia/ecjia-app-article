@@ -385,6 +385,7 @@ return array(
 	'label_add_custom_columns' 	=> '添加自定义栏目：',
 	'label_edit_custom_columns'	=> '编辑自定义栏目：',
 	'label_suggest_type'		=> '推荐类型：',
+	'article_comment'			=> '文章评论',
 );
 
 //end
