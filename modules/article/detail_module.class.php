@@ -155,6 +155,8 @@ class detail_module extends api_front implements api_interface {
 			);
 			$article_db->set_cache_item($cache_id, $article_detail);
 		}
+		/*更新文章浏览量*/
+		RC_DB::table('article')->where('article_id', $id)->increment('click_count');
 		return $article_detail;
 	}
 }

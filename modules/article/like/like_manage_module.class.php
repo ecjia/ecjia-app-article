@@ -81,9 +81,18 @@ class like_manage_module extends api_front implements api_interface {
 		        'store_id'				=> $article_info['store_id'],
 		    );
 		    $id = RC_DB::table('discuss_likes')->insertGetId($data);
+		    /*更新文章点赞数*/
+		    RC_DB::table('article')->where('article_id', $article_id)->increment('like_count');
 		} else {
 			RC_DB::table('discuss_likes')->where('like_type', 'article')->where('id_value', $article_id)->where('user_id', $user_id)->delete();
+			/*更新文章点赞数*/
+			RC_DB::table('article')->where('article_id', $article_id)->decrement('like_count');
 		}
+		/*释放文章详情的缓存*/
+		$orm_article_db = RC_Model::model('article/orm_article_model');
+		$cache_article_info_key = 'article_info_'.$article_id;
+		$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
+		$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存		
 		return array();
 	}
 }
