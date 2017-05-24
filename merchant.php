@@ -114,7 +114,6 @@ class merchant extends ecjia_merchant {
 	
 		$article_list = $this->get_articles_list();
 		$this->assign('article_list', $article_list);
-		
 		$this->assign('type_count', $article_list['count']);
 		$this->assign('filter', $article_list['filter']);
 		$this->assign('type', $article_list['filter']['type']);
@@ -877,7 +876,7 @@ class merchant extends ecjia_merchant {
 		$this->assign('ur_here', RC_Lang::get('article::article.article_comment_list'));
 		
 		$article_comment_list = $this->get_article_comment_list($id);
-		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment'));
+		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment', ['id' => $id]));
 		$this->assign('article_list', RC_Uri::url('article/merchant/init'));
 		$this->assign('data', $article_comment_list);
         $this->display('article_comment_list.dwt');
@@ -988,10 +987,9 @@ class merchant extends ecjia_merchant {
 				}
 				$rows['have_comment'] = 0;
 				$have_comment = RC_DB::table('article as a')
-					->leftJoin('comment as c', RC_DB::raw('c.id_value'), '=', RC_DB::raw('a.article_id'))
-					->where(RC_DB::raw('c.comment_type'), 1)
-					->where(RC_DB::raw('c.id_value'), $rows['article_id'])
-					->select(RC_DB::raw('c.comment_id'))
+					->leftJoin('discuss_comments as dc', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
+					->where(RC_DB::raw('dc.article_id'), $rows['article_id'])
+					->select(RC_DB::raw('dc.id'))
 					->get();
 				if (!empty($have_comment)) {
 					$rows['have_comment'] = 1;

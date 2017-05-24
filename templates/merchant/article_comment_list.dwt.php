@@ -29,7 +29,6 @@
 						<input type="text" name="keywords" class="form-control" value="{$smarty.get.keywords}" placeholder="{lang key='article::article.enter_comment_username'}"/>
 						<a class="btn btn-primary m_l5 search_articles"><i class="fa fa-search"></i> {lang key='system::system.button_search'}</a>
 					</div>
-					<input type="hidden" value="{$data.article_id}" name="article_id" />
 				</form>
 			</div>
 			
