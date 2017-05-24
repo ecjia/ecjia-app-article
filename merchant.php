@@ -876,7 +876,7 @@ class merchant extends ecjia_merchant {
 		$this->assign('ur_here', RC_Lang::get('article::article.article_comment_list'));
 		
 		$article_comment_list = $this->get_article_comment_list($id);
-		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment', ['id' => $id]));
+		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment', array('id' => $id)));
 		$this->assign('article_list', RC_Uri::url('article/merchant/init'));
 		$this->assign('data', $article_comment_list);
         $this->display('article_comment_list.dwt');
@@ -888,13 +888,14 @@ class merchant extends ecjia_merchant {
 	 */
 	private function get_article_comment_list($id) {
 	    $filter = array();
-	    $filter['keywords']   = empty($_GET['keywords'])      ? ''                : trim($_GET['keywords']);
-	    $filter['sort_by']    = empty($_GET['sort_by'])       ? 'dc.id'    : trim($_GET['sort_by']);
-	    $filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
+	    $filter['keywords']   = empty($_GET['keywords'])      ? ''    	: trim($_GET['keywords']);
+	    $filter['sort_by']    = empty($_GET['sort_by'])       ? 'dc.id'	: trim($_GET['sort_by']);
+	    $filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC' 	: trim($_GET['sort_order']);
 	    
 	    $db_dc = RC_DB::table('discuss_comments as dc')
     	    ->leftJoin('article as a', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
-    	    ->where(RC_DB::raw('dc.article_id'), $id);
+    	    ->where(RC_DB::raw('dc.article_id'), $id)
+	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id']);
 
 	    if (!empty($filter['keywords'])) {
 	        $db_dc->whereRaw('(dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or dc.user_name like "%'.mysql_like_quote($filter['keywords']).'%")');
@@ -919,7 +920,7 @@ class merchant extends ecjia_merchant {
 	            $arr[] = $rows;
 	        }
 	    }
-	    return array('arr' => $arr,  'page' => $page->show(2), 'desc' => $page->page_desc(), 'article_id' => $id);
+	    return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'article_id' => $id);
 	}
 	
 	/**
