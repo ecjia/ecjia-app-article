@@ -169,7 +169,7 @@ class merchant extends ecjia_merchant {
 		
 		$keywords     = !empty($_POST['keywords'])    	? trim($_POST['keywords'])      : '';
 		$description  = !empty($_POST['description'])  	? trim($_POST['description'])   : '';
-		$content      = !empty($_POST['content'])    	? trim($_POST['content'])       : '';
+		$content      = !empty($_POST['content'])    	? $_POST['content']       		: '';
 		
 		$cat_id       = !empty($_POST['cat_id'])     	? intval($_POST['cat_id']) 		: 0;
 		$article_type = !empty($_POST['article_type'])  ? trim($_POST['article_type'])	: 'article';
@@ -438,7 +438,7 @@ class merchant extends ecjia_merchant {
 		
 		$keywords     = !empty($_POST['keywords'])    	? trim($_POST['keywords'])      : '';
 		$description  = !empty($_POST['description'])  	? trim($_POST['description'])   : '';
-		$content      = !empty($_POST['content'])    	? trim($_POST['content'])       : '';
+		$content      = !empty($_POST['content'])    	? $_POST['content']       		: '';
 		
 		$cat_id       = !empty($_POST['cat_id'])     	? intval($_POST['cat_id']) 		: 0;
 		$article_type = !empty($_POST['article_type'])  ? trim($_POST['article_type'])	: 'article';
