@@ -38,6 +38,48 @@
 	</h3>
 </div>
 
+<ul class="nav nav-pills">
+	<li class="{if !$smarty.get.type}active{/if}">
+		<a class="data-pjax" href="{RC_Uri::url('article/admin/init')}
+			{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}
+			{if $filter.keywords}&keywords={$filter.keywords}{/if}">
+			{lang key='article::article.all'} 
+			<span class="badge badge-info">{if $type_count.count}{$type_count.count}{else}0{/if}</span>
+		</a>
+	</li>
+	<li class="{if $smarty.get.type eq 'has_checked'}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("article/admin/init", "type=has_checked
+			{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}
+			{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>
+			{lang key='article::article.has_checked'} 
+			<span class="badge badge-info use-plugins-num">{if $type_count.has_checked}{$type_count.has_checked}{else}0{/if}</span>
+		</a>
+	</li>
+	<li class="{if $smarty.get.type eq 'wait_check'}active{/if}">	
+		<a class="data-pjax" href='{RC_Uri::url("article/admin/init", "type=wait_check
+			{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}
+			{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>
+			{lang key='article::article.wait_check'}
+			<span class="badge badge-info unuse-plugins-num">{if $type_count.wait_check}{$type_count.wait_check}{else}0{/if}</span>
+		</a>
+	</li>
+	<li class="{if $smarty.get.type eq 'rubbish_article'}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("article/admin/init", "type=rubbish_article
+			{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}
+			{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>
+			{lang key='article::article.rubbish_article'}
+			<span class="badge badge-info unuse-plugins-num">{if $type_count.rubbish_article}{$type_count.rubbish_article}{else}0{/if}</span>
+		</a>
+	</li>
+	<li class="{if $smarty.get.type eq 'trash'}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("article/admin/init", "type=trash
+			{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}
+			{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>
+			{lang key='article::article.trash'}
+			<span class="badge badge-info unuse-plugins-num">{if $type_count.trash}{$type_count.trash}{else}0{/if}</span>
+		</a>
+	</li>
+</ul>
 <!-- 批量操作和搜索 -->
 <div class="row-fluid batch" >
 	<form method="post" action="{$search_action}" name="searchForm">
@@ -48,8 +90,9 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li><a class="button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_remove'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_drop_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-trash"></i>{lang key='article::article.drop_article'}</a></li>
-				<li><a class="button_hide"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_hide'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="请选择要移到回收站的文章" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye-off"></i>回收站</a></li>
-				<li><a class="button_show"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_show'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="请选择要通过的文章" data-name="article_id" href="javascript:;"><i class="fontello-icon-eye"></i>审核通过</a></li>
+				<li><a class="button_hide"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_hide'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_trash_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-box"></i>回收站</a></li>
+				<li><a class="button_show"   data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_show'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_approve_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-ok-circled"></i>审核通过</a></li>
+				<li><a class="button_rubbish"data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url="{url path='article/admin/batch' args='sel_action=button_rubbish'}" data-msg="{lang key='article::article.confirm_drop'}" data-noSelectMsg="{lang key='article::article.select_rubbish_article'}" data-name="article_id" href="javascript:;"><i class="fontello-icon-cancel-circled"></i>设为垃圾文章</a></li>
 				<li><a class="batch-move-btn" href="javascript:;" data-move="data-operatetype" data-name="move_cat"><i class="fontello-icon-exchange"></i>{lang key='article::article.move_category'}</a></li>
 			</ul>
 		</div>
@@ -110,7 +153,7 @@
 						<span class="cursor_pointer review_static" data-trigger="editable" data-value="{$list.article_approved}" data-type="select"  data-url="{RC_Uri::url('article/admin/review')}" data-name="sort_order" data-pk="{$list.article_id}" data-title="请选择审核状态">
 							<!-- {if $list.article_approved eq 1} -->
 								审核通过
-							<!-- {elseif $list.article_approved eq 0} -->
+							<!-- {elseif $list.article_approved eq '0'} -->
 								待审核
 							<!-- {elseif $list.article_approved eq 'trash'} -->
 								回收站

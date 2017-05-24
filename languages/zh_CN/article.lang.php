@@ -216,6 +216,9 @@ return array(
 	'select_drop_article'			=> '请先选中要删除的文章',
 	'select_hide_article'			=> '请先选中要隐藏的文章',
 	'select_display_article'		=> '请先选中要显示的文章',
+	'select_trash_article'			=> '请选择要移到回收站的文章',
+	'select_approve_article'		=> '请选择要通过的文章',
+	'select_rubbish_article'		=> '请选择要设为垃圾文章的文章',
 	'drop_article'					=> '删除文章',
 	'display'						=> '显示',
 	'hide'							=> '隐藏',
@@ -381,6 +384,7 @@ return array(
 	'label_author'	=> '文章作者：',
 	'label_add_time'=> '添加时间：',
 	'not_available'	=> '暂无',
+	'rubbish_article' => '垃圾文章',
 	
 	'label_add_custom_columns' 	=> '添加自定义栏目：',
 	'label_edit_custom_columns'	=> '编辑自定义栏目：',

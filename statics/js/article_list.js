@@ -45,7 +45,7 @@
 				$this.editable({
 					source: [{
 						value: 0,
-						text: '审核未通过'
+						text: '待审核'
 					}, {
 						value: 1,
 						text: '审核通过'

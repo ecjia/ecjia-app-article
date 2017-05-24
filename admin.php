@@ -117,12 +117,11 @@ class admin extends ecjia_admin {
 		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false, 0, 1));
 	
 		/* 取得过滤条件 */
-		$filter = array();
-		$this->assign('filter', $filter);
-		
+		$filter = array();		
 		$article_list = $this->get_articles_list();
 		$this->assign('article_list', $article_list);
-		
+		$this->assign('type_count', $article_list['count']);
+		$this->assign('filter', $article_list['filter']);
 		$this->assign('form_action', RC_Uri::url('article/admin/batch'));
 		$this->assign('search_action', RC_Uri::url('article/admin/init'));
 
@@ -854,7 +853,23 @@ class admin extends ecjia_admin {
 					}
 					return $this->showmessage('批量审核通过文章成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin/init')));
 					break;
-
+					
+				//批量显示
+				case 'button_rubbish' :
+					$data = array( 'article_approved' => 'spam', );
+					$this->db_article->article_batch($article_ids, 'update', $data);
+				
+					foreach ($info as $v) {
+						/*释放文章缓存*/
+						$cache_article_info_key = 'article_info_'.$v['article_id'];
+						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
+						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
+				
+						ecjia_admin::admin_log('批量设置文章为垃圾文章，'.RC_Lang::get('article::article.article_title_is').$v['title'], 'batch_setup', 'article');
+					}
+					return $this->showmessage('批量设置文章为垃圾文章成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin/init')));
+					break;
+					
 				//批量转移分类
 				case 'move_to' :
 					$target_cat = intval($_GET['target_cat']);
@@ -915,6 +930,7 @@ class admin extends ecjia_admin {
 		$filter['cat_id']     = empty($_GET['cat_id'])        ? 0                 : intval($_GET['cat_id']);
 		$filter['sort_by']    = empty($_GET['sort_by'])       ? 'a.article_id'    : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
+		$filter['type']   	  = empty($_GET['type'])      	  ? ''                : trim($_GET['type']);
 	
 		$db_article = RC_DB::table('article as a')
 			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
@@ -927,6 +943,28 @@ class admin extends ecjia_admin {
 		}
 		if ($filter['cat_id'] && ($filter['cat_id'] > 0)) {
 			$db_article ->whereIn(RC_DB::raw('a.cat_id'), article_cat::get_children_list($filter['cat_id']));
+		}
+		
+		$type_count = $db_article->select(RC_DB::raw('count(*) as count'),
+				RC_DB::raw('SUM(IF(a.article_approved = 1, 1, 0)) as has_checked'),
+				RC_DB::raw('SUM(IF(a.article_approved = 0, 1, 0)) as wait_check'),
+				RC_DB::raw('SUM(IF(a.article_approved = "trash", 1, 0)) as trash'),
+				RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as rubbish_article'))->first();
+		
+		if ($filter['type'] == 'has_checked') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 1);
+		}
+		
+		if ($filter['type'] == 'wait_check') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 0);
+		}
+		
+		if ($filter['type'] == 'trash') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 'trash');
+		}
+		
+		if ($filter['type'] == 'rubbish_article') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 'spam');
 		}
 		
 		$count = $db_article->select('article_id')->count();
@@ -945,7 +983,7 @@ class admin extends ecjia_admin {
 				$arr[] = $rows;
 			}
 		}
-		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc());
+		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'filter' => $filter, 'count' => $type_count);
 	}
 }
 
