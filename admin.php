@@ -1105,7 +1105,7 @@ class admin extends ecjia_admin {
 	
 		$type_count = $db_discuss_comments->select(RC_DB::raw('count(*) as count'),
 				RC_DB::raw('SUM(IF(dc.comment_approved = 1, 1, 0)) as has_checked'),
-				RC_DB::raw('SUM(IF(dc.comment_approved = and a.article_approved !="spam" and a.article_approved !="trash", 1, 0)) as wait_check'),
+				RC_DB::raw('SUM(IF(dc.comment_approved = 0 and dc.comment_approved !="spam" and dc.comment_approved !="trash", 1, 0)) as wait_check'),
 				RC_DB::raw('SUM(IF(dc.comment_approved = "trash", 1, 0)) as trash'),
 				RC_DB::raw('SUM(IF(dc.comment_approved = "spam", 1, 0)) as rubbish_comments'))->first();
 	
