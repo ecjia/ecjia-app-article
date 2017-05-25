@@ -395,6 +395,17 @@ return array(
     'label_comment_time'        => '评论时间',
     'article_comment_list'      => '文章评论列表',
     'enter_comment_username'    => '请输入用户名或评论关键字',
+    'article_comments'			=> '文章评论',
+    'comment_list'				=> '文章评论列表',
+    'rubbish_comments'			=> '垃圾评论',	
+    'drop_comment'				=> '删除评论',
+    'select_drop_comment'		=> '请选择要删除的评论',
+    'select_trash_comment'		=> '请选择要移至回收站的评论',
+    'select_approve_comment'	=> '请选择要审核通过的评论',
+    'select_rubbish_comment'	=> '请选择要设为垃圾评论的评论',
+    'article_comment_update'	=> '审核文章评论',
+    'comment_is'				=> '评论内容是 ',
+    'article_comment_delete'	=> '删除文章评论'
 );
 
 //end

@@ -82,7 +82,7 @@
 </ul>
 <!-- 批量操作和搜索 -->
 <div class="row-fluid batch" >
-	<form method="post" action="{$search_action}" name="searchForm">
+	<form method="post" action="{$search_action}{if $type}&type={$type}{/if}" name="searchForm">
 		<div class="btn-group f_l m_r5">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fontello-icon-cog"></i>{lang key='article::article.batch'}
@@ -136,6 +136,9 @@
 					      	{if $has_goods}
 					      	<a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$list.article_id}"}' title="{lang key='article::article.tab_goods'}">{lang key='article::article.tab_goods'}</a>&nbsp;|&nbsp; 
 					      	{/if}
+					      	{if $list.article_approved eq 1}
+					      		<a class="data-pjax" href='{url path="article/admin/comments" args="id={$list.article_id}"}' title="{lang key='article::article.article_comments'}">{lang key='article::article.article_comments'}</a>&nbsp;|&nbsp; 
+					     	{/if}
 					     	<!-- {if $list.cat_id > 0} -->
 					     	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_confirm'}" href='{RC_Uri::url("article/admin/remove", "id={$list.article_id}")}' title="{lang key='system::system.remove'}">{lang key='system::system.drop'}</a>
 					     	<!-- {/if} -->
