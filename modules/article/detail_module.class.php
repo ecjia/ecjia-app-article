@@ -53,11 +53,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class detail_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-    	$this->authSession();
-    	$user_id = $_SESSION['user_id'];
-    	if ($user_id < 1) {
-    		return new ecjia_error(100, 'Invalid session');
-    	}
     	$id = $this->requestData('article_id', 0);
     	if ($id <= 0) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
@@ -81,7 +76,11 @@ class detail_module extends api_front implements api_interface {
 			/*平台自营文章总数*/
 			$total_articles = RC_DB::table('article')->where('store_id', 0)->count('article_id');
 			/*当前用户是否点赞过此文章*/
-			$discuss_likes_info =  RC_DB::table('discuss_likes')->where('id_value', $id)->where('like_type', 'article')->where('user_id', $_SESSION['user_id'])->first();
+			$discuss_likes_info = '';
+			if ($_SESSION['user_id'] > 0) {
+				$discuss_likes_info =  RC_DB::table('discuss_likes')->where('id_value', $id)->where('like_type', 'article')->where('user_id', $_SESSION['user_id'])->first();
+			}
+			
 			/*关联商品*/
 			$article_related_goods_ids = RC_DB::table('goods_article')->where('article_id', $id)->lists('goods_id');
 			$article_related_goods = RC_DB::table('goods')->whereIn('goods_id', $article_related_goods_ids)->selectRaw('goods_id, goods_name, market_price, shop_price, goods_thumb, goods_img, original_img')->get();

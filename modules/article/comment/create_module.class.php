@@ -72,6 +72,7 @@ class create_module extends api_front implements api_interface {
 		if (!empty($content) && !empty($article_id) ) {
 		    $data = array(
 		        'article_id'			=> $article_id,
+		    	'user_id'				=> $_SESSION['user_id'],
 		        'user_name'				=> $user_name,
 		        'email'  				=> $email,
 		        'content'				=> trim($content),
