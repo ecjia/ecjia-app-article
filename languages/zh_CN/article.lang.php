@@ -408,6 +408,9 @@ return array(
     'article_comment_delete'	=> '删除文章评论',
    	'view_comment'				=> '查看评论',
    	'like_count'				=> '点赞数',
+   	'drop_comment_confirm'		=> '您确定要删除该文章评论吗？',
+   	'comment_required'			=> '没有找到该评论',
+   	'article_title_is'			=> '文章标题是',	
 );
 
 //end

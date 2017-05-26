@@ -48,8 +48,9 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA 管理中心文章处理程序文件
- *  @author songqian
+ *  @author wu
  */
+
 class merchant extends ecjia_merchant {
 	public function __construct() {
 		parent::__construct();
@@ -127,7 +128,7 @@ class merchant extends ecjia_merchant {
 	 * 添加文章页面
 	 */
 	public function add() {
-		$this->admin_priv('mh_add_article');
+		$this->admin_priv('mh_article_update');
 
 		RC_Script::enqueue_script('dropper-jq', RC_Uri::admin_url('statics/lib/dropper-upload/jquery.fs.dropper.js'), array(), false, true);
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('system::system.article_add')));
@@ -159,10 +160,10 @@ class merchant extends ecjia_merchant {
 	 * 添加文章
 	 */
 	public function insert() {
-		$this->admin_priv('mh_add_article', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 
 		$title 	      = !empty($_POST['title'])     	? trim($_POST['title'])         : '';
-		$link     	  = !empty($_POST['link'])     		? trim($_POST['link'])      : '';
+		$link     	  = !empty($_POST['link'])     		? trim($_POST['link'])      	: '';
 		
 		$author       = !empty($_POST['author'])        ? trim($_POST['author'])        : '';
 		$author_email = !empty($_POST['author_email'])	? trim($_POST['author_email'])  : '';
@@ -275,7 +276,7 @@ class merchant extends ecjia_merchant {
 	 * 添加自定义栏目
 	 */
 	public function insert_term_meta() {
-		$this->admin_priv('mh_add_article', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 
 		$article_id   = !empty($_POST['article_id'])  ? intval($_POST['article_id'])              : 0;
 		$key          = !empty($_POST['key'])         ? htmlspecialchars(trim($_POST['key']))     : '';
@@ -307,7 +308,7 @@ class merchant extends ecjia_merchant {
 	 * 更新自定义栏目
 	 */
 	public function update_term_meta() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 
 	    $article_id = !empty($_POST['article_id']) ? intval($_POST['article_id']) : 0;
 		$meta_id    = !empty($_POST['meta_id'])    ? intval($_POST['meta_id'])    : 0;
@@ -345,7 +346,7 @@ class merchant extends ecjia_merchant {
 	 * 删除自定义栏目
 	 */
 	public function remove_term_meta() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 		
 		$meta_id = !empty($_GET['meta_id']) ? intval($_GET['meta_id']) : 0;
 		$article_id = RC_DB::table('term_meta')->where('meta_id', $meta_id)->where('object_type', 'ecjia.article')->where('object_group', 'article')->pluck('object_id');
@@ -363,7 +364,7 @@ class merchant extends ecjia_merchant {
 	 * 编辑
 	 */
 	public function edit() {
-		$this->admin_priv('article_update');
+		$this->admin_priv('mh_article_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -427,7 +428,7 @@ class merchant extends ecjia_merchant {
 	}
 
 	public function update() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 	
 		$id           = !empty($_POST['id']) 			? intval($_POST['id'])          : 0;
 		$title 	      = !empty($_POST['title'])     	? trim($_POST['title'])         : '';
@@ -558,7 +559,7 @@ class merchant extends ecjia_merchant {
 	 * 预览
 	 */
 	public function preview() {
-		$this->admin_priv('article_manage');
+		$this->admin_priv('mh_article_manage');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.preview_article')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -592,7 +593,7 @@ class merchant extends ecjia_merchant {
 	 * 关联商品
 	 */
 	public function link_goods() {
-		$this->admin_priv('article_update');
+		$this->admin_priv('mh_article_update');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.edit_link_goods')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -633,7 +634,7 @@ class merchant extends ecjia_merchant {
 	 * 添加商品关联
 	 */
 	public function insert_link_goods() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 
 		$article_id		= !empty($_GET['id']) 			? intval($_GET['id']) 	: 0;
 		$linked_array 	= !empty($_GET['linked_array']) ? $_GET['linked_array'] : '';
@@ -670,7 +671,7 @@ class merchant extends ecjia_merchant {
 	 * 编辑文章标题
 	 */
 	public function edit_title() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 
 		$id    	= !empty($_POST['pk'])    ? intval($_POST['pk'])      : 0;
 		$title 	= !empty($_POST['value']) ? trim($_POST['value'])     : '';
@@ -705,10 +706,10 @@ class merchant extends ecjia_merchant {
 	}
 
 	/**
-	 * 删除文章主题
+	 * 删除文章
 	 */
 	public function remove() {
-		$this->admin_priv('article_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		
@@ -717,16 +718,8 @@ class merchant extends ecjia_merchant {
 			return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
-		$disk = RC_Filesystem::disk();
-		if (!empty($article['file_url'])) {
-			$disk->delete(RC_Upload::upload_path() . $article['file_url']);
-		}
+		$delete = RC_DB::table('article')->where('article_id', $id)->where('store_id', $_SESSION['store_id'])->update(array('article_approved' => 'trash'));
 		
-		if (!empty($article['cover_image'])) {
-			$disk->delete(RC_Upload::upload_path() . $article['cover_image']);
-		}
-
-		$delete = RC_DB::table('article')->where('article_id', $id)->where('store_id', $_SESSION['store_id'])->delete();
 		if ($delete) {
 			/*释放文章缓存*/
 			$orm_article_db = RC_Model::model('article/orm_article_model');
@@ -740,12 +733,79 @@ class merchant extends ecjia_merchant {
 			return $this->showmessage(RC_Lang::get('article::article.edit_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
+	
+	/**
+	 * 删除文章评论
+	 */
+	public function remove_comment() {
+		$this->admin_priv('mh_article_comment_update', ecjia::MSGTYPE_JSON);
+		
+		$type = !empty($_GET['type']) ? trim($_GET['type']) : '';
+		//批量删除
+		if ($type == 'batch') {
+			$ids = !empty($_POST['id']) ? $_POST['id'] : '';
+			$article_id = !empty($_GET['article_id']) ? intval($_GET['article_id']) : 0;
+			
+			$article = get_merchant_article_info($article_id);
+			if (empty($article)) {
+				return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+			
+			if (!is_array($ids)){
+				$ids = explode(',', $ids);
+			}
+			/*释放文章缓存*/
+			$orm_article_db = RC_Model::model('article/orm_article_model');
+			
+			if (!empty($ids)) {
+				$delete = RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
+	
+				if ($delete) {
+					/*释放文章缓存*/
+					$cache_article_info_key = 'article_info_'.$article_id;
+					$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
+					$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
+					
+					//记录日志
+					ecjia_merchant::admin_log(RC_Lang::get('article::article.article_title_is'). $article['title'], 'batch_remove', 'article_comment');
+					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/merchant/article_comment'), array('id' => $article_id)));
+				}
+			}			
+		} else {
+			//删除单个
+			$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+	
+			$article = get_merchant_article_info($article_id);
+			if (empty($article)) {
+				return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+			
+			$comment_info = RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->first();
+			if (empty($comment_info)) {
+				return $this->showmessage(RC_Lang::get('article::article.comment_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+			$delete = RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
+			
+			if ($delete) {
+				/*释放文章缓存*/
+				$orm_article_db = RC_Model::model('article/orm_article_model');
+				$cache_article_info_key = 'article_info_'.$id;
+				$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
+				$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
+					
+				//记录日志
+				ecjia_merchant::admin_log(RC_Lang::get('article::article.article_title_is'). $article['title'], 'remove', 'article_comment');
+				return $this->showmessage(RC_Lang::get('article::article.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+			}
+		}
+		return $this->showmessage(RC_Lang::get('article::article.edit_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	}
 
 	/**
 	 * 删除附件
 	 */
 	public function drop_file() {
-		$this->admin_priv('article_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
 
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$type = !empty($_GET['type']) ? trim($_GET['type']) : '';
@@ -771,14 +831,10 @@ class merchant extends ecjia_merchant {
 	 * 批量操作
 	 */
 	public function batch() {
+		$this->admin_priv('mh_article_update', ecjia::MSGTYPE_JSON);
+		
 		$action = !empty($_GET['sel_action']) ? trim($_GET['sel_action']) : 'move_to';
 		$article_ids = !empty($_POST['article_id']) ? $_POST['article_id'] : '';
-		
-		if ($action == 'button_remove') {
-			$this->admin_priv('article_delete', ecjia::MSGTYPE_JSON);
-		} else {
-			$this->admin_priv('article_manage', ecjia::MSGTYPE_JSON);
-		}
 		
 		if (!is_array($article_ids)){
 			$article_ids = explode(',', $article_ids);
@@ -792,17 +848,9 @@ class merchant extends ecjia_merchant {
 			switch ($action) {
 				//批量删除
 				case 'button_remove':
-					RC_DB::table('article')->whereIn('article_id', $article_ids)->where('store_id', $_SESSION['store_id'])->delete();
+					RC_DB::table('article')->whereIn('article_id', $article_ids)->where('store_id', $_SESSION['store_id'])->update(array('article_approved' => 'trash'));
 
-					$disk = RC_Filesystem::disk();
 					foreach ($info as $v) {
-						if (!empty($v['file_url'])) {
-							$disk->delete(RC_Upload::upload_path() . $v['file_url']);
-						}
-						if (!empty($v['cover_image'])) {
-							$disk->delete(RC_Upload::upload_path() . $v['cover_image']);
-						}
-						
 						/*释放文章缓存*/
 						$cache_article_info_key = 'article_info_'.$v['article_id'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
@@ -870,6 +918,8 @@ class merchant extends ecjia_merchant {
 	 * 文章评论列表
 	 */
 	public function article_comment() {
+		$this->admin_priv('mh_article_comment_manage');
+		
 		$id = !empty($_GET['id']) ? $_GET['id'] : '';
 		
 		ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_comment_list')));
@@ -901,16 +951,16 @@ class merchant extends ecjia_merchant {
 	    $db_dc = RC_DB::table('discuss_comments as dc')
     	    ->leftJoin('article as a', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
     	    ->where(RC_DB::raw('dc.article_id'), $id)
-	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id']);
-
+	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id'])
+	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash');
+	    
 	    if (!empty($filter['keywords'])) {
 	        $db_dc->whereRaw('(dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or dc.user_name like "%'.mysql_like_quote($filter['keywords']).'%")');
 	    }
 	    
-	    $type_count = $db_dc->select(RC_DB::raw('count(*) as count'),
-	    		RC_DB::raw('SUM(IF(dc.comment_approved = 1, 1, 0)) as has_checked'),
-	    		RC_DB::raw('SUM(IF(dc.comment_approved = 0, 1, 0)) as wait_check'),
-	    		RC_DB::raw('SUM(IF(dc.comment_approved = "trash", 1, 0)) as trash'),
+	    $type_count = $db_dc->select(RC_DB::raw('SUM(IF(dc.comment_approved != "trash", 1, 0)) as count'),
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = "1", 1, 0)) as has_checked'),
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = "0", 1, 0)) as wait_check'),
 	    		RC_DB::raw('SUM(IF(dc.comment_approved = "spam", 1, 0)) as unpass'))->first();
 	    
 	    if ($filter['type'] == 'has_checked') {
@@ -967,7 +1017,8 @@ class merchant extends ecjia_merchant {
 			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'))
 			->leftJoin('discuss_likes as d', function($join){
 				$join->on(RC_DB::raw('d.id_value'), '=', RC_DB::raw('a.article_id'))->on(RC_DB::raw('d.like_type'), '=', RC_DB::raw("'article'"));
-			});
+			})
+			->where(RC_DB::raw('a.article_approved'), '!=', 'trash');
 		
 		//不获取系统帮助文章的过滤
 		$db_article->where(RC_DB::raw('ac.cat_type'), 1);
@@ -979,10 +1030,9 @@ class merchant extends ecjia_merchant {
 			$db_article ->whereIn(RC_DB::raw('a.cat_id'), article_cat::get_children_list($filter['cat_id']));
 		}
 		
-		$type_count = $db_article->select(RC_DB::raw('count(*) as count'),
-			RC_DB::raw('SUM(IF(a.article_approved = 1, 1, 0)) as has_checked'),
-			RC_DB::raw('SUM(IF(a.article_approved = 0, 1, 0)) as wait_check'),
-			RC_DB::raw('SUM(IF(a.article_approved = "trash", 1, 0)) as trash'),
+		$type_count = $db_article->select(RC_DB::raw('SUM(IF(a.article_approved != "trash", 1, 0)) as count'),
+			RC_DB::raw('SUM(IF(a.article_approved = "1", 1, 0)) as has_checked'),
+			RC_DB::raw('SUM(IF(a.article_approved = "0", 1, 0)) as wait_check'),
 			RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as unpass'))->first();
 
 		if ($filter['type'] == 'has_checked') {
@@ -1020,6 +1070,7 @@ class merchant extends ecjia_merchant {
 				$have_comment = RC_DB::table('article as a')
 					->leftJoin('discuss_comments as dc', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
 					->where(RC_DB::raw('dc.article_id'), $rows['article_id'])
+					->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash')
 					->select(RC_DB::raw('dc.id'))
 					->get();
 				if (!empty($have_comment)) {
