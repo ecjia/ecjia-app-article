@@ -874,14 +874,19 @@ class merchant extends ecjia_merchant {
 		
 		ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_comment_list')));
 		$this->assign('ur_here', RC_Lang::get('article::article.article_comment_list'));
+		$this->assign('id', $id);
 		
 		$article_comment_list = $this->get_article_comment_list($id);
 		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment', array('id' => $id)));
 		$this->assign('article_list', RC_Uri::url('article/merchant/init'));
 		$this->assign('data', $article_comment_list);
+		
+		$this->assign('filter', $article_comment_list['filter']);
+		$this->assign('type_count', $article_comment_list['count']);
+		$this->assign('type', $article_comment_list['filter']['type']);
+		
         $this->display('article_comment_list.dwt');
 	}
-	
 	
 	/**
 	 * 获取文章评论列表
@@ -891,6 +896,7 @@ class merchant extends ecjia_merchant {
 	    $filter['keywords']   = empty($_GET['keywords'])      ? ''    	: trim($_GET['keywords']);
 	    $filter['sort_by']    = empty($_GET['sort_by'])       ? 'dc.id'	: trim($_GET['sort_by']);
 	    $filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC' 	: trim($_GET['sort_order']);
+	    $filter['type']   	  = empty($_GET['type'])      	  ? ''      : trim($_GET['type']);
 	    
 	    $db_dc = RC_DB::table('discuss_comments as dc')
     	    ->leftJoin('article as a', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
@@ -899,6 +905,28 @@ class merchant extends ecjia_merchant {
 
 	    if (!empty($filter['keywords'])) {
 	        $db_dc->whereRaw('(dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or dc.user_name like "%'.mysql_like_quote($filter['keywords']).'%")');
+	    }
+	    
+	    $type_count = $db_dc->select(RC_DB::raw('count(*) as count'),
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = 1, 1, 0)) as has_checked'),
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = 0, 1, 0)) as wait_check'),
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = "trash", 1, 0)) as trash'),
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = "spam", 1, 0)) as unpass'))->first();
+	    
+	    if ($filter['type'] == 'has_checked') {
+	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 1);
+	    }
+	    
+	    if ($filter['type'] == 'wait_check') {
+	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 0);
+	    }
+	    
+	    if ($filter['type'] == 'trash') {
+	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 'trash');
+	    }
+	    
+	    if ($filter['type'] == 'unpass') {
+	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 'spam');
 	    }
 	    
 	    $count = $db_dc->select('id')->count();
@@ -920,7 +948,7 @@ class merchant extends ecjia_merchant {
 	            $arr[] = $rows;
 	        }
 	    }
-	    return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'article_id' => $id);
+	    return array('arr' => $arr, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'count' => $type_count);
 	}
 	
 	/**
