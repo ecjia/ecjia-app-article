@@ -83,7 +83,10 @@ class detail_module extends api_front implements api_interface {
 			
 			/*关联商品*/
 			$article_related_goods_ids = RC_DB::table('goods_article')->where('article_id', $id)->lists('goods_id');
-			$article_related_goods = RC_DB::table('goods')->whereIn('goods_id', $article_related_goods_ids)->selectRaw('goods_id, goods_name, market_price, shop_price, goods_thumb, goods_img, original_img')->get();
+			$article_related_goods = array();
+			if (!empty($article_related_goods_ids)) {
+				$article_related_goods = RC_DB::table('goods')->whereIn('goods_id', $article_related_goods_ids)->selectRaw('goods_id, goods_name, market_price, shop_price, goods_thumb, goods_img, original_img')->get();
+			}
 			$list = array();
 			if (!empty($article_related_goods)) {
 				foreach ($article_related_goods as $row) {
