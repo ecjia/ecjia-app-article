@@ -138,6 +138,7 @@ class detail_module extends api_front implements api_interface {
 			}
 			/*文章内容*/
 			$base = sprintf('<base href="%s/" />', dirname(SITE_URL));
+			$article_info['content'] = preg_replace('/\\\"/', '"', $article_info['content']);
 			$content = '<!DOCTYPE html><html><head><title>'.$article_info['title'].'</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="viewport" content="initial-scale=1.0"><meta name="viewport" content="initial-scale = 1.0 , minimum-scale = 1.0 , maximum-scale = 1.0" /><style>img {width: auto\9;height: auto;vertical-align: middle;border: 0;-ms-interpolation-mode: bicubic;max-width: 100%; }html { font-size:100%; }p{word-wrap : break-word ;word-break:break-all;} </style>'.$base.'</head><body>'.$article_info['content'].'</body></html>';
 			
 			$article_detail[] = array(
