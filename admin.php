@@ -580,7 +580,7 @@ class admin extends ecjia_admin {
 		
 		$article = $this->db_article->article_find($id);
 		$article['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $article['add_time']);
-		
+		$article['content'] = preg_replace('/\\\"/', '"', $article['content']);
 		$this->assign('article', $article);
 		$this->display('preview.dwt');
 	}
