@@ -936,7 +936,10 @@ class merchant extends ecjia_merchant {
 	
 		$db_article = RC_DB::table('article as a')
 		    ->where(RC_DB::raw('a.store_id'), $_SESSION['store_id'])
-			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'));
+			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'))
+			->leftJoin('discuss_likes as d', function($join){
+				$join->on(RC_DB::raw('d.id_value'), '=', RC_DB::raw('a.article_id'))->on(RC_DB::raw('d.like_type'), '=', RC_DB::raw("'article'"));
+			});
 		
 		//不获取系统帮助文章的过滤
 		$db_article->where(RC_DB::raw('ac.cat_type'), 1);
@@ -970,8 +973,7 @@ class merchant extends ecjia_merchant {
 			$db_article->where(RC_DB::raw('a.article_approved'), 'spam');
 		}
 		
-		$count = $db_article->select('article_id')->count();
-
+		$count = $db_article->selectRaw('a.article_id')->count();
 		$page = new ecjia_merchant_page($count, 15, 5);
 		
 		$result = $db_article->select(RC_DB::raw('a.*'), RC_DB::raw('ac.cat_id'), RC_DB::raw('ac.cat_name'), RC_DB::raw('ac.cat_type'), RC_DB::raw('ac.sort_order'))
@@ -979,7 +981,7 @@ class merchant extends ecjia_merchant {
 			->take(15)
 		    ->skip($page->start_id-1)
 		    ->get();
-	
+		
 		$arr = array();
 		if (!empty($result)) {
 			foreach ($result as $rows) {

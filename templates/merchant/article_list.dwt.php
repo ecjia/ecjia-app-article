@@ -97,7 +97,10 @@
 							<th class="w200">
 								{lang key='article::article.cat'}
 							</th>
-							<th class="w250">
+							<th class="w130">
+								{lang key='article::article.like_count'}
+							</th>
+							<th class="w180">
 								{lang key='article::article.add_time'}
 							</th>
 						</tr>
@@ -120,7 +123,7 @@
 									<a class="data-pjax" href='{url path="article/merchant/link_goods" args="id={$list.article_id}"}' title="{lang key='article::article.tab_goods'}">{lang key='article::article.tab_goods'}</a>&nbsp;|&nbsp; 
 									{/if}
 									{if $list.have_comment eq 1}
-									<a class="data-pjax" href='{RC_Uri::url("article/merchant/article_comment", "id={$list.article_id}")}' title="{lang key='article::article.view'}">{lang key='article::article.article_comment'}</a>&nbsp;|&nbsp;
+									<a class="data-pjax" href='{RC_Uri::url("article/merchant/article_comment", "id={$list.article_id}")}' title="{lang key='article::article.view'}">{lang key='article::article.view_comment'}</a>&nbsp;|&nbsp;
 									{/if}
 									{if $list.cat_id gt 0}
 									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_confirm'}" href='{RC_Uri::url("article/merchant/remove", "id={$list.article_id}")}' title="{lang key='system::system.remove'}">{lang key='system::system.drop'}</a>
@@ -130,6 +133,7 @@
 							<td>
 								<span>{if $list.cat_id gt 0}{$list.cat_name|escape:html}{else}{lang key='article::article.reserve'}{/if}</span>
 							</td>
+							<td>{$list.like_count}</td>
 							<td>
 								<span>{$list.date}</span>
 							</td>

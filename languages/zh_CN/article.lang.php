@@ -405,7 +405,9 @@ return array(
     'select_rubbish_comment'	=> '请选择要设为垃圾评论的评论',
     'article_comment_update'	=> '审核文章评论',
     'comment_is'				=> '评论内容是 ',
-    'article_comment_delete'	=> '删除文章评论'
+    'article_comment_delete'	=> '删除文章评论',
+   	'view_comment'				=> '查看评论',
+   	'like_count'				=> '点赞数',
 );
 
 //end
