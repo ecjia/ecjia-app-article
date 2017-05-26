@@ -278,6 +278,7 @@ return array(
 	
 	'article_manage'		=> '文章管理',
 	'article_list'			=> '文章列表',
+	'store_article_list'	=> '商家投稿',
 	'shop_help'		  		=> '网店帮助',
 	'shop_info'				=> '网店信息',
 	'article_auto_release'	=> '文章自动发布',
