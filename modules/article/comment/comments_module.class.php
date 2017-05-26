@@ -131,7 +131,7 @@ function article_comments($options) {
 	$page			 	  = empty($options['page']) 		? 1 : intval($options['page']);
 	
 	if ($options['article_id'] && ($options['article_id'] > 0)) {
-		$dbview->where(RC_DB::raw('dc.article_id'), $options['article_id']);
+		$dbview->where(RC_DB::raw('dc.id_value'), $options['article_id'])->where(RC_DB::raw('dc.comment_type'), 'article');
 	}
 	/*显示审核通过的*/
 	if ($options['comment_approved'] && $options['comment_approved'] == 1) {
