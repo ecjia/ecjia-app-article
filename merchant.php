@@ -949,8 +949,8 @@ class merchant extends ecjia_merchant {
 	    $filter['type']   	  = empty($_GET['type'])      	  ? ''      : trim($_GET['type']);
 	    
 	    $db_dc = RC_DB::table('discuss_comments as dc')
-    	    ->leftJoin('article as a', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
-    	    ->where(RC_DB::raw('dc.article_id'), $id)
+    	    ->leftJoin('article as a', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'))
+    	    ->where(RC_DB::raw('dc.id_value'), $id)
 	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id'])
 	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash');
 	    
@@ -1068,8 +1068,8 @@ class merchant extends ecjia_merchant {
 				}
 				$rows['have_comment'] = 0;
 				$have_comment = RC_DB::table('article as a')
-					->leftJoin('discuss_comments as dc', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'))
-					->where(RC_DB::raw('dc.article_id'), $rows['article_id'])
+					->leftJoin('discuss_comments as dc', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'))
+					->where(RC_DB::raw('dc.id_value'), $rows['article_id'])
 					->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash')
 					->select(RC_DB::raw('dc.id'))
 					->get();
