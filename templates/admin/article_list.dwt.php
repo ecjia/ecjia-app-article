@@ -139,7 +139,7 @@
 				    <td class="hide-edit-area">
 				    	<span class="cursor_pointer" data-text="textarea" data-trigger="editable" data-url="{RC_Uri::url('article/admin/edit_title')}" data-name="{$list.cat_id}" data-pk="{$list.article_id}" data-title="{lang key='article::article.edit_article_title'}">{$list.title}</span>
 				    	<div class="edit-list">
-				    		<a class="data-pjax" href='{RC_Uri::url("article/admin/preview", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' title="{lang key='article::article.view'}">{lang key='article::article.view'}</a>&nbsp;|&nbsp;
+				    		<a class="data-pjax" href='{RC_Uri::url("article/admin/preview", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' target="_blank" title="{lang key='article::article.view'}">{lang key='article::article.view'}</a>&nbsp;|&nbsp;
 				    		<!-- {if ($list.article_approved eq '0') || ($list.article_approved eq '1')} -->
 					    		<a class="toggle_view" href='{url path="article/admin/check" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-val="{if $list.article_approved eq 0}allow{elseif $list.article_approved eq 1}forbid{/if}" data-status="{$list.article_approved}">
 									{if $list.article_approved eq '0'}{t}批准{/t}{elseif $list.article_approved eq '1'}<span class="ecjiafc-red">{t}驳回{/t}</span>{/if}
