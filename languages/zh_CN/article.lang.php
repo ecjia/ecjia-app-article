@@ -416,6 +416,9 @@ return array(
    	'move_confirm'		    => '您确定要将该文章移至回收站吗？',
    	'trash_msg'				=> '垃圾文章',
    	'move_to_recycle'		=> '移至回收站',
+   	'remove_comment_confirm'=> '您确定要删除这条评论吗？',
+   	'remove_forever'		=> '永久删除',
+   	'comment_content_is'	=> '评论内容是：'
 );
 
 //end

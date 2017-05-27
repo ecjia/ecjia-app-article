@@ -12,63 +12,40 @@
                 }
                 ecjia.pjax(url);
             });
-            app.comment_list.review_static();//状态审核
+            app.comment_list.toggle_view();//评论状态审核
         },
-		review_static: function() {
-			$('.review_static').each(function() {
-				var $this = $(this);
-				var oldval = $this.text();
-				var url = $this.attr('data-url');
-				var name = $this.attr('data-name') || 0;
-				var pk = $this.attr('data-pk') || 0;
-				var title = $this.attr('data-title');
-				var type = $this.attr('data-text') || 'text';
-				if (!name || !pk || !url) {
-					console.log('editable缺少参数');
-					return;
-				}
-				var pjaxurl = $this.attr('data-pjax-url') || '';
-				$this.editable({
-					source: [{
-						value: 0,
-						text: '待审核'
-					}, {
-						value: 1,
-						text: '审核通过'
-					}, {
-						value: 'trash',
-						text: '回收站'
-					}, {
-						value: 'spam',
-						text: '垃圾评论'
-					}],
-					url: url,
-					name: name,
-					pk: pk,
-					type: type,
-					dataType: 'json',
-					success: function(data) {
-						if (data.state == 'error') return data.message;
-						if (pjaxurl != '') {
-							ecjia.pjax(pjaxurl, function() {
-								ecjia.admin.showmessage(data);
-							});
-						} else {
-							ecjia.admin.showmessage(data);
-						}
-					}
-				});
-			}).on('shown', function(e) {
-				if ($(".editable-container select option").length) {
-					$(".editable-container select").chosen({
-						add_class: "down-menu-language",
-						no_results_text: "未找到搜索内容!",
-						allow_single_deselect: true,
-						disable_search_threshold: 8
-					});
-				}
-			});
-		},
+        toggle_view: function (option) {
+            $('.toggle_view').on('click', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                var url = $this.attr('href');
+                var val = $this.attr('data-val') || 'allow';
+                var status = $this.attr('data-status') || '';
+                var data = {
+                    check: val,
+                    status: status
+                }
+                var msg = $this.attr("data-msg");
+                if (msg) {
+                    smoke.confirm(msg, function (e) {
+                        if (e) {
+                            $.post(url, data, function (data) {
+                            	console.log(data);
+                            	ecjia.admin.showmessage(data);
+                            }, 'json');
+                        }
+                    }, {
+                        ok: js_lang.ok,
+                        cancel: js_lang.cancel
+                    });
+                } else {
+                    $.post(url, data, function (data) {
+                    	console.log(data);
+                    	ecjia.admin.showmessage(data);
+                    }, 'json');
+                }
+            });
+        },
     }
 })(ecjia.admin, jQuery);
  

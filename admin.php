@@ -1056,8 +1056,12 @@ class admin extends ecjia_admin {
 		$publishby = trim($_GET['publishby']);
 		if (!empty($publishby)) {
 			$href = RC_Uri::url('article/admin/init', array('publishby' => $publishby));
+			$href_form_action = RC_Uri::url('article/admin/comment_batch', array('publishby' => $publishby));
+			$href_search_action = RC_Uri::url('article/admin/comments', array('id' => $id, 'publishby' => $publishby));
 		} else {
 			$href = RC_Uri::url('article/admin/init');
+			$href_form_action = RC_Uri::url('article/admin/comment_batch');
+			$href_search_action = RC_Uri::url('article/admin/comments');
 		}
 		
 		$this->assign('ur_here', RC_Lang::get('article::article.comment_list'));
@@ -1068,11 +1072,11 @@ class admin extends ecjia_admin {
 		
 		$this->assign('type_count', $comment_list['count']);
 		$this->assign('filter', $comment_list['filter']);
-		$this->assign('form_action', RC_Uri::url('article/admin/comment_batch'));
+		$this->assign('form_action', $href_form_action);
 		$this->assign('type', $_GET['type']);
 		$this->assign('id', $_GET['id']);
 		$this->assign('publishby', $publishby);
-		$this->assign('search_action', RC_Uri::url('article/admin/comments', array('id' => $id)));
+		$this->assign('search_action', $href_search_action);
 		$this->display('comments.dwt');
 	}
 	
@@ -1128,6 +1132,74 @@ class admin extends ecjia_admin {
 	}
 	
 	/**
+	 * 评论状态审核
+	 */
+	public function comment_check() {
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+	
+		$id		 			= !empty($_GET['id']) 		? intval($_GET['id'])		: 0;
+		$article_id		 	= !empty($_GET['article_id']) 		? intval($_GET['article_id'])		: 0;
+		$publishby 			= !empty($_GET['publishby'])	? trim($_GET['publishby'])	: '';
+		$type				= !empty($_GET['type'])	? trim($_GET['type'])	: '';
+		$allow 				= !empty($_POST['check']) 	? $_POST['check']			: '';
+		$article_approved	= $_POST['article_approved'];
+		$content = RC_DB::table('discuss_comments')->where('id', $id)->pluck('content');
+	
+		if (isset($publishby) && $publishby === 'store') {
+			$pjaxurl = RC_Uri::url('article/admin/comments', array('publishby' => 'store', 'id' => $article_id, 'type' => $type));
+		} else {
+			$pjaxurl = RC_Uri::url('article/admin/comments', array('type' => $type, 'id' => $article_id));
+		}
+	
+		if ($allow == 'allow') {
+			/*审核通过*/
+			$data = array(
+					'id' 		=> $id,
+					'comment_approved'  => '1'
+			);
+			RC_DB::table('discuss_comments')->where('id', $id)->update($data);
+			$message = '成功切换评论状态';
+			ecjia_admin::admin_log('通过评论，'.RC_Lang::get('article::article.comment_content_is').$content, 'setup', 'article_comment');
+		} elseif ($allow == 'forbid' || $allow == 'no_rubbish' || $allow == 'no_trash') {
+			/*切换为待审核*/
+			$data = array(
+					'id' 		=> $id,
+					'comment_approved'  => '0'
+			);
+			RC_DB::table('discuss_comments')->where('id', $id)->update($data);
+			$message = '成功切换评论状态';
+			if ($allow == 'forbid') {
+				ecjia_admin::admin_log('设为待审核评论，'.RC_Lang::get('article::article.comment_content_is').$content, 'setup', 'article_comment');
+			} elseif ($allow == 'no_rubbish' || $allow == 'no_trash') {
+				ecjia_admin::admin_log('还原评论，'.RC_Lang::get('article::article.comment_content_is').$content, 'setup', 'article_comment');
+			}
+		} elseif ($allow == "rubbish_comment") {
+			/*垃圾文章*/
+			$data = array(
+					'id' 		=> $id,
+					'comment_approved'  => 'spam'
+			);
+			RC_DB::table('discuss_comments')->where('id', $id)->update($data);
+			$message = '成功设置评论为垃圾评论';
+			ecjia_admin::admin_log('设为垃圾评论，'.RC_Lang::get('article::article.comment_content_is').$content, 'setup', 'article_comment');
+		} elseif ($allow == "trashed_comment") {
+			/*文章移到回收站*/
+			$data = array(
+					'id' 		=> $id,
+					'comment_approved'  => 'trash'
+			);
+			RC_DB::table('discuss_comments')->where('id', $id)->update($data);
+			$message = '移除评论至回收站成功';
+			ecjia_admin::admin_log('评论移到回收站，'.RC_Lang::get('article::article.comment_content_is').$content, 'setup', 'article_comment');
+		}
+	
+		return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
+	}
+	
+	
+	
+	
+	/**
 	 * 文章评论批量操作
 	 */
 	public function comment_batch() {
@@ -1136,6 +1208,7 @@ class admin extends ecjia_admin {
 		$ids    	= explode(',', $ids);
 		$article_id = !empty($_GET['article_id']) ? $_GET['article_id'] : 0;
 		$type	 	= !empty($_GET['type']) ? $_GET['type'] : '';
+		$publishby	= !empty($_GET['publishby']) ? $_GET['publishby'] : '';
 		
 		if ($action == 'button_remove') {
 			$this->admin_priv('article_comment_delete', ecjia::MSGTYPE_JSON);
@@ -1146,7 +1219,12 @@ class admin extends ecjia_admin {
 	
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
-	
+		if (!empty($publishby)) {
+			$href = RC_Uri::url('article/admin/comments', array('id' => $article_id, 'type'=>$type, 'publishby' => $publishby));
+		} else {
+			$href = RC_Uri::url('article/admin/comments', array('id' => $article_id, 'type'=>$type));
+		}
+		
 		if (!empty($ids)) {
 			switch ($action) {
 				//批量删除
@@ -1160,7 +1238,7 @@ class admin extends ecjia_admin {
 	
 						ecjia_admin::admin_log('评论内容是：'.substr($v['content'], 0, 20), 'batch_remove', 'article_comment');
 					}
-					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin/comments', array('id' => $article_id, 'type'=>$type))));
+					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $href));
 					break;
 	
 					//批量移到回收站
@@ -1176,7 +1254,7 @@ class admin extends ecjia_admin {
 	
 						ecjia_admin::admin_log('批量移除文章评论到回收站，'.RC_Lang::get('article::article.comment_is').substr($v['content'], 0, 20), 'batch_setup', 'article_comment');
 					}
-					return $this->showmessage('批量移除文章评论到回收站成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin/comments', array('id' => $article_id, 'type'=>$type))));
+					return $this->showmessage('批量移除文章评论到回收站成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $href));
 					break;
 	
 	
@@ -1193,7 +1271,7 @@ class admin extends ecjia_admin {
 	
 						ecjia_admin::admin_log('批量审核通过文章评论，'.RC_Lang::get('article::article.comment_is').substr($v['content'], 0, 20), 'batch_setup', 'article_comment');
 					}
-					return $this->showmessage('批量审核通过文章评论成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin/comments', array('id'=> $article_id, 'type' =>$type))));
+					return $this->showmessage('批量审核通过文章评论成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $href));
 					break;
 						
 					//批量显示
@@ -1209,7 +1287,7 @@ class admin extends ecjia_admin {
 	
 						ecjia_admin::admin_log('批量设置文章评论为垃圾评论，'.RC_Lang::get('article::article.comment_is').substr($v['content'], 0, 20), 'batch_setup', 'article_comment');
 					}
-					return $this->showmessage('批量设置文章评论为垃圾评论成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin/comments', array('id'=> $article_id, 'type'=> $type))));
+					return $this->showmessage('批量设置文章评论为垃圾评论成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $href));
 					break;
 	
 				default :
@@ -1275,11 +1353,13 @@ class admin extends ecjia_admin {
 			foreach ($result as $rows) {
 				if (isset($rows['add_time'])) {
 					$rows['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
+					//$row['url'] = RC_Uri::url('article/admin/preview', array('id' => $row['id_value']));
 					$rows['title']	  = $title;
 				}
 				$arr[] = $rows;
 			}
 		}
+
 		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'filter' => $filter, 'count' => $type_count);
 	}
 	
