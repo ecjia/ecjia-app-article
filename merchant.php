@@ -1048,10 +1048,6 @@ class merchant extends ecjia_merchant {
 			$db_article->where(RC_DB::raw('a.article_approved'), 'trash');
 		}
 
-		if ($filter['type'] == 'unpass') {
-			$db_article->where(RC_DB::raw('a.article_approved'), 'spam');
-		}
-		
 		$count = $db_article->selectRaw('a.article_id')->count();
 		$page = new ecjia_merchant_page($count, 15, 5);
 		

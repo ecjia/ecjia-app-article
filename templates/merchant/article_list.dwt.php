@@ -49,7 +49,6 @@
 					<li class="{if $type eq ''}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.all'} <span class="badge badge-info">{if $type_count.count}{$type_count.count}{else}0{/if}</span></a></li>
 					<li class="{if $type eq 'has_checked'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="type=has_checked{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.has_checked'}<span class="badge badge-info">{if $type_count.has_checked}{$type_count.has_checked}{else}0{/if}</span></a></li>
 					<li class="{if $type eq 'wait_check'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="type=wait_check{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.wait_check'}<span class="badge badge-info">{if $type_count.wait_check}{$type_count.wait_check}{else}0{/if}</span></a></li>
-					<li class="{if $type eq 'unpass'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/init" args="type=unpass{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>{lang key='article::article.unpass'}<span class="badge badge-info">{if $type_count.unpass}{$type_count.unpass}{else}0{/if}</span></a></li>
 				</ul>
 				<div class="clearfix"></div>
 			</div>
