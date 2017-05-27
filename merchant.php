@@ -951,6 +951,7 @@ class merchant extends ecjia_merchant {
 	    $db_dc = RC_DB::table('discuss_comments as dc')
     	    ->leftJoin('article as a', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'))
     	    ->where(RC_DB::raw('dc.id_value'), $id)
+    	    ->where(RC_DB::raw('dc.comment_type'), 'article')
 	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id'])
 	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash');
 	    
