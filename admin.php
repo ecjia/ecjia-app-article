@@ -559,6 +559,10 @@ class admin extends ecjia_admin {
 	 */
 	public function preview() {
 		$this->admin_priv('article_manage');
+		
+		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+		
+		RC_Hook::do_action('article_admin_priview_handler', $id);
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.preview_article')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -571,8 +575,6 @@ class admin extends ecjia_admin {
 			'<p><strong>' . RC_Lang::get('article::article.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E9.A2.84.E8.A7.88.E6.96.87.E7.AB.A0" target="_blank">'.RC_Lang::get('article::article.about_preview_article').'</a>') . '</p>'
 		);
-		
-		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		
 		$this->assign('ur_here', RC_Lang::get('article::article.preview_article'));
 		$this->assign('action_linkedit', array('text' => RC_Lang::get('article::article.article_editbtn'), 'href' => RC_Uri::url('article/admin/edit', array('id' => $id))));
