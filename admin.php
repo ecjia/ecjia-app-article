@@ -916,6 +916,7 @@ class admin extends ecjia_admin {
 	public function batch() {
 		$action = !empty($_GET['sel_action']) ? trim($_GET['sel_action']) : 'move_to';
 		$article_ids = !empty($_POST['article_id']) ? $_POST['article_id'] : '';
+		
 		$publishby = trim($_GET['publishby']);
 		
 		if (isset($publishby) && $publishby == 'store') {
@@ -947,6 +948,7 @@ class admin extends ecjia_admin {
 						if (!empty($v['cover_image']) && strpos($v['cover_image'], 'http://') === false && strpos($v['cover_image'], 'https://') === false) {
 							$disk->delete(RC_Upload::upload_path() . $v['cover_image']);
 						}
+						
 						/*释放文章缓存*/
 						$cache_article_info_key = 'article_info_'.$v['article_id'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
@@ -954,7 +956,18 @@ class admin extends ecjia_admin {
 						
 						ecjia_admin::admin_log($v['title'], 'batch_remove', 'article');
 					}
-
+					
+					/*删除文章评论*/
+					$article_ids_new = explode(',', $article_ids);
+					$discuss_comments_ids = RC_DB::table('discuss_comments')->whereIn('id_value', $article_ids_new)->where('comment_type', 'article')->lists('id');
+					if (!empty($discuss_comments_ids)) {
+						RC_DB::table('discuss_comments')->whereIn('id', $discuss_comments_ids)->delete();
+					}
+					/*删除文章点赞*/
+					$discuss_likes_ids = RC_DB::table('discuss_likes')->whereIn('id_value', $article_ids_new)->where('like_type', 'article')->lists('id');
+					if (!empty($discuss_likes_ids)) {
+						RC_DB::table('discuss_likes')->whereIn('id', $discuss_likes_ids)->delete();
+					}
 					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
 					break;
 
