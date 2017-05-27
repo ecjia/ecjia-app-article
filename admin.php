@@ -599,6 +599,10 @@ class admin extends ecjia_admin {
 	 */
 	public function preview() {
 		$this->admin_priv('article_manage');
+		
+		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+		
+		RC_Hook::do_action('article_admin_priview_handler', $id);
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.preview_article')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -611,8 +615,6 @@ class admin extends ecjia_admin {
 			'<p><strong>' . RC_Lang::get('article::article.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E9.A2.84.E8.A7.88.E6.96.87.E7.AB.A0" target="_blank">'.RC_Lang::get('article::article.about_preview_article').'</a>') . '</p>'
 		);
-		
-		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		
 		$publishby = trim($_GET['publishby']);
 		if (!empty($publishby)) {
@@ -768,7 +770,8 @@ class admin extends ecjia_admin {
 		$type				= !empty($_GET['type'])	? trim($_GET['type'])	: '';
 		$allow 				= !empty($_POST['check']) 	? $_POST['check']			: '';
 		$article_approved	= $_POST['article_approved'];
-		$title = RC_DB::table('artilce')->where('article_id', $id)->pluck('title');
+		$title = RC_DB::table('article')->where('article_id', $id)->pluck('title');
+		
 		if (isset($publishby) && $publishby === 'store') {
 			$pjaxurl = RC_Uri::url('article/admin/init', array('publishby' => 'store', 'type' => $type));
 		} else {
@@ -1050,8 +1053,15 @@ class admin extends ecjia_admin {
 		//'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表" target="_blank">'.RC_Lang::get('article::article.about_article_list').'</a>') . '</p>'
 		//		);
 		$id = $_GET['id'];
+		$publishby = trim($_GET['publishby']);
+		if (!empty($publishby)) {
+			$href = RC_Uri::url('article/admin/init', array('publishby' => $publishby));
+		} else {
+			$href = RC_Uri::url('article/admin/init');
+		}
+		
 		$this->assign('ur_here', RC_Lang::get('article::article.comment_list'));
-		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => RC_Uri::url('article/admin/init')));
+		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => $href));
 		/* 取得过滤条件 */
 		$comment_list = $this->get_comment_list($id);
 		$this->assign('comment_list', $comment_list);
@@ -1061,6 +1071,7 @@ class admin extends ecjia_admin {
 		$this->assign('form_action', RC_Uri::url('article/admin/comment_batch'));
 		$this->assign('type', $_GET['type']);
 		$this->assign('id', $_GET['id']);
+		$this->assign('publishby', $publishby);
 		$this->assign('search_action', RC_Uri::url('article/admin/comments', array('id' => $id)));
 		$this->display('comments.dwt');
 	}
@@ -1220,11 +1231,11 @@ class admin extends ecjia_admin {
 		$filter['type']   	  = empty($_GET['type'])      	  ? ''                : trim($_GET['type']);
 		$filter['article_id'] = empty($_GET['id'])      	  ?  0                : intval($_GET['id']);
 	
-		$db_discuss_comments = RC_DB::table('discuss_comments as dc')
-		->leftJoin('article as a', RC_DB::raw('dc.article_id'), '=', RC_DB::raw('a.article_id'));
+		$db_discuss_comments = RC_DB::table('discuss_comments as dc');
+		$title = RC_DB::table('article')->where('article_id', $filter['article_id'])->pluck('title');
 	
 		if (isset($filter['article_id']) && $filter['article_id'] > 0) {
-			$db_discuss_comments->where(RC_DB::raw('dc.article_id'), $filter['article_id']);
+			$db_discuss_comments->where(RC_DB::raw('dc.id_value'), $filter['article_id'])->where('comment_type', 'article');
 		}
 		if (!empty($filter['keywords'])) {
 			$db_discuss_comments ->whereRaw('(dc.user_name like  "%' . mysql_like_quote($filter['keywords']) . '%" or dc.content like "%'.mysql_like_quote($filter['keywords']).'%")');
@@ -1255,7 +1266,7 @@ class admin extends ecjia_admin {
 		$count = $db_discuss_comments->select('id')->count();
 		$page = new ecjia_page($count, 15, 5);
 	
-		$result = $db_discuss_comments->select(RC_DB::raw('dc.*'), RC_DB::raw('a.title'))
+		$result = $db_discuss_comments->select(RC_DB::raw('dc.*'))
 		->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
 		->take(15)->skip($page->start_id-1)->get();
 	
@@ -1264,6 +1275,7 @@ class admin extends ecjia_admin {
 			foreach ($result as $rows) {
 				if (isset($rows['add_time'])) {
 					$rows['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
+					$rows['title']	  = $title;
 				}
 				$arr[] = $rows;
 			}
