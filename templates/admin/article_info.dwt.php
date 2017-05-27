@@ -24,7 +24,7 @@
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab1" data-toggle="tab">{lang key='article::article.tab_general'}</a></li>
 				<!--<li><a href="#tab2" data-toggle="tab">{lang key='article::article.tab_content'}</a></li> -->
-				<li><a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$smarty.get.id}"}'>{lang key='article::article.tab_goods'}</a></li>
+				<li><a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$smarty.get.id}{if $publishby}&publishby={$publishby}{/if}"}'>{lang key='article::article.tab_goods'}</a></li>
 			</ul>
 			{/if}
 			<form class="form-horizontal" action="{$form_action}" method="post" enctype="multipart/form-data" name="infoForm" data-edit-url="{RC_Uri::url('article/admin/edit')}">
@@ -246,6 +246,7 @@
 
 													<input type="hidden" name="old_title" value="{$article.title}"/>
 													<input type="hidden" name="id" value="{$article.article_id}" />
+													<input type="hidden" name="publishby" value="{$publishby}" />
 													{if $article.article_id eq ''}
 													<button class="btn btn-gebo" type="submit">{lang key='article::article.issue'}</button>
 													{else}

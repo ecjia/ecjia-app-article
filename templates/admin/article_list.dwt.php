@@ -146,7 +146,7 @@
 								</a>&nbsp;|&nbsp;
 								<a class="ecjiafc-red toggle_view" href='{url path="article/admin/check" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-msg="{lang key='article::article.trash_confirm'}" data-val="rubbish_article" data-status="{$list.article_approved}">{lang key='article::article.trash_msg'}</a>&nbsp;|&nbsp;
 								<a class="ecjiafc-red toggle_view" href='{url path="article/admin/check" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-msg="{lang key='article::article.move_confirm'}" data-val="trashed_article" data-status="{$list.article_approved}">{lang key='article::article.move_to_recycle'}</a>&nbsp;|&nbsp;
-								<a class="data-pjax" href='{RC_Uri::url("article/admin/edit", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp; 
+								<a class="data-pjax" href='{RC_Uri::url("article/admin/edit", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>
 								{if $list.article_approved eq 1}
 						      		&nbsp;|&nbsp;<a class="data-pjax" href='{url path="article/admin/comments" args="id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}"}' title="{lang key='article::article.article_comments'}">{lang key='article::article.article_comments'}</a>&nbsp;|&nbsp; 
 						     	{/if}
