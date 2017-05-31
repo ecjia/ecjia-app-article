@@ -195,6 +195,11 @@ class merchant extends ecjia_merchant {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
+		
+
+		if (empty($cat_id)) {
+			return $this->showmessage(RC_Lang::get('article::article.no_select_act'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
 
 		if ($article_type == 'article' || $article_type == 'related') {
 			if (empty($content)) {
@@ -473,6 +478,10 @@ class merchant extends ecjia_merchant {
 			} else {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
+		}
+
+		if (empty($cat_id)) {
+			return $this->showmessage(RC_Lang::get('article::article.no_select_act'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		if ($article_type == 'article' || $article_type == 'related') {

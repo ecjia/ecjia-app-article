@@ -73,7 +73,7 @@
                     title: {
                         required: true
                     },
-                    article_cat: {
+                    cat_id: {
                         required: true,
                         min: 1
                     },
@@ -82,7 +82,7 @@
                     title: {
                         required: js_lang.article_title_required
                     },
-                    article_cat: {
+                    cat_id: {
                         min: js_lang.no_select_cat
                     },
                 },
