@@ -414,7 +414,7 @@ class admin extends ecjia_admin {
 		}
 		
 		$this->assign('ur_here', RC_Lang::get('article::article.article_edit'));
-		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => RC_Uri::url('article/admin/init')));
+		$this->assign('action_link', array('text' => RC_Lang::get('article::article.article_list'), 'href' => $href_link));
 		
 		$result = ecjia_app::validate_application('goods');
 		if (!is_ecjia_error($result)) {
@@ -1430,7 +1430,7 @@ class admin extends ecjia_admin {
 		$result = $db_article->selectRaw('a.*, ac.cat_id, ac.cat_name, ac.cat_type, ac.sort_order,sf.merchants_name')
 			->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
 			->take(15)->skip($page->start_id-1)->get();
-	
+
 		$arr = array();
 		if (!empty($result)) {
 			foreach ($result as $rows) {
