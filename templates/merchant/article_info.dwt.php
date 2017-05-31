@@ -249,9 +249,8 @@
 								                                <input id="suggest_type_0" type="radio" name="suggest_type" value="stickie" {if $article.suggest_type eq 'stickie'}checked{/if} />
 								                                <label for="suggest_type_0">{lang key='article::article.top'}</label>
 								
-								                                <input id="suggest_type_1" type="radio" name="suggest_type" value="0"  {if $article.suggest_type eq '0'}checked{/if} />
+								                                <input id="suggest_type_1" type="radio" name="suggest_type" value="0"  {if $article.suggest_type eq '0' || !$article.suggest_type}checked{/if} />
 								                                <label for="suggest_type_1">{lang key='article::article.default'}</label>
-								
 								                            </div>
 														</div>
 														
