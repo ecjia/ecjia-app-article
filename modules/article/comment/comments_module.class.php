@@ -73,7 +73,7 @@ class comments_module extends api_front implements api_interface {
 		$comments =article_comments($options);
 		$time = RC_Time::gmtime();
 		$arr = array();
-		if(!empty($comments['list'])) {
+		if (!empty($comments['list'])) {
 			foreach ($comments['list'] as $rows) {
 				$time_gap = $time - $rows['add_time'];
 				if ($time_gap <= 60) {
@@ -100,24 +100,23 @@ class comments_module extends api_front implements api_interface {
 					$avatar_img =  RC_DB::table('users')->where('user_id', $rows['user_id'])->pluck('avatar_img');
 				}
 				
-				$total_count = RC_DB::table('discuss_comments')->where('article_id', $article_id)->count('id');
 				$arr[] = array(
-						'id' 				=> intval($rows['id']),
-						'author' 			=> !empty($rows['user_name']) ? $rows['user_name'] : '匿名用户',
-						'avatar_img'		=> !empty($avatar_img) ? RC_Upload::upload_url($avatar_img) : '',
-						'content'			=> !empty($rows['content']) ? trim($rows['content']) : '',
-						'add_time'			=> $rows['add_time'],
-				);
-				
-				$list = array(
-						'total_count' => intval($total_count),
-						'list' => $arr
+					'id' 				=> intval($rows['id']),
+					'author' 			=> !empty($rows['user_name']) ? $rows['user_name'] : '匿名用户',
+					'avatar_img'		=> !empty($avatar_img) ? RC_Upload::upload_url($avatar_img) : '',
+					'content'			=> !empty($rows['content']) ? trim($rows['content']) : '',
+					'add_time'			=> $rows['add_time'],
 				);
 			}
 		}
+		
+		$total_count = RC_DB::table('discuss_comments')->where('id_value', $article_id)->count('id');
+		$list = array(
+			'total_count' => intval($total_count),
+			'list' => $arr
+		);
 		return array('data' => $list, 'pager' => $comments['page']);
 	}
-	
 	
 }
 
