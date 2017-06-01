@@ -748,10 +748,11 @@ class merchant extends ecjia_merchant {
 		$this->admin_priv('mh_article_comment_update', ecjia::MSGTYPE_JSON);
 		
 		$type = !empty($_GET['type']) ? trim($_GET['type']) : '';
+		$article_id = !empty($_GET['article_id']) ? intval($_GET['article_id']) : 0;
+		
 		//批量删除
 		if ($type == 'batch') {
 			$ids = !empty($_POST['id']) ? $_POST['id'] : '';
-			$article_id = !empty($_GET['article_id']) ? intval($_GET['article_id']) : 0;
 			
 			$article = get_merchant_article_info($article_id);
 			if (empty($article)) {
@@ -766,8 +767,9 @@ class merchant extends ecjia_merchant {
 			
 			if (!empty($ids)) {
 				$delete = RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
-	
+
 				if ($delete) {
+					update_article_comment_count($article_id);
 					/*释放文章缓存*/
 					$cache_article_info_key = 'article_info_'.$article_id;
 					$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
@@ -775,7 +777,7 @@ class merchant extends ecjia_merchant {
 					
 					//记录日志
 					ecjia_merchant::admin_log(RC_Lang::get('article::article.article_title_is'). $article['title'], 'batch_remove', 'article_comment');
-					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/merchant/article_comment'), array('id' => $article_id)));
+					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/merchant/article_comment', array('id' => $article_id))));
 				}
 			}			
 		} else {
@@ -794,6 +796,7 @@ class merchant extends ecjia_merchant {
 			$delete = RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
 			
 			if ($delete) {
+				update_article_comment_count($article_id);
 				/*释放文章缓存*/
 				$orm_article_db = RC_Model::model('article/orm_article_model');
 				$cache_article_info_key = 'article_info_'.$id;

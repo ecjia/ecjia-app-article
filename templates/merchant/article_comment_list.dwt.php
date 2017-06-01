@@ -89,7 +89,7 @@
 								<br>
 								<span>{$list.content}</span>
 								<div class="edit-list">
-									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_comment_confirm'}" href='{RC_Uri::url("article/merchant/remove_comment", "id={$list.id}&article_id={$list.article_id}")}' title="{lang key='system::system.remove'}">{lang key='system::system.drop'}</a>
+									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_comment_confirm'}" href='{RC_Uri::url("article/merchant/remove_comment", "id={$list.id}&article_id={$list.id_value}")}' title="{lang key='system::system.remove'}">{lang key='system::system.drop'}</a>
 								</div>
 							</td>
 							<td>
