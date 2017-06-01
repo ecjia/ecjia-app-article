@@ -73,7 +73,8 @@ class suggestlist_module extends api_front implements api_interface {
 		);
 		
 		$article_data =article_list::article_lists($options);
-				
+		$platform = RC_Uri::admin_url('statics/images/platform_logo.png');//平台默认logo
+		
 		$arr = array();
 		if(!empty($article_data['list'])) {
 			foreach ($article_data['list'] as $rows) {
@@ -93,8 +94,8 @@ class suggestlist_module extends api_front implements api_interface {
 						'link_url'			=> !empty($rows['link_url']) ? $rows['link_url'] : '',
 						'store_info'		=> array(
 													'store_id' 		=> $rows['store_id'] > 0 ? $rows['store_id'] : 0,
-													'store_name' 	=> $rows['store_id'] > 0 ? $store_name : '自营',
-													'store_logo'	=> $rows['store_id'] > 0 ? RC_Upload::upload_url($store_logo) : ''
+													'store_name' 	=> $rows['store_id'] > 0 ? $store_name : '小编推荐',
+													'store_logo'	=> $rows['store_id'] > 0 ? RC_Upload::upload_url($store_logo) : $platform
 												)
 				);
 			}

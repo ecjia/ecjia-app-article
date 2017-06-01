@@ -121,6 +121,7 @@ class detail_module extends api_front implements api_interface {
 					$recommend_goods = array();
 				}
 			}
+			$platform = RC_Uri::admin_url('statics/images/platform_logo.png');//平台默认logo
 			if (!empty($recommend_goods)) {
 				foreach ($recommend_goods as $val) {
 					$goods_list[] = array(
@@ -146,8 +147,8 @@ class detail_module extends api_front implements api_interface {
 					'title'					=> trim($article_info['title']),
 					'add_time'				=> !empty($article_info['add_time']) ? RC_Time::local_date(ecjia::config('time_format'), $article_info['add_time']) : '',
 					'store_id'				=> $article_info['store_id'],
-					'store_name'			=> $article_info['store_id'] > 0 ? $store_name : '自营',
-					'store_logo'			=> $article_info['store_id'] > 0 ? RC_Upload::upload_url($store_logo) : '',
+					'store_name'			=> $article_info['store_id'] > 0 ? $store_name : '小编推荐',
+					'store_logo'			=> $article_info['store_id'] > 0 ? RC_Upload::upload_url($store_logo) : $platform,
 					'total_articles'		=> $article_info['store_id'] > 0 ? $store_total_articles : $total_articles,
 					'like_count'			=> $article_info['like_count'],
 					'comment_count'			=> $article_info['comment_count'],
