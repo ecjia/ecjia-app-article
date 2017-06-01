@@ -113,7 +113,7 @@
 								<!-- {if $list.comment_approved eq 'trash'}  -->
 									<a class="toggle_view" href='{url path="article/admin/comment_check" args="id={$list.id}&article_id={$list.id_value}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-val="no_trashed" data-status="{$list.comment_approved}">{t}还原评论{/t}</a>&nbsp;|&nbsp;
 								<!-- {/if}  -->
-								<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.remove_comment_confirm'}" href='{url path="article/admin/comment_remove" args="id={$list.id}"}' title="{lang key='article::article.remove_forever'}">
+								<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.remove_comment_confirm'}" href='{url path="article/admin/comment_remove" args="id={$list.id}&article_id={$list.id_value}"}' title="{lang key='article::article.remove_forever'}">
 									{lang key='article::article.remove_forever'}
 								</a>
 							<!-- {/if} -->
