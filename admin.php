@@ -1136,7 +1136,7 @@ class admin extends ecjia_admin {
 			}
 			$message = '成功切换评论状态';
 			ecjia_admin::admin_log('通过评论，'.RC_Lang::get('article::article.comment_content_is').$content, 'setup', 'article_comment');
-		} elseif ($allow == 'forbid' || $allow == 'no_rubbish' || $allow == 'no_trash') {
+		} elseif ($allow == 'forbid' || $allow == 'no_rubbish' || $allow == 'no_trashed') {
 			/*切换为待审核*/
 			$data = array(
 					'id' 		=> $id,
