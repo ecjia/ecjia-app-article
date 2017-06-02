@@ -184,14 +184,15 @@ class admin_shophelp extends ecjia_admin {
 			return $this->showmessage(sprintf(RC_Lang::get('article::shophelp.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data = array(
-			'title'		   => $title,
-			'cat_id'	   => $cat_id,
-			'article_type' => $article_type,
-			'content'	   => !empty($_POST['content']) ? $_POST['content'] : '',
-			'keywords'	   => !empty($_POST['keywords']) ? trim($_POST['keywords']) : '',
-			'description'  => !empty($_POST['description']) ? trim($_POST['description']) : '',
-			'add_time'	   => RC_Time::gmtime(),
-			'author'	   => '_SHOPHELP',
+			'title'		   	=> $title,
+			'cat_id'	   	=> $cat_id,
+			'article_type' 	=> $article_type,
+			'content'	   	=> !empty($_POST['content']) ? $_POST['content'] : '',
+			'keywords'	   	=> !empty($_POST['keywords']) ? trim($_POST['keywords']) : '',
+			'description'  	=> !empty($_POST['description']) ? trim($_POST['description']) : '',
+			'add_time'	   	=> RC_Time::gmtime(),
+			'author'	   	=> '_SHOPHELP',
+			'article_approved' => 1
 		);
 		$id = $this->db_article->article_manage($data);
 		//释放article_list缓存
@@ -266,6 +267,7 @@ class admin_shophelp extends ecjia_admin {
 			'content'      	=> !empty($_POST['content']) ? $_POST['content'] : '',
 			'keywords'     	=> !empty($_POST['keywords']) ? trim($_POST['keywords']) : '',
 			'description'	=> !empty($_POST['description']) ? trim($_POST['description']) : '',
+			'article_approved' 	=> 1
 		);
 		if ($this->db_article->article_manage($data)) {
 		    $cat_name = $this->db_article_cat->article_cat_field($cat_id, 'cat_name');

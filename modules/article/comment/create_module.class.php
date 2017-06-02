@@ -86,8 +86,6 @@ class create_module extends api_front implements api_interface {
 		    );
 		    $comment_id = RC_DB::table('discuss_comments')->insertGetId($data);
 		}
-		/*更新文章评论数*/
-		RC_DB::table('article')->where('article_id', $article_id)->increment('comment_count');
 		/*释放文章详情的缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
 		$cache_article_info_key = 'article_info_'.$article_id;

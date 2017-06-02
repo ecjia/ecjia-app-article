@@ -164,13 +164,14 @@ class admin_shopinfo extends ecjia_admin {
 		}
 		
 		$data = array(
-			'title' 	   	=> $title,
-			'cat_id'   		=> 0,
-			'content'  		=> $content,
-			'keywords'  	=> $keywords,
-			'file_url'		=> $file_name,
-			'description'  	=> $desc,
-			'add_time' 		=> RC_Time::gmtime(),
+			'title' 	   		=> $title,
+			'cat_id'   			=> 0,
+			'content'  			=> $content,
+			'keywords'  		=> $keywords,
+			'file_url'			=> $file_name,
+			'description'  		=> $desc,
+			'add_time' 			=> RC_Time::gmtime(),
+			'article_approved' 	=> 1
 		);
 		$id = $this->db_article->article_manage($data);
 		//释放article_list缓存
@@ -265,7 +266,8 @@ class admin_shopinfo extends ecjia_admin {
 			'keywords'    	=> $keywords,
 			'file_url'		=> $file_name,
 			'description' 	=> $desc,
-			'add_time'    	=> RC_Time::gmtime()
+			'add_time'    	=> RC_Time::gmtime(),
+			'article_approved' 	=> 1
 		);
 
 		$this->db_article->article_manage($data);
