@@ -127,7 +127,8 @@
 				    <!-- {/if}  -->
 				    <th class="w120">{lang key='article::article.cat'}</th>
 				    <th class="w150">{lang key='article::article.add_time'}</th>
-				    <th class="w100">{t}审核状态{/t}</th>
+				    <th class="w50">{t}点赞数{/t}</th>
+				    <th class="w80">{t}审核状态{/t}</th>
 			  	</tr>
 			</thead>
 			<tbody>
@@ -176,6 +177,7 @@
 						{elseif $list.article_type eq 'related'} {t}文章内容底部相关下载{/t}
 					    {/if}</span>
 				   </td>
+				   <td>{$list.like_count}</td>
 				    <td>
 						<!-- {if $list.article_approved eq 1} -->
 							<span>审核通过</span>
@@ -189,7 +191,7 @@
 					</td>
 				</tr>
 				<!-- {foreachelse} -->
-				   <tr><td class="no-records" colspan="{if $publishby}6{else}5{/if}">{lang key='system::system.no_records'}</td></tr>
+				   <tr><td class="no-records" colspan="{if $publishby}7{else}6{/if}">{lang key='system::system.no_records'}</td></tr>
 				<!-- {/foreach} -->
             </tbody>
          </table>
