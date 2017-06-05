@@ -82,14 +82,14 @@ class comments_module extends api_front implements api_interface {
 				} elseif ($time_gap < 12*60*60){
 					if (($time_gap < 60*60) && $time_gap > 60) {
 						//大于1分钟，小于60分钟
-						$time = $time_gap/60;
-						$time = intval($time);
-						$rows['add_time'] = $time.'分钟前';
+						$times = $time_gap/60;
+						$times = intval($times);
+						$rows['add_time'] = $times.'分钟前';
 					} else{
 						//大于60分钟，小于12小时
-						$time = $time_gap/3600;
-						$time = intval($time);
-						$rows['add_time'] = $time.'小时前';
+						$times = $time_gap/3600;
+						$times = intval($times);
+						$rows['add_time'] = $times.'小时前';
 					}
 				} else {
 					$rows['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
