@@ -81,7 +81,7 @@
 			<div class="panel-body panel-body-small">
 				<table class="table table-striped table-hover table-hide-edit ecjiaf-tlf">
 					<thead>
-						<tr>
+						<tr data-sorthref='{url path="article/merchant/init" args="{if $filter.keywords}&keywords={$filter.keywords}{/if}{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}"}'>
 							<th class="table_checkbox check-list w30">
 								<div class="check-item">
 									<input id="checkall" type="checkbox" name="select_rows" data-toggle="selectall" data-children=".checkbox"/>
@@ -94,8 +94,11 @@
 							<th class="w200">
 								{lang key='article::article.cat'}
 							</th>
-							<th class="w130">
+							<th class="w130 sorting" data-toggle="sortby" data-sortby="like_count">
 								{lang key='article::article.like_count'}
+							</th>
+							<th class="w130 sorting" data-toggle="sortby" data-sortby="comment_count">
+								{lang key='article::article.comment_count'}
 							</th>
 							<th class="w180">
 								{lang key='article::article.add_time'}
@@ -128,7 +131,8 @@
 							<td>
 								<span>{if $list.cat_id gt 0}{$list.cat_name|escape:html}{else}{lang key='article::article.reserve'}{/if}</span>
 							</td>
-							<td>{$list.like_count}</td>
+							<td>{$list.like_value}</td>
+							<td>{$list.comment_count}</td>
 							<td>
 								<span>{$list.date}</span>
 							</td>

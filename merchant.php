@@ -1021,10 +1021,20 @@ class merchant extends ecjia_merchant {
 		$filter = array();
 		$filter['keywords']   = empty($_GET['keywords'])      ? ''                : trim($_GET['keywords']);
 		$filter['cat_id']     = empty($_GET['cat_id'])        ? 0                 : intval($_GET['cat_id']);
-		$filter['sort_by']    = empty($_GET['sort_by'])       ? 'a.article_id'    : trim($_GET['sort_by']);
+		
 		$filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
 		$filter['type']   	  = empty($_GET['type'])      	  ? ''                : trim($_GET['type']);
-	
+		$filter['sort_by'] 	  = 'a.article_id';
+		
+		if (!empty($_GET['sort_by'])) {
+			if ($_GET['sort_by'] == 'like_count') {
+				$filter['sort_by'] = 'd.like_value';
+			}
+			if ($_GET['sort_by'] == 'comment_count') {
+				$filter['sort_by'] = 'a.comment_count';
+			}
+		}
+		
 		$db_article = RC_DB::table('article as a')
 		    ->where(RC_DB::raw('a.store_id'), $_SESSION['store_id'])
 			->leftJoin('article_cat as ac', RC_DB::raw('ac.cat_id'), '=', RC_DB::raw('a.cat_id'))
@@ -1063,27 +1073,20 @@ class merchant extends ecjia_merchant {
 		$count = $db_article->selectRaw('a.article_id')->count();
 		$page = new ecjia_merchant_page($count, 15, 5);
 		
-		$result = $db_article->select(RC_DB::raw('a.*'), RC_DB::raw('ac.cat_id'), RC_DB::raw('ac.cat_name'), RC_DB::raw('ac.cat_type'), RC_DB::raw('ac.sort_order'))
+		$result = $db_article->select(RC_DB::raw('a.*'), RC_DB::raw('ac.cat_id'), RC_DB::raw('ac.cat_name'), RC_DB::raw('ac.cat_type'), RC_DB::raw('ac.sort_order'), RC_DB::raw('d.like_value'))
 			->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
 			->take(15)
 		    ->skip($page->start_id-1)
 		    ->get();
-		
+
 		$arr = array();
 		if (!empty($result)) {
 			foreach ($result as $rows) {
 				if (isset($rows['add_time'])) {
 					$rows['date'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
 				}
-				$rows['have_comment'] = 0;
-				$have_comment = RC_DB::table('article as a')
-					->leftJoin('discuss_comments as dc', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'))
-					->where(RC_DB::raw('dc.id_value'), $rows['article_id'])
-					->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash')
-					->select(RC_DB::raw('dc.id'))
-					->get();
-				if (!empty($have_comment)) {
-					$rows['have_comment'] = 1;
+				if (empty($rows['like_value'])) {
+					$rows['like_value'] = 0;
 				}
 				$arr[] = $rows;
 			}

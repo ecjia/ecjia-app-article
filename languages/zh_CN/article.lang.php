@@ -418,7 +418,8 @@ return array(
    	'move_to_recycle'		=> '移至回收站',
    	'remove_comment_confirm'=> '您确定要删除这条评论吗？',
    	'remove_forever'		=> '永久删除',
-   	'comment_content_is'	=> '评论内容是：'
+   	'comment_content_is'	=> '评论内容是：',
+   	'comment_count'			=> '评论数',
 );
 
 //end
