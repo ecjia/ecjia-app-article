@@ -940,7 +940,6 @@ class merchant extends ecjia_merchant {
 		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment', array('id' => $id)));
 		$this->assign('article_list', RC_Uri::url('article/merchant/init'));
 		$this->assign('data', $article_comment_list);
-		
 		$this->assign('filter', $article_comment_list['filter']);
 		$this->assign('type_count', $article_comment_list['count']);
 		$this->assign('type', $article_comment_list['filter']['type']);
@@ -960,10 +959,13 @@ class merchant extends ecjia_merchant {
 	    
 	    $db_dc = RC_DB::table('discuss_comments as dc')
     	    ->leftJoin('article as a', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'))
-    	    ->where(RC_DB::raw('dc.id_value'), $id)
     	    ->where(RC_DB::raw('dc.comment_type'), 'article')
 	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id'])
 	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash');
+	    
+	    if (!empty($id)) {
+	        $db_dc->where(RC_DB::raw('dc.id_value'), $id);
+	    }
 	    
 	    if (!empty($filter['keywords'])) {
 	        $db_dc->whereRaw('(dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or dc.user_name like "%'.mysql_like_quote($filter['keywords']).'%")');

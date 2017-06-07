@@ -85,7 +85,7 @@
 							</td>
 							<td>{$list.user_name}</td>
 							<td class="hide-edit-area">
-								<span>{$list.title}</span>
+								<a href='{RC_Uri::url("article/merchant/article_comment", "id={$list.id_value}")}'><span>{$list.title}</span></a>
 								<br>
 								<span>{$list.content}</span>
 								<div class="edit-list">
