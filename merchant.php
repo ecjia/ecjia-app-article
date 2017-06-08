@@ -937,7 +937,7 @@ class merchant extends ecjia_merchant {
 		$this->assign('id', $id);
 		
 		$article_comment_list = $this->get_article_comment_list($id);
-		$this->assign('search_action', RC_Uri::url('article/merchant/article_comment', array('id' => $id)));
+		
 		$this->assign('article_list', RC_Uri::url('article/merchant/init'));
 		$this->assign('data', $article_comment_list);
 		$this->assign('filter', $article_comment_list['filter']);
