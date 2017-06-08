@@ -98,7 +98,7 @@
 						</tr>
 						<!-- {foreachelse} -->
 						<tr>
-							<td class="no-records" colspan="3">
+							<td class="no-records" colspan="4">
 								{lang key='system::system.no_records'}
 							</td>
 						</tr>
