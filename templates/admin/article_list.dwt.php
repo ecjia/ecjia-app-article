@@ -84,6 +84,24 @@
 			<span class="badge badge-info unuse-plugins-num">{if $type_count.trash}{$type_count.trash}{else}0{/if}</span>
 		</a>
 	</li>
+	<li class="{if $smarty.get.suggest_type eq 'default'}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("article/admin/init", "suggest_type=default
+			{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}
+			{if $publishby}&publishby={$publishby}{/if}
+			{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>
+			{t}默认{/t}
+			<span class="badge badge-info unuse-plugins-num">{if $suggest_type_count.default_count}{$suggest_type_count.default_count}{else}0{/if}</span>
+		</a>
+	</li>
+	<li class="{if $smarty.get.suggest_type eq 'top'}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("article/admin/init", "suggest_type=top
+			{if $filter.cat_id}&cat_id={$filter.cat_id}{/if}
+			{if $publishby}&publishby={$publishby}{/if}
+			{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>
+			{t}置顶{/t}
+			<span class="badge badge-info unuse-plugins-num">{if $suggest_type_count.top}{$suggest_type_count.top}{else}0{/if}</span>
+		</a>
+	</li>
 </ul>
 <!-- 批量操作和搜索 -->
 <div class="row-fluid batch" >
@@ -143,6 +161,9 @@
 				    		<!-- {if $list.article_approved eq '1'}  -->
 				    			<a href='{RC_Uri::url("article/admin/preview", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' target="_blank" title="{lang key='article::article.view'}">{lang key='article::article.view'}</a>&nbsp;|&nbsp;
 				    		<!-- {/if}  -->
+				    		<a class="toggle_view" href='{url path="article/admin/top" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-val="{if $list.suggest_type eq '0'}allow{elseif $list.suggest_type eq 'stickie'}forbid{/if}" data-status="{$list.suggest_type}">
+									{if $list.suggest_type eq '0'}{t}置顶{/t}{elseif $list.suggest_type eq 'stickie'}<span class="ecjiafc-red">{t}取消置顶{/t}</span>{/if}
+								</a>&nbsp;|&nbsp;
 				    		<!-- {if ($list.article_approved eq '0') || ($list.article_approved eq '1')} -->
 					    		<a class="toggle_view" href='{url path="article/admin/check" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-val="{if $list.article_approved eq 0}allow{elseif $list.article_approved eq 1}forbid{/if}" data-status="{$list.article_approved}">
 									{if $list.article_approved eq '0'}{t}批准{/t}{elseif $list.article_approved eq '1'}<span class="ecjiafc-red">{t}驳回{/t}</span>{/if}
@@ -189,6 +210,12 @@
 							<span class="ecjiafc-red">回收站</span>
 						<!-- {elseif $list.article_approved eq 'spam'} -->
 							<span class="ecjiafc-red">垃圾文章</span>
+						<!-- {/if} -->
+						<br>
+						<!-- {if $list.suggest_type eq 'stickie'} -->
+						  <span>置顶</span>
+						<!-- {else} -->
+						   <span>默认</span> 
 						<!-- {/if} -->
 					</td>
 				</tr>
