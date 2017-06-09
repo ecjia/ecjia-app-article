@@ -420,6 +420,7 @@ return array(
    	'remove_forever'		=> '永久删除',
    	'comment_content_is'	=> '评论内容是：',
    	'comment_count'			=> '评论数',
+   	'article_comment'		=> '文章评论',
 );
 
 //end

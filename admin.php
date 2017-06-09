@@ -1034,7 +1034,7 @@ class admin extends ecjia_admin {
 	
 
 	/**
-	 * 文章评论列表
+	 * 某篇文章评论列表
 	 */
 	public function comments() {
 		$this->admin_priv('article_manage');
@@ -1079,6 +1079,46 @@ class admin extends ecjia_admin {
 		$this->display('comments.dwt');
 	}
 	
+	/**
+	 * 章评论列表（全部）
+	 */
+	public function article_comment_list() {
+		$this->admin_priv('article_manage');
+	
+		ecjia_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.comment_list')));
+		//ecjia_screen::get_current_screen()->add_help_tab(array(
+		//'id'		=> 'overview',
+		//'title'		=> RC_Lang::get('article::article.overview'),
+		//'content'	=> '<p>' . RC_Lang::get('article::article.article_list_help') . '</p>'
+		//		));
+	
+		//ecjia_screen::get_current_screen()->set_help_sidebar(
+		//'<p><strong>' . RC_Lang::get('article::article.more_info') . '</strong></p>' .
+		//'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表" target="_blank">'.RC_Lang::get('article::article.about_article_list').'</a>') . '</p>'
+		//		);
+		
+		$publishby = trim($_GET['publishby']);
+
+		$href = RC_Uri::url('article/admin/article_comment_list');
+		$href_form_action = RC_Uri::url('article/admin/comment_batch');
+		$href_search_action = RC_Uri::url('article/admin/article_comment_list');
+		
+		$this->assign('ur_here', RC_Lang::get('article::article.article_comment'));
+		/* 取得过滤条件 */
+		$comment_list = $this->get_comment_list();
+		$this->assign('comment_list', $comment_list);
+	
+		$this->assign('type_count', $comment_list['count']);
+		$this->assign('filter', $comment_list['filter']);
+		$this->assign('form_action', $href_form_action);
+		$this->assign('type', $_GET['type']);
+		$this->assign('publishby', $publishby);
+		$this->assign('search_action', $href_search_action);
+		$this->display('article_comment_list.dwt');
+	}
+	
+	
 	
 	/**
 	 * 搜索商品，仅返回名称及ID
@@ -1118,6 +1158,8 @@ class admin extends ecjia_admin {
 		
 		if (isset($publishby) && $publishby === 'store') {
 			$pjaxurl = RC_Uri::url('article/admin/comments', array('publishby' => 'store', 'id' => $article_id, 'type' => $type));
+		} elseif(isset($publishby) && $publishby === 'total_comments') {
+			$pjaxurl = RC_Uri::url('article/admin/article_comment_list', array('publishby' => 'total_comments', 'type' => $type));
 		} else {
 			$pjaxurl = RC_Uri::url('article/admin/comments', array('type' => $type, 'id' => $article_id));
 		}
@@ -1196,23 +1238,28 @@ class admin extends ecjia_admin {
 		$ids    	= explode(',', $ids);
 		$article_id = !empty($_GET['article_id']) ? $_GET['article_id'] : 0;
 		$type	 	= !empty($_GET['type']) ? $_GET['type'] : '';
-		$publishby	= !empty($_GET['publishby']) ? $_GET['publishby'] : '';
+		$publishby	= !empty($_GET['publishby']) ? trim($_GET['publishby']) : '';
 		
 		if ($action == 'button_remove') {
 			$this->admin_priv('article_comment_delete', ecjia::MSGTYPE_JSON);
 		} else {
 			$this->admin_priv('article_comment_update', ecjia::MSGTYPE_JSON);
 		}
-		$info = RC_DB::table('discuss_comments')->whereIn('id', $ids)->selectRaw('content,comment_approved, id_value')->get();
+		$info = RC_DB::table('discuss_comments')
+				->whereIn('id', $ids)->selectRaw('content,comment_approved, id_value')->get();
 
-	
 		/*释放文章缓存*/
 		$orm_article_db = RC_Model::model('article/orm_article_model');
 		if (!empty($publishby)) {
-			$href = RC_Uri::url('article/admin/comments', array('id' => $article_id, 'type'=>$type, 'publishby' => $publishby));
+			if ($publishby == 'store') {
+				$href = RC_Uri::url('article/admin/comments', array('id' => $article_id, 'type'=>$type, 'publishby' => $publishby));
+			} elseif ($publishby == 'total_comments') {
+				$href = RC_Uri::url('article/admin/article_comment_list', array('type'=>$type, 'publishby' => $publishby));
+			}
 		} else {
 			$href = RC_Uri::url('article/admin/comments', array('id' => $article_id, 'type'=>$type));
 		}
+		
 		if (!empty($ids)) {
 			switch ($action) {
 				//批量删除
@@ -1220,12 +1267,12 @@ class admin extends ecjia_admin {
 					RC_DB::table('discuss_comments')->whereIn('id', $ids)->delete();
 					foreach ($info as $v) {
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info_'.$article_id;
+						$cache_article_info_key = 'article_info_'.$v['id_value'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						/*更新文章评论数*/
 						if ($v['comment_approved'] == '1') {
-							RC_DB::table('article')->where('article_id', $article_id)->decrement('comment_count');
+							RC_DB::table('article')->where('article_id', $v['id_value'])->decrement('comment_count');
 						}
 						ecjia_admin::admin_log('评论内容是：'.substr($v['content'], 0, 20), 'batch_remove', 'article_comment');
 					}
@@ -1239,12 +1286,12 @@ class admin extends ecjia_admin {
 	
 					foreach ($info as $v) {
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info_'.$article_id;
+						$cache_article_info_key = 'article_info_'.$v['id_value'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						/*更新文章评论数*/
 						if ($v['comment_approved'] == '1') {
-							RC_DB::table('article')->where('article_id', $article_id)->decrement('comment_count');
+							RC_DB::table('article')->where('article_id', $v['id_value'])->decrement('comment_count');
 						}
 						ecjia_admin::admin_log('批量移除文章评论到回收站，'.RC_Lang::get('article::article.comment_is').substr($v['content'], 0, 20), 'batch_setup', 'article_comment');
 					}
@@ -1259,12 +1306,12 @@ class admin extends ecjia_admin {
 	
 					foreach ($info as $v) {
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info_'.$article_id;
+						$cache_article_info_key = 'article_info_'.$v['id_value'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						/*更新文章评论数*/
 						if ($v['comment_approved'] != '1') {
-							RC_DB::table('article')->where('article_id', $article_id)->increment('comment_count');
+							RC_DB::table('article')->where('article_id', $v['id_value'])->increment('comment_count');
 						}	
 						ecjia_admin::admin_log('批量审核通过文章评论，'.RC_Lang::get('article::article.comment_is').substr($v['content'], 0, 20), 'batch_setup', 'article_comment');
 					}
@@ -1278,12 +1325,12 @@ class admin extends ecjia_admin {
 	
 					foreach ($info as $v) {
 						/*释放文章缓存*/
-						$cache_article_info_key = 'article_info_'.$article_id;
+						$cache_article_info_key = 'article_info_'.$v['id_value'];
 						$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 						$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 						/*更新文章评论数*/
 						if ($v['comment_approved'] == '1') {
-							RC_DB::table('article')->where('article_id', $article_id)->decrement('comment_count');
+							RC_DB::table('article')->where('article_id', $v['id_value'])->decrement('comment_count');
 						}
 						ecjia_admin::admin_log('批量设置文章评论为垃圾评论，'.RC_Lang::get('article::article.comment_is').substr($v['content'], 0, 20), 'batch_setup', 'article_comment');
 					}
@@ -1328,14 +1375,15 @@ class admin extends ecjia_admin {
 		$filter['type']   	  = empty($_GET['type'])      	  ? ''                : trim($_GET['type']);
 		$filter['article_id'] = empty($_GET['id'])      	  ?  0                : intval($_GET['id']);
 	
-		$db_discuss_comments = RC_DB::table('discuss_comments as dc');
-		$title = RC_DB::table('article')->where('article_id', $filter['article_id'])->pluck('title');
-	
+		$db_discuss_comments = RC_DB::table('discuss_comments as dc')
+							   ->leftJoin('article as a', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'));
+		
+		$db_discuss_comments->where('comment_type', 'article');
 		if (isset($filter['article_id']) && $filter['article_id'] > 0) {
-			$db_discuss_comments->where(RC_DB::raw('dc.id_value'), $filter['article_id'])->where('comment_type', 'article');
+			$db_discuss_comments->where(RC_DB::raw('dc.id_value'), $filter['article_id']);
 		}
 		if (!empty($filter['keywords'])) {
-			$db_discuss_comments ->whereRaw('(dc.user_name like  "%' . mysql_like_quote($filter['keywords']) . '%" or dc.content like "%'.mysql_like_quote($filter['keywords']).'%")');
+			$db_discuss_comments ->whereRaw('(dc.user_name like  "%' . mysql_like_quote($filter['keywords']) . '%" or dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or a.title like "%'.mysql_like_quote($filter['keywords']).'%")');
 		}
 	
 		$type_count = $db_discuss_comments->select(RC_DB::raw('count(*) as count'),
@@ -1360,10 +1408,10 @@ class admin extends ecjia_admin {
 			$db_discuss_comments->where(RC_DB::raw('dc.comment_approved'), 'spam');
 		}
 	
-		$count = $db_discuss_comments->select('id')->count();
+		$count = $db_discuss_comments->select('dc.id')->count();
 		$page = new ecjia_page($count, 15, 5);
 	
-		$result = $db_discuss_comments->select(RC_DB::raw('dc.*'))
+		$result = $db_discuss_comments->select(RC_DB::raw('dc.*, a.title'))
 		->orderby(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
 		->take(15)->skip($page->start_id-1)->get();
 	
@@ -1373,7 +1421,6 @@ class admin extends ecjia_admin {
 				if (isset($rows['add_time'])) {
 					$rows['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['add_time']);
 					//$row['url'] = RC_Uri::url('article/admin/preview', array('id' => $row['id_value']));
-					$rows['title']	  = $title;
 				}
 				$arr[] = $rows;
 			}
