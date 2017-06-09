@@ -127,6 +127,7 @@ class admin extends ecjia_admin {
 		$article_list = $this->get_articles_list();
 		$this->assign('article_list', $article_list);
 		$this->assign('type_count', $article_list['count']);
+		$this->assign('suggest_type_count', $article_list['suggest_type_count']);
 		$this->assign('filter', $article_list['filter']);
 		if (isset($_GET['publishby']) && ($_GET['publishby'] == 'store')) {
 			$this->assign('form_action', RC_Uri::url('article/admin/batch', array('publishby' =>'store')));
@@ -135,7 +136,8 @@ class admin extends ecjia_admin {
 			$this->assign('form_action', RC_Uri::url('article/admin/batch'));
 			$this->assign('search_action', RC_Uri::url('article/admin/init'));
 		}
-		$this->assign('type', $_GET['type']);		
+		$this->assign('type', $_GET['type']);	
+		$this->assign('suggest_type', $_GET['suggest_type']);
 		$this->assign('publishby', $publishby);
 		$this->display('article_list.dwt');
 	}
@@ -824,6 +826,51 @@ class admin extends ecjia_admin {
 	}
 	
 	/**
+	 * 文章是否置顶
+	 */
+	public function top() {
+		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+	
+		$id		 			= !empty($_GET['id']) 		? intval($_GET['id'])		: 0;
+		$publishby 			= !empty($_GET['publishby'])	? trim($_GET['publishby'])	: '';
+		$type				= !empty($_GET['type'])	? trim($_GET['type'])	: '';
+		$allow 				= !empty($_POST['check']) 	? $_POST['check']			: '';
+		$title = RC_DB::table('article')->where('article_id', $id)->pluck('title');
+		if (isset($publishby) && $publishby === 'store') {
+			$pjaxurl = RC_Uri::url('article/admin/init', array('publishby' => 'store', 'type' => $type));
+		} else {
+			$pjaxurl = RC_Uri::url('article/admin/init', array('type' => $type));
+		}
+	
+		if ($allow == 'allow') {
+			/*审核通过*/
+			$data = array(
+					'article_id' 		=> $id,
+					'suggest_type'  	=> 'stickie'
+			);
+			RC_DB::table('article')->where('article_id', $id)->update($data);
+			$message = '成功切换文章是否置顶';
+			ecjia_admin::admin_log('设为置顶文章，'.RC_Lang::get('article::article.article_title_is').$title, 'setup', 'article');
+		} elseif ($allow == 'forbid') {
+			/*切换为待审核*/
+			$data = array(
+					'article_id' 		=> $id,
+					'suggest_type'  	=> '0'
+			);
+			RC_DB::table('article')->where('article_id', $id)->update($data);
+			$message = '成功切换文章是否置顶';
+			if ($allow == 'forbid') {
+				ecjia_admin::admin_log('设为默认文章，'.RC_Lang::get('article::article.article_title_is').$title, 'setup', 'article');
+			} 
+		} 
+	
+		return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
+	}
+	
+	
+	
+	
+	/**
 	 * 删除文章
 	 */
 	public function remove() {
@@ -1441,6 +1488,7 @@ class admin extends ecjia_admin {
 		$filter['sort_by']    = empty($_GET['sort_by'])       ? 'a.article_id'    : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order'])    ? 'DESC'            : trim($_GET['sort_order']);
 		$filter['type']   	  = empty($_GET['type'])      	  ? ''                : trim($_GET['type']);
+		$filter['suggest_type']= empty($_GET['suggest_type']) ? ''         : trim($_GET['suggest_type']);
 		$publishby = trim($_GET['publishby']);
 		
 		$db_article = RC_DB::table('article as a')
@@ -1474,6 +1522,10 @@ class admin extends ecjia_admin {
 				RC_DB::raw('SUM(IF(a.article_approved = "trash", 1, 0)) as trash'),
 				RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as rubbish_article'))->first();
 		
+		$suggest_type_count = $db_article->select(
+				RC_DB::raw('SUM(IF(a.suggest_type = 0 and a.suggest_type !="stickie", 1, 0)) as default_count'),
+				RC_DB::raw('SUM(IF(a.suggest_type = "stickie", 1, 0)) as top'))->first();
+		
 		if ($filter['type'] == 'has_checked') {
 			$db_article->where(RC_DB::raw('a.article_approved'), 1);
 		}
@@ -1488,6 +1540,14 @@ class admin extends ecjia_admin {
 		
 		if ($filter['type'] == 'rubbish_article') {
 			$db_article->where(RC_DB::raw('a.article_approved'), 'spam');
+		}
+
+		if ($filter['suggest_type'] == 'default') {
+			$db_article->where(RC_DB::raw('a.suggest_type'), '0');
+		}
+		
+		if ($filter['suggest_type'] == 'top') {
+			$db_article->where(RC_DB::raw('a.suggest_type'), 'stickie');
 		}
 		
 		$count = $db_article->select('article_id')->count();
@@ -1506,7 +1566,7 @@ class admin extends ecjia_admin {
 				$arr[] = $rows;
 			}
 		}
-		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'filter' => $filter, 'count' => $type_count);
+		return array('arr' => $arr, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'filter' => $filter, 'count' => $type_count, 'suggest_type_count' => $suggest_type_count);
 	}
 }
 
