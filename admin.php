@@ -1083,7 +1083,7 @@ class admin extends ecjia_admin {
 	 * 章评论列表（全部）
 	 */
 	public function article_comment_list() {
-		$this->admin_priv('article_manage');
+		$this->admin_priv('article_comment_manage');
 	
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.comment_list')));
@@ -1144,7 +1144,7 @@ class admin extends ecjia_admin {
 	 * 评论状态审核
 	 */
 	public function comment_check() {
-		$this->admin_priv('article_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_comment_update', ecjia::MSGTYPE_JSON);
 	
 		$id		 			= !empty($_GET['id']) 		? intval($_GET['id'])		: 0;
 		$article_id		 	= !empty($_GET['article_id']) 		? intval($_GET['article_id'])		: 0;
@@ -1348,7 +1348,7 @@ class admin extends ecjia_admin {
 	 * 删除某一条评论
 	 */
 	public function comment_remove() {
-		$this->admin_priv('comment_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('article_comment_delete', ecjia::MSGTYPE_JSON);
 		$id = intval($_GET['id']);
 		/*评论的当前状态*/
 		$current_comment_approved = RC_DB::table('discuss_comments')->where('id', $id)->pluck('comment_approved');

@@ -421,6 +421,7 @@ return array(
    	'comment_content_is'	=> '评论内容是：',
    	'comment_count'			=> '评论数',
    	'article_comment'		=> '文章评论',
+   	'article_comment_manage'=> '文章评论管理',
 );
 
 //end
