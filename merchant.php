@@ -760,7 +760,7 @@ class merchant extends ecjia_merchant {
 			$orm_article_db = RC_Model::model('article/orm_article_model');
 			
 			if (!empty($ids)) {
-				$delete = RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'spam'));
+				$delete = RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
 
 				if ($delete) {
 					/*释放文章缓存*/
@@ -795,7 +795,7 @@ class merchant extends ecjia_merchant {
 			if (empty($comment_info)) {
 				return $this->showmessage(RC_Lang::get('article::article.comment_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$delete = RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'spam'));
+			$delete = RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
 			
 			if ($delete) {
 				update_article_comment_count($article_id);
@@ -1070,7 +1070,7 @@ class merchant extends ecjia_merchant {
     	    ->leftJoin('article as a', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'))
     	    ->where(RC_DB::raw('dc.comment_type'), 'article')
 	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id'])
-	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'spam');
+	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash');
 	    
 	    if (!empty($id)) {
 	        $db_dc->where(RC_DB::raw('dc.id_value'), $id);
@@ -1080,10 +1080,10 @@ class merchant extends ecjia_merchant {
 	        $db_dc->whereRaw('(dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or dc.user_name like "%'.mysql_like_quote($filter['keywords']).'%")');
 	    }
 	    
-	    $type_count = $db_dc->select(RC_DB::raw('SUM(IF(dc.comment_approved != "spam", 1, 0)) as count'),
+	    $type_count = $db_dc->select(RC_DB::raw('SUM(IF(dc.comment_approved != "trash", 1, 0)) as count'),
 	    		RC_DB::raw('SUM(IF(dc.comment_approved = "1", 1, 0)) as has_checked'),
 	    		RC_DB::raw('SUM(IF(dc.comment_approved = "0", 1, 0)) as wait_check'),
-	    		RC_DB::raw('SUM(IF(dc.comment_approved = "trash", 1, 0)) as trash'))->first();
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = "spam", 1, 0)) as spam'))->first();
 	    
 	    if ($filter['type'] == 'has_checked') {
 	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 1);
@@ -1165,7 +1165,7 @@ class merchant extends ecjia_merchant {
 		$type_count = $db_article->select(RC_DB::raw('SUM(IF(a.article_approved != "trash", 1, 0)) as count'),
 			RC_DB::raw('SUM(IF(a.article_approved = "1", 1, 0)) as has_checked'),
 			RC_DB::raw('SUM(IF(a.article_approved = "0", 1, 0)) as wait_check'),
-			RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as trash'))->first();
+			RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as spam'))->first();
 
 		if ($filter['type'] == 'has_checked') {
 			$db_article->where(RC_DB::raw('a.article_approved'), 1);
@@ -1175,8 +1175,8 @@ class merchant extends ecjia_merchant {
 			$db_article->where(RC_DB::raw('a.article_approved'), 0);
 		}
 
-		if ($filter['type'] == 'trash') {
-			$db_article->where(RC_DB::raw('a.article_approved'), 'trash');
+		if ($filter['type'] == 'spam') {
+			$db_article->where(RC_DB::raw('a.article_approved'), 'spam');
 		}
 
 		$count = $db_article->selectRaw('a.article_id')->count();
