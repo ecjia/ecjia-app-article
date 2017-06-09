@@ -725,7 +725,7 @@ class merchant extends ecjia_merchant {
 			return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
-		$delete = RC_DB::table('article')->where('article_id', $id)->where('store_id', $_SESSION['store_id'])->update(array('article_approved' => 'trash'));
+		$delete = RC_DB::table('article')->where('article_id', $id)->where('store_id', $_SESSION['store_id'])->update(array('article_approved' => 'spam'));
 		
 		if ($delete) {
 			/*释放文章缓存*/
@@ -753,12 +753,6 @@ class merchant extends ecjia_merchant {
 		//批量删除
 		if ($type == 'batch') {
 			$ids = !empty($_POST['id']) ? $_POST['id'] : '';
-			
-			$article = get_merchant_article_info($article_id);
-			if (empty($article)) {
-				return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			
 			if (!is_array($ids)){
 				$ids = explode(',', $ids);
 			}
@@ -766,18 +760,26 @@ class merchant extends ecjia_merchant {
 			$orm_article_db = RC_Model::model('article/orm_article_model');
 			
 			if (!empty($ids)) {
-				$delete = RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
+				$delete = RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'spam'));
 
 				if ($delete) {
-					update_article_comment_count($article_id);
 					/*释放文章缓存*/
 					$cache_article_info_key = 'article_info_'.$article_id;
 					$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
 					$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
 					
-					//记录日志
-					ecjia_merchant::admin_log(RC_Lang::get('article::article.article_title_is'). $article['title'], 'batch_remove', 'article_comment');
-					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/merchant/article_comment', array('id' => $article_id))));
+					foreach ($ids as $v) {
+						$comment_info = RC_DB::table('discuss_comments')->where('id', $v)->where('store_id', $_SESSION['store_id'])->first();
+						$article = get_merchant_article_info($comment_info['id_value']);
+						update_article_comment_count($comment_info['id_value']);
+						//记录日志
+						ecjia_merchant::admin_log('评论内容为：'.$comment_info['content'].'，'.RC_Lang::get('article::article.article_title_is'). $article['title'], 'batch_remove', 'article_comment');
+					}
+					$pjaxurl = RC_Uri::url('article/merchant/article_comment');
+					if (!empty($article_id)) {
+						$pjaxurl .= '&id='.$article_id;
+					}
+					return $this->showmessage(RC_Lang::get('article::article.batch_handle_ok_del'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
 				}
 			}			
 		} else {
@@ -793,7 +795,7 @@ class merchant extends ecjia_merchant {
 			if (empty($comment_info)) {
 				return $this->showmessage(RC_Lang::get('article::article.comment_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$delete = RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
+			$delete = RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'spam'));
 			
 			if ($delete) {
 				update_article_comment_count($article_id);
@@ -858,7 +860,7 @@ class merchant extends ecjia_merchant {
 			switch ($action) {
 				//批量删除
 				case 'button_remove':
-					RC_DB::table('article')->whereIn('article_id', $article_ids)->where('store_id', $_SESSION['store_id'])->update(array('article_approved' => 'trash'));
+					RC_DB::table('article')->whereIn('article_id', $article_ids)->where('store_id', $_SESSION['store_id'])->update(array('article_approved' => 'spam'));
 
 					foreach ($info as $v) {
 						/*释放文章缓存*/
@@ -948,6 +950,113 @@ class merchant extends ecjia_merchant {
 	}
 	
 	/**
+	 * 评论状态审核
+	 */
+	public function comment_check() {
+		$this->admin_priv('mh_article_comment_update', ecjia::MSGTYPE_JSON);
+		
+		$article_id = !empty($_POST['article_id']) ? intval($_POST['article_id']) : 0;
+		$comment_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+		$status = !empty($_POST['status']) ? $_POST['status'] : 0;
+		
+		$type = !empty($_GET['type']) ? trim($_GET['type']) : '';
+		$keywords = !empty($_GET['keywords']) ? trim($_GET['keywords']) : '';
+		
+		$pjax_url = RC_Uri::url('article/merchant/article_comment');
+		if (!empty($type)) {
+			$pjax_url .= '&type='.$type;
+		}
+		if (!empty($keywords)) {
+			$pjax_url .= '&keywords='.$keywords;
+		}
+		
+		$article = get_merchant_article_info($article_id);
+		if (empty($article)) {
+			return $this->showmessage(RC_Lang::get('article::article.article_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		
+		$comment_info = get_merchant_comment_info($comment_id);
+
+		//批准
+		if ($status == 1) {
+			$message = '通过文章评论，评论内容为：'.$comment_info['content'].'，文章标题为：'.$article['title'];
+		}
+		
+		if ($status == 0) {
+			$message = '驳回文章评论，评论内容为：'.$comment_info['content'].'，文章标题为：'.$article['title'];
+		}
+		
+		if ($status == 'spam') {
+			$message = '设为垃圾评论，评论内容为：'.$comment_info['content'].'，文章标题为：'.$article['title'];
+		}
+		
+		$update = RC_DB::table('discuss_comments')->where('id', $comment_id)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => $status));
+		
+		if ($update) {
+			update_article_comment_count($article_id);
+			
+			/*释放文章缓存*/
+			$orm_article_db = RC_Model::model('article/orm_article_model');
+			$cache_article_info_key = 'article_info_'.$article_id;
+			$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
+			$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
+				
+			//记录日志
+			ecjia_merchant::admin_log($message, 'setup', 'article_comment');
+			return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjax_url));
+		}
+	}
+	
+	/**
+	 * 批量审核文章评论
+	 */
+	public function batch_check() {
+		$this->admin_priv('mh_article_comment_update', ecjia::MSGTYPE_JSON);
+		
+		$type = !empty($_GET['type']) ? trim($_GET['type']) : '';
+		$ids = !empty($_POST['id']) ? $_POST['id'] : '';
+		
+		if (!is_array($ids)){
+			$ids = explode(',', $ids);
+		}
+		/*释放文章缓存*/
+		$orm_article_db = RC_Model::model('article/orm_article_model');
+		
+		if (!empty($ids)) {
+			switch ($type) {
+				case 'batch_check':
+					RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 1));
+					break;
+				case 'batch_uncheck':
+					RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 0));
+					break;
+				case 'batch_trash':
+					RC_DB::table('discuss_comments')->whereIn('id', $ids)->where('store_id', $_SESSION['store_id'])->update(array('comment_approved' => 'trash'));
+					break;
+			}
+			
+			/*释放文章缓存*/
+			$cache_article_info_key = 'article_info_'.$article_id;
+			$cache_id_info = sprintf('%X', crc32($cache_article_info_key));
+			$orm_article_db->delete_cache_item($cache_id_info);//释放article_info缓存
+				
+			foreach ($ids as $v) {
+				$comment_info = RC_DB::table('discuss_comments')->where('id', $v)->where('store_id', $_SESSION['store_id'])->first();
+				$article = get_merchant_article_info($comment_info['id_value']);
+				update_article_comment_count($comment_info['id_value']);
+				//记录日志
+				ecjia_merchant::admin_log('评论内容为：'.$comment_info['content'].'，'.RC_Lang::get('article::article.article_title_is'). $article['title'], 'batch_setup', 'article_comment');
+			}
+			$pjaxurl = RC_Uri::url('article/merchant/article_comment');
+			if (!empty($article_id)) {
+				$pjaxurl .= '&id='.$article_id;
+			}
+			return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
+			
+		}			
+	}
+	
+	/**
 	 * 获取文章评论列表
 	 */
 	private function get_article_comment_list($id) {
@@ -961,7 +1070,7 @@ class merchant extends ecjia_merchant {
     	    ->leftJoin('article as a', RC_DB::raw('dc.id_value'), '=', RC_DB::raw('a.article_id'))
     	    ->where(RC_DB::raw('dc.comment_type'), 'article')
 	    	->where(RC_DB::raw('dc.store_id'), $_SESSION['store_id'])
-	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'trash');
+	    	->where(RC_DB::raw('dc.comment_approved'), '!=', 'spam');
 	    
 	    if (!empty($id)) {
 	        $db_dc->where(RC_DB::raw('dc.id_value'), $id);
@@ -971,10 +1080,10 @@ class merchant extends ecjia_merchant {
 	        $db_dc->whereRaw('(dc.content like "%'.mysql_like_quote($filter['keywords']).'%" or dc.user_name like "%'.mysql_like_quote($filter['keywords']).'%")');
 	    }
 	    
-	    $type_count = $db_dc->select(RC_DB::raw('SUM(IF(dc.comment_approved != "trash", 1, 0)) as count'),
+	    $type_count = $db_dc->select(RC_DB::raw('SUM(IF(dc.comment_approved != "spam", 1, 0)) as count'),
 	    		RC_DB::raw('SUM(IF(dc.comment_approved = "1", 1, 0)) as has_checked'),
 	    		RC_DB::raw('SUM(IF(dc.comment_approved = "0", 1, 0)) as wait_check'),
-	    		RC_DB::raw('SUM(IF(dc.comment_approved = "spam", 1, 0)) as unpass'))->first();
+	    		RC_DB::raw('SUM(IF(dc.comment_approved = "trash", 1, 0)) as trash'))->first();
 	    
 	    if ($filter['type'] == 'has_checked') {
 	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 1);
@@ -988,7 +1097,7 @@ class merchant extends ecjia_merchant {
 	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 'trash');
 	    }
 	    
-	    if ($filter['type'] == 'unpass') {
+	    if ($filter['type'] == 'spam') {
 	    	$db_dc->where(RC_DB::raw('dc.comment_approved'), 'spam');
 	    }
 	    
@@ -1041,7 +1150,7 @@ class merchant extends ecjia_merchant {
 			->leftJoin('discuss_likes as d', function($join){
 				$join->on(RC_DB::raw('d.id_value'), '=', RC_DB::raw('a.article_id'))->on(RC_DB::raw('d.like_type'), '=', RC_DB::raw("'article'"));
 			})
-			->where(RC_DB::raw('a.article_approved'), '!=', 'trash');
+			->where(RC_DB::raw('a.article_approved'), '!=', 'spam');
 		
 		//不获取系统帮助文章的过滤
 		$db_article->where(RC_DB::raw('ac.cat_type'), 1);
@@ -1056,7 +1165,7 @@ class merchant extends ecjia_merchant {
 		$type_count = $db_article->select(RC_DB::raw('SUM(IF(a.article_approved != "trash", 1, 0)) as count'),
 			RC_DB::raw('SUM(IF(a.article_approved = "1", 1, 0)) as has_checked'),
 			RC_DB::raw('SUM(IF(a.article_approved = "0", 1, 0)) as wait_check'),
-			RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as unpass'))->first();
+			RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as trash'))->first();
 
 		if ($filter['type'] == 'has_checked') {
 			$db_article->where(RC_DB::raw('a.article_approved'), 1);

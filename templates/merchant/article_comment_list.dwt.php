@@ -28,7 +28,7 @@
 					<li class="{if $type eq ''}active{/if}"><a class="data-pjax" href='{url path="article/merchant/article_comment" args="{if $id}id={$id}&{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}"}'>{lang key='article::article.all'} <span class="badge badge-info">{if $type_count.count}{$type_count.count}{else}0{/if}</span></a></li>
 					<li class="{if $type eq 'has_checked'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/article_comment" args="{if $id}id={$id}&{/if}type=has_checked{if $filter.keywords}&keywords={$filter.keywords}{/if}"}'>{lang key='article::article.has_checked'}<span class="badge badge-info">{if $type_count.has_checked}{$type_count.has_checked}{else}0{/if}</span></a></li>
 					<li class="{if $type eq 'wait_check'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/article_comment" args="{if $id}id={$id}&{/if}type=wait_check{if $filter.keywords}&keywords={$filter.keywords}{/if}"}'>{lang key='article::article.wait_check'}<span class="badge badge-info">{if $type_count.wait_check}{$type_count.wait_check}{else}0{/if}</span></a></li>
-					<li class="{if $type eq 'unpass'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/article_comment" args="{if $id}id={$id}&{/if}type=unpass{if $filter.keywords}&keywords={$filter.keywords}{/if}"}'>{lang key='article::article.unpass'}<span class="badge badge-info">{if $type_count.unpass}{$type_count.unpass}{else}0{/if}</span></a></li>
+					<li class="{if $type eq 'trash'}active{/if}"><a class="data-pjax" href='{url path="article/merchant/article_comment" args="{if $id}id={$id}&{/if}type=trash{if $filter.keywords}&keywords={$filter.keywords}{/if}"}'>{lang key='article::article.trash_comment'}<span class="badge badge-info">{if $type_count.trash}{$type_count.trash}{else}0{/if}</span></a></li>
 				</ul>
 				<div class="clearfix"></div>
 			</div>
@@ -42,7 +42,23 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="button_remove" data-toggle="ecjiabatch" data-idclass=".checkbox:checked" data-url="{url path='article/merchant/remove_comment'}&type=batch&article_id={$id}" data-msg="{lang key='article::article.confirm_drop'}" data-noselectmsg="{lang key='article::article.select_drop_comment'}" data-name="id" href="javascript:;"><i class="fa fa-trash-o"></i><i class="fontello-icon-trash"></i> {lang key='article::article.drop_comment'}</a></li>
+							<!-- {if $filter.type eq 'trash'} -->
+							<li><a class="button_remove" data-toggle="ecjiabatch" data-idclass=".checkbox:checked" data-url="{url path='article/merchant/batch_check'}&type=batch_uncheck&article_id={$id}" data-msg="您确定要批量执行该操作吗？" data-noselectmsg="请选择要操作的评论" data-name="id" href="javascript:;"><i class="fa fa-reply"></i> 还原评论</a></li>
+							<!-- {/if} -->
+							
+							<!-- {if $filter.type neq 'trash'} -->
+							<!-- {if $filter.type neq 'has_checked'} -->
+							<li><a class="button_remove" data-toggle="ecjiabatch" data-idclass=".checkbox:checked" data-url="{url path='article/merchant/batch_check'}&type=batch_check&article_id={$id}" data-msg="您确定要批量执行该操作吗？" data-noselectmsg="请选择要操作的评论" data-name="id" href="javascript:;"><i class="fa fa-check"></i> 通过审核</a></li>
+							<!-- {/if} -->
+							
+							<!-- {if $filter.type neq 'wait_check'} -->
+							<li><a class="button_remove" data-toggle="ecjiabatch" data-idclass=".checkbox:checked" data-url="{url path='article/merchant/batch_check'}&type=batch_uncheck&article_id={$id}" data-msg="您确定要批量执行该操作吗？" data-noselectmsg="请选择要操作的评论" data-name="id" href="javascript:;"><i class="fa fa-info-circle"></i> 设为待审核</a></li>
+							<!-- {/if} -->
+						
+							<li><a class="button_remove" data-toggle="ecjiabatch" data-idclass=".checkbox:checked" data-url="{url path='article/merchant/batch_check'}&type=batch_trash&article_id={$id}" data-msg="您确定要批量执行该操作吗？" data-noselectmsg="请选择要操作的评论" data-name="id" href="javascript:;"><i class="fa fa-archive"></i> 设为垃圾评论</a></li>
+							<!-- {/if} -->
+							
+							<li><a class="button_remove" data-toggle="ecjiabatch" data-idclass=".checkbox:checked" data-url="{url path='article/merchant/remove_comment'}&type=batch&article_id={$id}" data-msg="{lang key='article::article.confirm_drop'}" data-noselectmsg="{lang key='article::article.select_drop_comment'}" data-name="id" href="javascript:;"><i class="fa fa-trash-o"></i> {lang key='article::article.drop_comment'}</a></li>
 						</ul>
 					</div>
 					
@@ -70,7 +86,7 @@
 								{lang key='article::article.comment_detail'}
 							</th>
 							<th class="w180">
-								{lang key='article::article.label_comment_time'}
+								{lang key='article::article.comment_status'}
 							</th>
 						</tr>
 					</thead>
@@ -85,15 +101,32 @@
 							</td>
 							<td>{$list.user_name}</td>
 							<td class="hide-edit-area">
-								<a class="data-pjax" href='{RC_Uri::url("article/merchant/article_comment", "id={$list.id_value}")}'><span>{$list.title}</span></a>
-								<br>
+								<a href='{RC_Uri::url("article/merchant/article_comment", "id={$list.id_value}")}' target="__blank"><span>{$list.title}</span></a>
+								<div>评论于&nbsp;{$list.date}</div>
 								<span>{$list.content}</span>
 								<div class="edit-list">
+									<!-- {if $list.comment_approved neq 'trash'} -->
+										<!-- {if $list.comment_approved eq 1} -->
+										<a class="toggle_view ecjiafc-red" href='{url path="article/merchant/comment_check" args="id={$list.id}{if $filter.type}&type={$filter.type}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}"}' data-id="{$list.id_value}" data-val="forbid" data-status=0>驳回</a>&nbsp;|&nbsp;
+										<!-- {/if} -->
+										
+										<!-- {if $list.comment_approved eq 0} -->
+										<a class="toggle_view" href='{url path="article/merchant/comment_check" args="id={$list.id}{if $filter.type}&type={$filter.type}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}"}' data-id="{$list.id_value}" data-val="allow" data-status=1>批准</a>&nbsp;|&nbsp;
+										<!-- {/if} -->
+										
+										<a class="toggle_view ecjiafc-red" href='{url path="article/merchant/comment_check" args="id={$list.id}{if $filter.type}&type={$filter.type}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}"}' data-id="{$list.id_value}" data-val="forbid" data-status="trash" data-msg="{lang key='article::article.trash_comment_confirm'}">垃圾评论</a>&nbsp;|&nbsp;
+									<!-- {else} -->
+										<a class="toggle_view ecjiafc-blue" href='{url path="article/merchant/comment_check" args="id={$list.id}{if $filter.type}&type={$filter.type}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}"}' data-id="{$list.id_value}" data-val="forbid" data-status=0>还原评论</a>&nbsp;|&nbsp;
+									<!-- {/if} -->
 									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='article::article.drop_comment_confirm'}" href='{RC_Uri::url("article/merchant/remove_comment", "id={$list.id}&article_id={$list.id_value}")}' title="{lang key='system::system.remove'}">{lang key='system::system.drop'}</a>
 								</div>
 							</td>
 							<td>
-								<span>{$list.date}</span>
+								<!-- {if $list.comment_approved eq 1} -->
+									审核通过
+								<!-- {else} -->
+									<span class="ecjiafc-blue">待审核</span>
+								<!-- {/if} -->
 							</td>
 						</tr>
 						<!-- {foreachelse} -->
