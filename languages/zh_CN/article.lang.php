@@ -424,6 +424,7 @@ return array(
    	'comment_status'		=> '审核状态',
    	'trash_comment_confirm'	=> '您确定要将该评论设为垃圾评论吗？',
    	'article_comment'		=> '文章评论',
+   	'article_comment_manage'=> '文章评论管理',
 );
 
 //end

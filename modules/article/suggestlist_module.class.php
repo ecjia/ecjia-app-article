@@ -55,8 +55,8 @@ class suggestlist_module extends api_front implements api_interface {
     	
     	RC_Loader::load_app_class('article_list', 'article', false);
 		$type	 = $this->requestData('type', 'stickie');//置顶的
-		$types   = array('stickie', '0');
-		if (!in_array('stickie', $types)) {
+		$types   = array('stickie');
+		if (!in_array($type, $types)) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		/* 获取数量 */
