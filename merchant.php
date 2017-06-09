@@ -1162,10 +1162,10 @@ class merchant extends ecjia_merchant {
 			$db_article ->whereIn(RC_DB::raw('a.cat_id'), article_cat::get_children_list($filter['cat_id']));
 		}
 		
-		$type_count = $db_article->select(RC_DB::raw('SUM(IF(a.article_approved != "trash", 1, 0)) as count'),
+		$type_count = $db_article->select(RC_DB::raw('SUM(IF(a.article_approved != "spam", 1, 0)) as count'),
 			RC_DB::raw('SUM(IF(a.article_approved = "1", 1, 0)) as has_checked'),
 			RC_DB::raw('SUM(IF(a.article_approved = "0", 1, 0)) as wait_check'),
-			RC_DB::raw('SUM(IF(a.article_approved = "spam", 1, 0)) as trash'))->first();
+			RC_DB::raw('SUM(IF(a.article_approved = "trash", 1, 0)) as trash'))->first();
 
 		if ($filter['type'] == 'has_checked') {
 			$db_article->where(RC_DB::raw('a.article_approved'), 1);
