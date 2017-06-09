@@ -382,6 +382,7 @@ return array(
 	'wait_check'	=> '待审核',
 	'trash'			=> '回收站',
 	'unpass'		=> '未通过审核',
+	'trash_comment'	=> '垃圾评论',
 	'label_author'	=> '文章作者：',
 	'label_add_time'=> '添加时间：',
 	'not_available'	=> '暂无',
@@ -420,6 +421,8 @@ return array(
    	'remove_forever'		=> '永久删除',
    	'comment_content_is'	=> '评论内容是：',
    	'comment_count'			=> '评论数',
+   	'comment_status'		=> '审核状态',
+   	'trash_comment_confirm'	=> '您确定要将该评论设为垃圾评论吗？',
    	'article_comment'		=> '文章评论',
    	'article_comment_manage'=> '文章评论管理',
 );

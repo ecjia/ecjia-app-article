@@ -62,8 +62,10 @@ function article_title_exists($title, $article_id = 0) {
 //获取文章信息
 function get_merchant_article_info($article_id) {
 	$article_info = RC_DB::table('article')->where('article_id', $article_id)->where('store_id', $_SESSION['store_id'])->first();
-	$article_info['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $article_info['add_time']);
-	$article_info['content'] = !empty($article_info['content']) ? stripslashes($article_info['content']) : '';
+	if (!empty($article_info)) {
+		$article_info['add_time'] = RC_Time::local_date(ecjia::config('time_format'), $article_info['add_time']);
+		$article_info['content'] = !empty($article_info['content']) ? stripslashes($article_info['content']) : '';
+	}
 	return $article_info;
 }
 
@@ -85,6 +87,11 @@ function update_article_comment_count($article_id) {
 	RC_DB::table('article')->where('article_id', $article_id)->where('store_id', $_SESSION['store_id'])->update(array('comment_count' => $comment_count));
 	
 	return true;
+}
+
+//获取评论信息
+function get_merchant_comment_info($id) {
+	return RC_DB::table('discuss_comments')->where('id', $id)->where('store_id', $_SESSION['store_id'])->first();
 }
 
 // end
