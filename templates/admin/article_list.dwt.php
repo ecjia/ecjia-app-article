@@ -140,20 +140,22 @@
 				    <td class="hide-edit-area">
 				    	<span class="cursor_pointer" data-text="textarea" data-trigger="editable" data-url="{RC_Uri::url('article/admin/edit_title')}" data-name="{$list.cat_id}" data-pk="{$list.article_id}" data-title="{lang key='article::article.edit_article_title'}">{$list.title}</span>
 				    	<div class="edit-list">
-				    		<a href='{RC_Uri::url("article/admin/preview", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' target="_blank" title="{lang key='article::article.view'}">{lang key='article::article.view'}</a>&nbsp;|&nbsp;
+				    		<!-- {if $list.article_approved eq '1'}  -->
+				    			<a href='{RC_Uri::url("article/admin/preview", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' target="_blank" title="{lang key='article::article.view'}">{lang key='article::article.view'}</a>&nbsp;|&nbsp;
+				    		<!-- {/if}  -->
 				    		<!-- {if ($list.article_approved eq '0') || ($list.article_approved eq '1')} -->
 					    		<a class="toggle_view" href='{url path="article/admin/check" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-val="{if $list.article_approved eq 0}allow{elseif $list.article_approved eq 1}forbid{/if}" data-status="{$list.article_approved}">
 									{if $list.article_approved eq '0'}{t}批准{/t}{elseif $list.article_approved eq '1'}<span class="ecjiafc-red">{t}驳回{/t}</span>{/if}
 								</a>&nbsp;|&nbsp;
 								<a class="ecjiafc-red toggle_view" href='{url path="article/admin/check" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-msg="{lang key='article::article.trash_confirm'}" data-val="rubbish_article" data-status="{$list.article_approved}">{lang key='article::article.trash_msg'}</a>&nbsp;|&nbsp;
 								<a class="ecjiafc-red toggle_view" href='{url path="article/admin/check" args="id={$list.article_id}{if $type}&type={$type}{/if}{if $publishby}&publishby={$publishby}{/if}"}' data-msg="{lang key='article::article.move_confirm'}" data-val="trashed_article" data-status="{$list.article_approved}">{lang key='article::article.move_to_recycle'}</a>&nbsp;|&nbsp;
-								<a class="data-pjax" href='{RC_Uri::url("article/admin/edit", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>
+								<a class="data-pjax" href='{RC_Uri::url("article/admin/edit", "id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 								{if $list.article_approved eq 1}
-						      		&nbsp;|&nbsp;<a class="data-pjax" href='{url path="article/admin/comments" args="id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}"}' title="{lang key='article::article.article_comments'}">{lang key='article::article.article_comments'}</a>
+						      		<a class="data-pjax" href='{url path="article/admin/comments" args="id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}"}' title="{lang key='article::article.article_comments'}">{lang key='article::article.article_comments'}</a>&nbsp;|&nbsp;
 						     	{/if}
 							<!-- {/if} -->
 					      	{if $has_goods}
-					      		&nbsp;|&nbsp;<a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}"}' title="{lang key='article::article.tab_goods'}">{lang key='article::article.tab_goods'}</a> 
+					      		<a class="data-pjax" href='{url path="article/admin/link_goods" args="id={$list.article_id}{if $publishby}&publishby={$publishby}{/if}"}' title="{lang key='article::article.tab_goods'}">{lang key='article::article.tab_goods'}</a> 
 					      	{/if}
 					     	<!-- {if $list.cat_id > 0} -->
 						     	<!-- {if ($list.article_approved eq 'spam') || ($list.article_approved eq 'trash')} -->
