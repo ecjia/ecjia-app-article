@@ -414,7 +414,7 @@ return array(
    	'comment_required'			=> '没有找到该评论',
    	'article_title_is'			=> '文章标题是',	
    	'trash_confirm'		    => '您确定要将该文章设为垃圾文章吗？',
-   	'move_confirm'		    => '您确定要将该文章移至回收站吗？',
+   	'spam_confirm'		    => '您确定要将该文章移至回收站吗？',
    	'trash_msg'				=> '垃圾文章',
    	'move_to_recycle'		=> '移至回收站',
    	'remove_comment_confirm'=> '您确定要删除这条评论吗？',
