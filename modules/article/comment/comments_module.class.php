@@ -67,7 +67,7 @@ class comments_module extends api_front implements api_interface {
 				'article_id'		=> $article_id,
 				'sort_by'			=> 'dc.add_time',
 				'sort_order'		=> 'DESC',
-				'comment_approved'	=> 1
+				'comment_approved'	=> array(1,0)
 		);
 		
 		$comments =article_comments($options);
@@ -133,8 +133,8 @@ function article_comments($options) {
 		$dbview->where(RC_DB::raw('dc.id_value'), $options['article_id'])->where(RC_DB::raw('dc.comment_type'), 'article');
 	}
 	/*显示审核通过的*/
-	if ($options['comment_approved'] && $options['comment_approved'] == 1) {
-		$dbview->where(RC_DB::raw('dc.comment_approved'), '=', 1);
+	if ($options['comment_approved'] && is_array($options['comment_approved'])) {
+		$dbview->whereIn(RC_DB::raw('dc.comment_approved'),  $options['comment_approved']);
 	}
 	
 	/*文章评论总数 */

@@ -121,6 +121,19 @@ class article_list {
 		}
 		return $datas;
 	}
+	
+	/**
+	 * 更新文章评论数
+	 * @return bool
+	 */
+	public static function update_comment_count($article_id){
+		$count = RC_DB::table('discuss_comments')
+				->where('id_value', $article_id)
+				->whereIn('comment_approved', array(1,0))
+				->where('comment_type', 'article')->count('id');
+		$res = RC_DB::table('article')->where('article_id', $article_id)->update(array('comment_count' => $count));
+		return true;
+	}
 }	
 
 
