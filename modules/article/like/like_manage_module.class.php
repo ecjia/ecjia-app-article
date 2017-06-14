@@ -76,6 +76,7 @@ class like_manage_module extends api_front implements api_interface {
 		        'like_type'				=> 'article',
 		        'id_value'				=> $article_id,
 		        'user_id'  				=> $user_id,
+		    	'user_type'  			=> 'user',
 		        'like_value'			=> 1,
 		        'add_time'				=> RC_Time::gmtime(),
 		        'store_id'				=> $article_info['store_id'],
