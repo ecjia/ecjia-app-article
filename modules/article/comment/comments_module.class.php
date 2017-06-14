@@ -67,7 +67,7 @@ class comments_module extends api_front implements api_interface {
 				'article_id'		=> $article_id,
 				'sort_by'			=> 'dc.add_time',
 				'sort_order'		=> 'DESC',
-				'comment_approved'	=> array(1,0)
+				'comment_approved'	=> array(1)
 		);
 		
 		$comments =article_comments($options);

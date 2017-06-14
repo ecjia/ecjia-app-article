@@ -82,7 +82,7 @@ class create_module extends api_front implements api_interface {
 		        'ip_address'			=> RC_Ip::client_ip(),
 		        'parent_id'				=> 0,
 		        'store_id'				=> $store_id,
-		        'comment_approved'   	=> 0,
+		        'comment_approved'   	=> 1,
 		    );
 		    $comment_id = RC_DB::table('discuss_comments')->insertGetId($data);
 		}

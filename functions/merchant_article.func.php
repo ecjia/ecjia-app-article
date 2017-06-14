@@ -81,7 +81,7 @@ function update_article_comment_count($article_id) {
 		->where('comment_type', 'article')
 		->where('id_value', $article_id)
 		->where('store_id', $_SESSION['store_id'])
-		->whereIn('comment_approved', array(1,0))
+		->whereIn('comment_approved', array(1))
 		->count();
 	
 	RC_DB::table('article')->where('article_id', $article_id)->where('store_id', $_SESSION['store_id'])->update(array('comment_count' => $comment_count));
