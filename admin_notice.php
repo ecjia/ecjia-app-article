@@ -55,6 +55,9 @@ class admin_notice extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Loader::load_app_func('admin_article');
+		RC_Loader::load_app_func('global', 'article');
+		assign_adminlog_contents();
+		
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('jquery-form');
@@ -69,8 +72,8 @@ class admin_notice extends ecjia_admin {
 		RC_Script::enqueue_script('store_notice', RC_App::apps_url('statics/js/store_notice.js', __FILE__), array(), false, true);
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
-		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 6;
-		$data = get_cat_type_info($cat_type, $id);
+		$article_type = !empty($_GET['article_type']) ? trim($_GET['article_type']) : 'merchant_notice';
+		$data = get_cat_type_info($article_type, $id);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text'], $data['url']));
 	}
@@ -81,8 +84,8 @@ class admin_notice extends ecjia_admin {
 	public function init() {
 		$this->admin_priv('store_notice_manage');
 		
-		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 0;
-		$data = get_cat_type_info($cat_type);
+		$article_type = !empty($_GET['article_type']) ? trim($_GET['article_type']) : 'merchant_notice';
+		$data = get_cat_type_info($article_type);
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text']));
@@ -100,8 +103,8 @@ class admin_notice extends ecjia_admin {
 	public function add() {
 		$this->admin_priv('store_notice_update');
 		
-		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 0;
-		$data = get_cat_type_info($cat_type);
+		$article_type = !empty($_GET['article_type']) ? trim($_GET['article_type']) : 'merchant_notice';
+		$data = get_cat_type_info($article_type);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text_add']));
 		
@@ -120,16 +123,16 @@ class admin_notice extends ecjia_admin {
 		$keywords	= !empty($_POST['keywords'])    ? trim($_POST['keywords'])      : '';
 		$desc    	= !empty($_POST['description']) ? trim($_POST['description'])   : '';
 		$file		= !empty($_FILES['file']) 		? $_FILES['file'] 				: '';
-		$cat_type	= !empty($_GET['cat_type'])		? intval($_GET['cat_type'])		: 6;
+		$article_type = !empty($_GET['article_type']) ? trim($_GET['article_type'])	: 'merchant_notice';
 		
  		$is_only = RC_DB::table('article as a')
      			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
      			->where('title', $title)
-     			->where(RC_DB::raw('ac.cat_type'), $cat_type)
+     			->where(RC_DB::raw('a.article_type'), $article_type)
      			->count();
  			
 		if ($is_only != 0) {
-			return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(sprintf(RC_Lang::get('article::article.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$file_name = '';
@@ -146,7 +149,7 @@ class admin_notice extends ecjia_admin {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
-		$cat_id = RC_DB::table('article_cat')->where('cat_type', $cat_type)->pluck('cat_id');
+		$cat_id = RC_DB::table('article_cat')->where('cat_type', $article_type)->pluck('cat_id');
 		
 		$data = array(
 			'title' 	   	=> $title,
@@ -156,10 +159,17 @@ class admin_notice extends ecjia_admin {
 			'file_url'		=> $file_name,
 			'description'  	=> $desc,
 			'add_time' 		=> RC_Time::gmtime(),
+			'article_type'  => $article_type
 		);
 		$id = RC_DB::table('article')->insertGetId($data);
 
-		ecjia_admin::admin_log($title, 'add', 'merchant_notice');
+		if ($article_type == 'merchant_notice') {
+			$object = 'merchant_notice';
+		} elseif ($article_type == 'system') {
+			$object = 'system_info';
+		}
+		
+		ecjia_admin::admin_log($title, 'add', $object);
 		return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleadd_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_notice/edit', array('id' => $id))));
 	}
 	
@@ -176,8 +186,8 @@ class admin_notice extends ecjia_admin {
 			->selectRaw('a.*, ac.cat_type')
 			->first();
 		
-		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : $info['cat_type'];
-		$data = get_cat_type_info($cat_type);
+		$article_type = !empty($_GET['article_type']) ? trim($_GET['article_type']) : $info['article_type'];
+		$data = get_cat_type_info($article_type);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($data['text']));
 		
@@ -208,17 +218,17 @@ class admin_notice extends ecjia_admin {
 		$desc     	= !empty($_POST['description']) ? trim($_POST['description'])   : '';
 		$id       	= !empty($_POST['id'])          ? intval($_POST['id'])          : 0;
 		$file		= !empty($_FILES['file']) 		? $_FILES['file'] 				: '';
-		$cat_type	= !empty($_GET['cat_type'])		? intval($_GET['cat_type'])		: 6;
+		$article_type = !empty($_GET['article_type']) ? trim($_GET['article_type']) : 'merchant_notice';
 		
 		$is_only = RC_DB::table('article as a')
 			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
 			->where('title', $title)
-			->where(RC_DB::raw('ac.cat_type'), $cat_type)
+			->where(RC_DB::raw('ac.cat_type'), $article_type)
 			->where(RC_DB::raw('a.article_id'), '!=', $id)
 			->count();
 		
 		if ($is_only != 0) {
-			return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(sprintf(RC_Lang::get('article::article.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$old_file_name = RC_DB::table('article')->where('article_id', $id)->pluck('file_url');
@@ -246,11 +256,18 @@ class admin_notice extends ecjia_admin {
 			'keywords'    	=> $keywords,
 			'file_url'		=> $file_name,
 			'description' 	=> $desc,
-			'add_time'    	=> RC_Time::gmtime()
+			'add_time'    	=> RC_Time::gmtime(),
+			'article_type'  => $article_type
 		);
 
 		RC_DB::table('article')->where('article_id', $id)->update($data);
-		ecjia_admin::admin_log($title, 'edit', 'merchant_notice');
+		
+		if ($article_type == 'merchant_notice') {
+			$object = 'merchant_notice';
+		} elseif ($article_type == 'system') {
+			$object = 'system_info';
+		}
+		ecjia_admin::admin_log($title, 'edit', $object);
 		
 		return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleedit_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('article/admin_notice/edit', array('id' => $id))));
 	}
@@ -269,7 +286,13 @@ class admin_notice extends ecjia_admin {
 				$disk = RC_Filesystem::disk();
 				$disk->delete(RC_Upload::upload_path() . $info['file_url']);
 			}
-			ecjia_admin::admin_log(addslashes($info['title']), 'remove', 'merchant_notice');
+			
+			if ($info['article_type'] == 'merchant_notice') {
+				$object = 'merchant_notice';
+			} elseif ($info['article_type'] == 'system') {
+				$object = 'system_info';
+			}
+			ecjia_admin::admin_log(addslashes($info['title']), 'remove', $object);
 		}
 		return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.remove_success'), $info['title']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
@@ -298,16 +321,15 @@ class admin_notice extends ecjia_admin {
 	 * 获取文章列表
 	 */
 	private function get_notice_list($cat_id = 0) {
-		$cat_type = !empty($_GET['cat_type']) ? intval($_GET['cat_type']) : 6;
+		$article_type = !empty($_GET['article_type']) ? trim($_GET['article_type']) : 'merchant_notice';
 
 		$db_article = RC_DB::table('article as a');
-		if (!empty($cat_type)) {
-			$db_article->where(RC_DB::raw('ac.cat_type'), $cat_type);
+		if (!empty($article_type)) {
+			$db_article->where(RC_DB::raw('a.article_type'), $article_type);
 		}
 		
 	    $data = $db_article
      			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
-     			->where(RC_DB::raw('ac.cat_type'), $cat_type)
      			->get();
 	    
 	    $list = array();
