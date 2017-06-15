@@ -247,7 +247,7 @@ class admin_article_auto extends ecjia_admin {
 		}
 		//不获取系统帮助文章的过滤
 		$where['a.cat_id'] = array('neq' => 0);
-		$where['ac.cat_type']	= 1;
+		$where['ac.cat_type']	= 'article';
 		
 		$count = $db_article_view->article_count($where, 'article_cat');
 		$page = new ecjia_page($count, 10, 5);

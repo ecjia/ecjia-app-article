@@ -63,7 +63,7 @@ class article_cat {
 	 * @param int $level
 	 *        	限定返回的级数。为0时返回所有级数
 	 * @param int $cat_type
-	 *        	文章分类类型。1普通分类，2系统保留分类，3网店信息分类，4网店帮助分类，5网店帮助下的分类，6商家公告
+	 *        	文章分类类型。article普通分类，2系统保留分类，3网店信息分类，4网店帮助分类，5网店帮助下的分类，6商家公告
 	 * @return mix
 	 */
 	public static function article_cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0, $cat_type = 0) {

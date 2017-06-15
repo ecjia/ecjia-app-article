@@ -121,7 +121,7 @@ class admin extends ecjia_admin {
 		
 		/* 文章筛选时保留筛选的分类cat_id */
 		$cat_id = isset($_GET['cat_id']) ? intval($_GET['cat_id']) : 0;
-		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false, 0, 1));
+		$this->assign('cat_select', article_cat::article_cat_list(0, $cat_id, false, 0, 'article'));
 	
 		/* 取得过滤条件 */
 		$filter = array();		
@@ -176,7 +176,7 @@ class admin extends ecjia_admin {
 		$this->assign('article_type', $article_type);
 
 		$this->assign('article', $article);
-		$this->assign('cat_select', article_cat::article_cat_list(0, 0, false, 0, 1));
+		$this->assign('cat_select', article_cat::article_cat_list(0, 0, false, 0, 'article'));
 		
 		$this->assign('form_action', RC_Uri::url('article/admin/insert'));
 		$this->assign('publishby',$publishby);
@@ -460,7 +460,7 @@ class admin extends ecjia_admin {
 		$this->assign('term_meta_key_list', $term_meta_key_list);
 	
 		$this->assign('action',	'edit');
-		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id'], false, 0, 1));
+		$this->assign('cat_select', article_cat::article_cat_list(0, $article['cat_id'], false, 0, 'article'));
 		$this->assign('article', $article);
 		$this->assign('form_action', RC_Uri::url('article/admin/update'));
 		$this->assign('publishby', $publishby);
@@ -1477,7 +1477,7 @@ class admin extends ecjia_admin {
 			->leftJoin('store_franchisee as sf', RC_DB::raw('a.store_id'), '=', RC_DB::raw('sf.store_id'));
 		
 		//不获取系统帮助文章的过滤
-		$db_article->where(RC_DB::raw('a.cat_id'), '!=', '0')->where(RC_DB::raw('ac.cat_type'), 1);
+		$db_article->where(RC_DB::raw('a.cat_id'), '!=', '0')->where(RC_DB::raw('ac.cat_type'), 'article');
 		
 		if(!empty($publishby) && $publishby == 'store') {
 			$db_article->where(RC_DB::raw('a.store_id'), '>', '0');
