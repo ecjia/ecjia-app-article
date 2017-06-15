@@ -55,7 +55,7 @@ class cycleimage_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	$request = royalcms('request');
     	
-    	$cat_type = array('1');
+    	$cat_type = array('article');
     	$cat_list = RC_DB::table('article_cat')->where('parent_id', 0)->whereIn('cat_type', $cat_type)->orderBy('sort_order', 'ASC')->selectRaw('cat_id, cat_name')->get();
     	
 		$list = array();
