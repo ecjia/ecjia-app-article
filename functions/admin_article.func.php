@@ -83,16 +83,16 @@ function get_article_info($article_id) {
  * @param number $cat_type
  * @return array
  */
-function get_cat_type_info ($cat_type = 0, $article_id = 0) {
+function get_cat_type_info ($article_type = 'merchant_notice', $article_id = 0) {
 	$info['cat_type'] = 0;
 	if (!empty($article_id)) {
 		$info = RC_DB::table('article as a')
 		->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
 		->where(RC_DB::raw('a.article_id'), $article_id)
-		->selectRaw('a.*, ac.cat_type')
+		->selectRaw('a.*')
 		->first();
 	}
-	$cat_type = !empty($info['cat_type']) ? $info['cat_type'] : $cat_type;//默认商家公告
+	$article_type = !empty($info['article_type']) ? $info['article_type'] : $article_type;//默认商家公告
 	$text = '商家公告';
 	$text_add = '发布商家公告';
 	$text_edit = '编辑商家公告';
@@ -101,24 +101,24 @@ function get_cat_type_info ($cat_type = 0, $article_id = 0) {
 	$url_insert = RC_Uri::url('article/admin_notice/insert');
 	$url_update = RC_Uri::url('article/admin_notice/update');
 
-	if ($cat_type == 7) {
+	if ($article_type == 'system') {
 		$text = '系统信息';
 		$text_add = '发布系统信息';
 		$text_edit = '编辑系统信息';
-		$url = RC_Uri::url('article/admin_notice/init', array('cat_type' => 7));
-		$url_add = RC_Uri::url('article/admin_notice/add', array('cat_type' => 7));
-		$url_insert = RC_Uri::url('article/admin_notice/insert', array('cat_type' => 7));
-		$url_update = RC_Uri::url('article/admin_notice/update', array('cat_type' => 7));
+		$url = RC_Uri::url('article/admin_notice/init', array('article_type' => 'system'));
+		$url_add = RC_Uri::url('article/admin_notice/add', array('article_type' => 'system'));
+		$url_insert = RC_Uri::url('article/admin_notice/insert', array('article_type' => 'system'));
+		$url_update = RC_Uri::url('article/admin_notice/update', array('article_type' => 'system'));
 	}
 	$data = array(
-			'text'             => $text,
-			'text_add'         => $text_add,
-			'text_edit'     => $text_edit,
-			'url'            => $url,
-			'url_add'        => $url_add,
-			'url_insert'     => $url_insert,
-			'url_update'    => $url_update,
-			'article_info'    => $info
+		'text'          => $text,
+		'text_add'      => $text_add,
+		'text_edit'     => $text_edit,
+		'url'           => $url,
+		'url_add'       => $url_add,
+		'url_insert'    => $url_insert,
+		'url_update'    => $url_update,
+		'article_info'  => $info
 	);
 	return $data;
 }
