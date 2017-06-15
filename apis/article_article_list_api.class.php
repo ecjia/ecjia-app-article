@@ -82,6 +82,8 @@ class article_article_list_api extends Component_Event_Api {
 		$filter['article_approved']	  = empty($options['article_approved'])	? 1 : intval($options['article_approved']);
 		$filter['page_size']  = empty($options['page_size']) 	? 15 : intval($options['page_size']);
 		$filter['current_page'] = empty($options['current_page']) ? 1 : intval($options['current_page']);
+		
+		$filter['article_type']	  = empty($options['article_type']) 	? '' : trim($options['article_type']);
 		//不获取系统帮助文章的过滤
 		if (!empty($filter['keywords'])) {
 			$dbview->where(RC_DB::raw('a.title'), 'like', '%' .$filter['keywords']. '%');
@@ -90,6 +92,11 @@ class article_article_list_api extends Component_Event_Api {
 		if ($filter['cat_id'] && ($filter['cat_id'] > 0)) {
 			$dbview->whereIn(RC_DB::raw('a.cat_id'),article_cat::get_children_list($filter['cat_id']));
 		}
+		
+		if (!empty($filter['article_type'])) {
+			$dbview->where(RC_DB::raw('a.article_type'), $filter['article_type']);
+		}
+		
 		/* 是否显示 will.chen*/
 		$dbview->where(RC_DB::raw('a.article_approved'), '=', $filter['article_approved']);
 		

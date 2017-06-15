@@ -159,7 +159,8 @@ class admin_notice extends ecjia_admin {
 			'file_url'		=> $file_name,
 			'description'  	=> $desc,
 			'add_time' 		=> RC_Time::gmtime(),
-			'article_type'  => $article_type
+			'article_type'  => $article_type,
+			'article_approved' => 1,
 		);
 		$id = RC_DB::table('article')->insertGetId($data);
 
@@ -257,7 +258,8 @@ class admin_notice extends ecjia_admin {
 			'file_url'		=> $file_name,
 			'description' 	=> $desc,
 			'add_time'    	=> RC_Time::gmtime(),
-			'article_type'  => $article_type
+			'article_type'  => $article_type,
+			'article_approved' => 1,
 		);
 
 		RC_DB::table('article')->where('article_id', $id)->update($data);
