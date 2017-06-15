@@ -53,7 +53,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class info_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
     	$article_db = RC_DB::table('article');
-    	$article_db->where('cat_id' , '=', 0);
     	$article_db->where('content' , '<>', '');
     	$article_db->where('title' , '<>', '');
     	$article_db->where('article_type' , 'shop_info');
