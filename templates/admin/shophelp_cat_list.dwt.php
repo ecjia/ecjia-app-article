@@ -22,8 +22,9 @@
             <button class="btn btn-gebo" type="submit">{lang key='article::shophelp.cat_add_confirm'}</button>
         </form>
 	</div>
+	
 	<div class="right-bar">
-		<table class="table dataTable table-hide-edit">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>{lang key='article::shophelp.cat_name'}</th>

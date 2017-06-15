@@ -411,7 +411,7 @@ class admin_shophelp extends ecjia_admin {
 	private function get_shophelp_list() {
 		$data = RC_DB::table('article_cat')
 			->select('cat_id', 'cat_name', 'sort_order')
-			->where('cat_type', shop_help)
+			->where('cat_type', 'shop_help')
 			->orderby('sort_order', 'asc')
 			->get();
 		
