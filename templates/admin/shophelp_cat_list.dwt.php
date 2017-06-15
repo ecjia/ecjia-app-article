@@ -30,7 +30,7 @@
 				<tr>
 					<th>{lang key='article::shophelp.cat_name'}</th>
 					<th class="w50">{lang key='article::shophelp.sort'}</th>
-					<th class="w200">{lang key='system::system.handler'}</th>
+					<th class="w180">{lang key='system::system.handler'}</th>
 				</tr>
 			</thead>
 			<tbody>
