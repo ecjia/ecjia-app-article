@@ -154,16 +154,16 @@ class admin_articlecat extends ecjia_admin {
         if ($this->db_article_cat->article_cat_count(array('cat_name' => $cat_name)) > 0) {
 			return $this->showmessage(sprintf(RC_Lang::get('article::article.catname_exist'), stripslashes($cat_name)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		$cat_type = 1;
-		if ($parent_id > 0) {
-            $p_cat_type = $this->db_article_cat->article_cat_field($parent_id, 'cat_type');
-		    $p_cat_type = $p_cat_type['cat_type'];
-			if ($p_cat_type == 2 || $p_cat_type == 3 || $p_cat_type == 5) {
-				return $this->showmessage(RC_Lang::get('article::article.not_allow_add'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			} else if ($p_cat_type == 4) {
-				$cat_type = 5;
-			}
-		}
+		$cat_type = 'article';
+// 		if ($parent_id > 0) {
+//             $p_cat_type = $this->db_article_cat->article_cat_field($parent_id, 'cat_type');
+// 		    $p_cat_type = $p_cat_type['cat_type'];
+// 			if ($p_cat_type == 2 || $p_cat_type == 3 || $p_cat_type == 5) {
+// 				return $this->showmessage(RC_Lang::get('article::article.not_allow_add'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 			} else if ($p_cat_type == 4) {
+// 				$cat_type = 5;
+// 			}
+// 		}
 		$show_in_nav = !empty($_POST['show_in_nav']) ? intval($_POST['show_in_nav']) : 0;
 		$data = array(
 			'cat_name'	  => $cat_name,
@@ -273,6 +273,7 @@ class admin_articlecat extends ecjia_admin {
 
         $row = $this->db_article_cat->article_cat_info($id);
 		$cat_type = $row['cat_type'];
+		
 		if ($cat_type == 3 || $cat_type == 4) {
 			$parent_id = $row['parent_id'];
 		}
@@ -288,19 +289,19 @@ class admin_articlecat extends ecjia_admin {
 			return $this->showmessage(sprintf(RC_Lang::get('article::article.parent_id_err'), stripslashes($cat_name)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
-		if ($cat_type == 1 || $cat_type == 5) {
-			if ($parent_id > 0) {
-			    $p_cat_type = $this->db_article_cat->article_cat_field($parent_id, 'cat_type');
+// 		if ($cat_type == 1 || $cat_type == 5) {
+// 			if ($parent_id > 0) {
+// 			    $p_cat_type = $this->db_article_cat->article_cat_field($parent_id, 'cat_type');
 			     
-				if ($p_cat_type == 4) {
-					$cat_type = 5;
-				} else {
-					$cat_type = 1;
-				}
-			} else {
-				$cat_type = 1;
-			}
-		}
+// 				if ($p_cat_type == 4) {
+// 					$cat_type = 5;
+// 				} else {
+// 					$cat_type = 1;
+// 				}
+// 			} else {
+// 				$cat_type = 1;
+// 			}
+// 		}
 		
         $info = $this->db_article_cat->article_cat_info($id);
 		$data = array(
