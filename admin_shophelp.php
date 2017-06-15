@@ -177,8 +177,6 @@ class admin_shophelp extends ecjia_admin {
 		
 		$title 			= !empty($_POST['title']) 			? trim($_POST['title']) 			: '';
 		$cat_id 		= !empty($_POST['cat_id']) 			? intval($_POST['cat_id']) 			: 0;
-		$article_type 	= !empty($_POST['article_type']) 	? trim($_POST['article_type']) 	: 'article';
-
 		$is_only = $this->db_article->article_count(array('title' => $title, 'cat_id' => $cat_id));
 		if ($is_only != 0) {
 			return $this->showmessage(sprintf(RC_Lang::get('article::shophelp.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -186,7 +184,7 @@ class admin_shophelp extends ecjia_admin {
 		$data = array(
 			'title'		   	=> $title,
 			'cat_id'	   	=> $cat_id,
-			'article_type' 	=> $article_type,
+			'article_type' 	=> 'shop_help',
 			'content'	   	=> !empty($_POST['content']) ? $_POST['content'] : '',
 			'keywords'	   	=> !empty($_POST['keywords']) ? trim($_POST['keywords']) : '',
 			'description'  	=> !empty($_POST['description']) ? trim($_POST['description']) : '',
@@ -252,7 +250,6 @@ class admin_shophelp extends ecjia_admin {
 		$cat_id    = !empty($_POST['cat_id']) 		? intval($_POST['cat_id']) 	: 0;
 		$id        = !empty($_POST['id']) 			? intval($_POST['id']) 		: 0;
 		$title     = !empty($_POST['title']) 		? trim($_POST['title']) 	: '';
-		$article_type = !empty($_POST['article_type']) ? trim($_POST['article_type']) : 'article';
 		
 	    $is_only = $this->db_article->article_count(array('title' => $title, 'cat_id' => $cat_id, 'article_id' => array('neq' => $id)));
 		if ($is_only != 0) {
@@ -263,7 +260,7 @@ class admin_shophelp extends ecjia_admin {
 		    'article_id'    => $id,
 			'title'        	=> $title,
 			'cat_id'       	=> $cat_id,
-			'article_type' 	=> $article_type,
+			'article_type' 	=> 'shop_help',
 			'content'      	=> !empty($_POST['content']) ? $_POST['content'] : '',
 			'keywords'     	=> !empty($_POST['keywords']) ? trim($_POST['keywords']) : '',
 			'description'	=> !empty($_POST['description']) ? trim($_POST['description']) : '',
@@ -390,8 +387,7 @@ class admin_shophelp extends ecjia_admin {
 			} else {
 				$data = array(
 					'cat_name'  => $cat_name,
-					'cat_type'  => 5,
-					'parent_id' => 3,
+					'cat_type'  => 'shop_help',
 				);
 				$this->db_article_cat->article_cat_manage($data);
 				//释放article_list缓存
@@ -415,8 +411,7 @@ class admin_shophelp extends ecjia_admin {
 	private function get_shophelp_list() {
 		$data = RC_DB::table('article_cat')
 			->select('cat_id', 'cat_name', 'sort_order')
-			->where('cat_type', 5)
-			->where('parent_id', 3)
+			->where('cat_type', shop_help)
 			->orderby('sort_order', 'asc')
 			->get();
 		
