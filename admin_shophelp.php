@@ -390,8 +390,7 @@ class admin_shophelp extends ecjia_admin {
 			} else {
 				$data = array(
 					'cat_name'  => $cat_name,
-					'cat_type'  => 5,
-					'parent_id' => 3,
+					'cat_type'  => 'shop_help',
 				);
 				$this->db_article_cat->article_cat_manage($data);
 				//释放article_list缓存
@@ -415,8 +414,7 @@ class admin_shophelp extends ecjia_admin {
 	private function get_shophelp_list() {
 		$data = RC_DB::table('article_cat')
 			->select('cat_id', 'cat_name', 'sort_order')
-			->where('cat_type', 5)
-			->where('parent_id', 3)
+			->where('cat_type', shop_help)
 			->orderby('sort_order', 'asc')
 			->get();
 		
