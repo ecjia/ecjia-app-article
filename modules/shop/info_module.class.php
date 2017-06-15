@@ -47,7 +47,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 商店帮助列表
+ * 商店信息列表
  * @author royalwang
  */
 class info_module extends api_front implements api_interface {
@@ -56,6 +56,7 @@ class info_module extends api_front implements api_interface {
     	$article_db->where('cat_id' , '=', 0);
     	$article_db->where('content' , '<>', '');
     	$article_db->where('title' , '<>', '');
+    	$article_db->where('article_type' , 'shop_info');
     	
     	$cat_id = 0;
     	$cache_article_key = 'article_list_'.$cat_id;
