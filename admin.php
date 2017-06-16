@@ -700,7 +700,6 @@ class admin extends ecjia_admin {
 				$data[] = array(
 					'article_id'   => $article_id,
 					'goods_id'     => $val['goods_id'],
-					'admin_id'     => $_SESSION['admin_id'],
 				);
 			}
 		}
