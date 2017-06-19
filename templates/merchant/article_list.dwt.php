@@ -139,7 +139,7 @@
 						</tr>
 						<!-- {foreachelse} -->
 						<tr>
-							<td class="no-records" colspan="5">
+							<td class="no-records" colspan="6">
 								{lang key='system::system.no_records'}
 							</td>
 						</tr>

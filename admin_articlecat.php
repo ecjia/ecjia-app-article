@@ -272,11 +272,12 @@ class admin_articlecat extends ecjia_admin {
 		}
 
         $row = $this->db_article_cat->article_cat_info($id);
-		$cat_type = $row['cat_type'];
+		//$cat_type = $row['cat_type'];
+        $cat_type = 'article';
 		
-		if ($cat_type == 3 || $cat_type == 4) {
-			$parent_id = $row['parent_id'];
-		}
+// 		if ($cat_type == 3 || $cat_type == 4) {
+// 			$parent_id = $row['parent_id'];
+// 		}
 		
 		/* 检查设定的分类的父分类是否合法 */
 		$child_cat = article_cat::article_cat_list($id, 0, false, 0, 'article');

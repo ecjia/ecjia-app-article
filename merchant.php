@@ -1153,7 +1153,7 @@ class merchant extends ecjia_merchant {
 			->where(RC_DB::raw('a.article_approved'), '!=', 'spam');
 		
 		//不获取系统帮助文章的过滤
-		$db_article->where(RC_DB::raw('ac.cat_type'), 1);
+		$db_article->where(RC_DB::raw('ac.cat_type'), 'article');
 		
 		if (!empty($filter['keywords'])) {
 			$db_article ->where(RC_DB::raw('title'), 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
