@@ -83,7 +83,7 @@ class article_article_list_api extends Component_Event_Api {
 		$filter['page_size']  = empty($options['page_size']) 	? 15 : intval($options['page_size']);
 		$filter['current_page'] = empty($options['current_page']) ? 1 : intval($options['current_page']);
 		
-		$filter['article_type']	  = empty($options['article_type']) 	? '' : trim($options['article_type']);
+		$filter['article_type']	  = empty($options['article_type']) 	? 'article' : trim($options['article_type']);
 		//不获取系统帮助文章的过滤
 		if (!empty($filter['keywords'])) {
 			$dbview->where(RC_DB::raw('a.title'), 'like', '%' .$filter['keywords']. '%');
