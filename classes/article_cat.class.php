@@ -77,7 +77,6 @@ class article_cat {
 		$res = $db_article
 			->select(RC_DB::raw('c.*'), RC_DB::raw('COUNT(s.cat_id) as has_children'), RC_DB::raw('COUNT(a.article_id) as article_num'))
 			->whereNotIn(RC_DB::raw('c.parent_id'), array(1,2,3))
-			->where(RC_DB::raw('c.cat_id'), '!=', 1)
 			->groupby(RC_DB::raw('c.cat_id'))
 			->orderby('parent_id', 'asc')
 			->orderby('sort_order', 'asc')
