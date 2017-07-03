@@ -198,8 +198,8 @@ class admin_notice extends ecjia_admin {
 		if (!empty($info['content'])) {
 			$info['content'] = stripslashes($info['content']);
 		}
-
-		if (!empty($info['file_url']) && file_exists(RC_Upload::upload_path($info['file_url']))) {
+		$disk = RC_Filesystem::disk();
+		if (!empty($info['file_url']) && $disk->exists(RC_Upload::upload_path($info['file_url']))) {
 			$info['image_url'] = RC_Upload::upload_url($info['file_url']);
 		} else {
 			$info['image_url'] = RC_Uri::admin_url('statics/images/nopic.png');
@@ -283,9 +283,9 @@ class admin_notice extends ecjia_admin {
 		$id   = intval($_GET['id']);
 		$info = RC_DB::table('article')->where('article_id', $id)->first();
 		
+		$disk = RC_Filesystem::disk();
 		if (RC_DB::table('article')->where('article_id', $id)->delete()) {
-			if (!empty($info['file_url']) && file_exists(RC_Upload::upload_path() . $info['file_url'])) {
-				$disk = RC_Filesystem::disk();
+			if (!empty($info['file_url']) && $disk->exists(RC_Upload::upload_path() . $info['file_url'])) {
 				$disk->delete(RC_Upload::upload_path() . $info['file_url']);
 			}
 			
