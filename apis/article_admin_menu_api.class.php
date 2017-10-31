@@ -69,7 +69,7 @@ class article_admin_menu_api extends Component_Event_Api {
         	ecjia_admin::make_admin_menu('09_system_info', RC_Lang::get('article::article.system_info'), RC_Uri::url('article/admin_notice/init', array('article_type' => 'system')), 10)->add_purview('store_notice_manage'),
         		
         	ecjia_admin::make_admin_menu('divider', '', '', 10)->add_purview(array('article_auto_manage')),
-//         	ecjia_admin::make_admin_menu('11_article_info', __('文章自动发布'), RC_Uri::url('article/admin_article_auto/init'), 12)->add_purview('article_auto_manage'),
+        	ecjia_admin::make_admin_menu('11_article_info', __('文章自动发布'), RC_Uri::url('article/admin_article_auto/init'), 12)->add_purview('article_auto_manage'),
         );
         
         $menus->add_submenu($submenus);
