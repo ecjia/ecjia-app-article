@@ -521,7 +521,7 @@ class admin extends ecjia_admin {
 			//}
 			
 			/*文章封面*/
-			$old_pic = RC_DB::TABLE('article')->where('article_id', $id)->pluck('cover_image');
+			$old_pic = RC_DB::table('article')->where('article_id', $id)->pluck('cover_image');
 			if (isset($_FILES['cover_image']['error']) && $_FILES['cover_image']['error'] == 0 || ! isset($_FILES['cover_image']['error']) && isset($_FILES['cover_image']['tmp_name']) && $_FILES['cover_image']['tmp_name'] != 'none') {
 				$upload = RC_Upload::uploader('image', array('save_path' => 'data/article', 'auto_sub_dirs' => false));
 				$image_info = $upload->upload($_FILES['cover_image']);
