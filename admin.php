@@ -1371,7 +1371,7 @@ class admin extends ecjia_admin {
 	/**
 	 * 获取文章评论列表
 	 */
-	public function get_comment_list($article_id) {
+	public function get_comment_list($article_id = 0) {
 		$filter = array();
 		$filter['keywords']   = empty($_GET['keywords'])      ? ''                : trim($_GET['keywords']);
 		$filter['cat_id']     = empty($_GET['cat_id'])        ? 0                 : intval($_GET['cat_id']);
