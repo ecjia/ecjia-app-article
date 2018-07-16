@@ -270,7 +270,7 @@ class admin extends ecjia_admin {
 				'add_time'     		=> RC_Time::gmtime(),
 				'file_url'     		=> $file_name,
 				'cover_image'  		=> $cover_image,
-				'link'         		=> $linkurl,
+				'link'         		=> empty($linkurl) ? '' : $linkurl,
 				'description'  		=> $description,
 				'suggest_type'		=> $suggest_type
 			);
@@ -571,7 +571,7 @@ class admin extends ecjia_admin {
 				'keywords'     		=> $keywords,
 				'content'      		=> $content,
 				'file_url'     		=> $file_name,
-				'link'         		=> $linkurl,
+				'link'         		=> empty($linkurl) ? '' : $linkurl,
 				'cover_image'		=> $cover_image,
 				'description'  		=> $description,
 				'suggest_type'		=> $suggest_type,
