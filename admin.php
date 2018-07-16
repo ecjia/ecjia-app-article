@@ -204,10 +204,20 @@ class admin extends ecjia_admin {
 		if (($article_type == 'article') && empty($content)) {
 			return $this->showmessage('文章类型为普通文章时，文章内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
 		}
-		if (($article_type == 'redirect') && (strstr($link_url, 7) == false)) {
+		if (($article_type == 'redirect') && (empty($link_url))) {
 			return $this->showmessage('文章类型为跳转链接时，外部链接不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
 		}
-			
+
+		if (!empty($link_url) && $article_type == 'redirect') {
+			if (substr($link_url, 7) == 'http://' || substr($link_url, 8) == "https://") {
+				$linkurl = $link_url;
+			} elseif (substr($link_url, 7) != 'http://' && substr($link_url, 8) != "https://") {
+				$linkurl = 'http://'.$link_url;
+			}
+		} else {
+			$linkurl = '';
+		}
+		
 		$is_only = RC_DB::table('article')->where('title', $title)->count();
 		if ($is_only > 0) {
 			return $this->showmessage(sprintf(RC_Lang::get('article::article.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
@@ -260,7 +270,7 @@ class admin extends ecjia_admin {
 				'add_time'     		=> RC_Time::gmtime(),
 				'file_url'     		=> $file_name,
 				'cover_image'  		=> $cover_image,
-				'link'         		=> $link_url,
+				'link'         		=> $linkurl,
 				'description'  		=> $description,
 				'suggest_type'		=> $suggest_type
 			);
@@ -479,8 +489,17 @@ class admin extends ecjia_admin {
 		if (($article_type == 'article') && empty($content)) {
 			return $this->showmessage('文章类型为普通文章时，文章内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
 		}
-		if (($article_type == 'redirect') && (strstr($link_url, 7) == false)) {
+		if (($article_type == 'redirect') && (empty($link_url))) {
 			return $this->showmessage('文章类型为跳转链接时，外部链接不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+		}
+		if (!empty($link_url) && $article_type == 'redirect') {
+			if (substr($link_url, 7) == 'http://' || substr($link_url, 8) == "https://") {
+				$linkurl = $link_url;
+			} elseif (substr($link_url, 7) != 'http://' && substr($link_url, 8) != "https://") {
+				$linkurl = 'http://'.$link_url;
+			}
+		} else {
+			$linkurl = '';
 		}
 		
 		$is_only = RC_DB::table('article')->where('title', $title)->where('article_id', '!=', $id)->count();
@@ -551,7 +570,7 @@ class admin extends ecjia_admin {
 				'keywords'     		=> $keywords,
 				'content'      		=> $content,
 				'file_url'     		=> $file_name,
-				'link'         		=> $link_url,
+				'link'         		=> $linkurl,
 				'cover_image'		=> $cover_image,
 				'description'  		=> $description,
 				'suggest_type'		=> $suggest_type,
