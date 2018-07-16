@@ -209,10 +209,10 @@ class admin extends ecjia_admin {
 		}
 
 		if (!empty($link_url) && $article_type == 'redirect') {
-			if (substr($link_url, 7) == 'http://' || substr($link_url, 8) == "https://") {
-				$linkurl = $link_url;
-			} elseif (substr($link_url, 7) != 'http://' && substr($link_url, 8) != "https://") {
+			if (strpos($link_url, 'http') === false) {
 				$linkurl = 'http://'.$link_url;
+			} elseif (strlen($link_url) > 7 && strpos($link_url, 'http') === 0) {
+				$linkurl = $link_url;
 			}
 		} else {
 			$linkurl = '';
@@ -492,16 +492,17 @@ class admin extends ecjia_admin {
 		if (($article_type == 'redirect') && (empty($link_url))) {
 			return $this->showmessage('文章类型为跳转链接时，外部链接不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
 		}
+		
 		if (!empty($link_url) && $article_type == 'redirect') {
-			if (substr($link_url, 7) == 'http://' || substr($link_url, 8) == "https://") {
-				$linkurl = $link_url;
-			} elseif (substr($link_url, 7) != 'http://' && substr($link_url, 8) != "https://") {
+			if (strpos($link_url, 'http') === false) {
 				$linkurl = 'http://'.$link_url;
+			} elseif (strlen($link_url) > 7 && strpos($link_url, 'http') === 0) {
+				$linkurl = $link_url;
 			}
 		} else {
 			$linkurl = '';
 		}
-		
+
 		$is_only = RC_DB::table('article')->where('title', $title)->where('article_id', '!=', $id)->count();
 		
 		if ($is_only != 0) {
