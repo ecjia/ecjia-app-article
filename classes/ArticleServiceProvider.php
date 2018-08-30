@@ -9,7 +9,7 @@ class ArticleServiceProvider extends  AppParentServiceProvider
     
     public function boot()
     {
-        $this->package('ecjia/app-article');
+        $this->package('ecjia/app-article', null, dirname(__DIR__));
     }
     
     public function register()
