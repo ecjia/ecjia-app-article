@@ -36,7 +36,7 @@
 			<!-- {foreach from=$article_comment item=val} -->
 			<tr>
 				<td>
-				<div class="td-left"><img src="{$val.avatar_img}" /></div>
+					<div class="td-left"><img src="{$val.avatar_img}" /></div>
 					<div class="td-right">
 						<p class="m_b5">{$val.user_name}</p>
 						<p class="m_b5">对文章<a href="{RC_Uri::url('article/admin/preview')}&id={$val.id_value}" target="_black" title="{$val.title}">《{$val.title}》</a>发表评论</p>
@@ -56,10 +56,12 @@
 		border: none;
 		margin-bottom: 10px;
 	}
+
 	.table.article_stats_table td {
 		border-top: none;
 		border-bottom: 1px solid #eee;
 	}
+
 	.table.article_stats_table tr:last-child td {
 		border-bottom: none;
 	}
@@ -70,9 +72,11 @@
 		float: left;
 		margin: 0px 10px 0 10px;
 	}
+
 	.table.article_stats_table .td-left {
 		float: left;
 	}
+
 	.table.article_stats_table .td-right {
 		margin-left: 100px;
 	}
