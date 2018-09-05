@@ -61,7 +61,12 @@ class article_hooks
         //最新发布
         $article = RC_Cache::app_cache_get('admin_dashboard_articlestats', 'article');
         if (!$article) {
-            $article = RC_DB::table('article')->select('title', 'article_id', 'add_time')->take(5)->orderBy('article_id', 'desc')->get();
+            $article = RC_DB::table('article as a')
+            	->leftJoin('store_franchisee as s', RC_DB::raw('a.store_id'), '=', RC_DB::raw('s.store_id'))
+            	->select(RC_DB::raw('a.title, a.article_id, a.add_time, s.merchants_name'))
+            	->take(5)
+            	->orderBy(RC_DB::raw('a.article_id'), 'desc')
+            	->get();
             RC_Cache::app_cache_set('admin_dashboard_articlestats', $article, 'article', 120);
         }
 

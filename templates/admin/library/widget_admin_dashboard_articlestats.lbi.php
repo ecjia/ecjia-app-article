@@ -16,6 +16,7 @@
 						<a href="{RC_Uri::url('article/admin/preview')}&id={$val.article_id}" target="_black" title="{$val.title}">{$val.title}</a>
 						<span class="ecjiaf-fr">{RC_Time::local_date('Y-m-d H:i:s', $val.add_time)}</span>
 					</p>
+					<p class="m_b5">文章由【{if $val.merchants_name}{$val.merchants_name}{else}平台{/if}】发布</p>
 				</td>
 			</tr>
 			<!-- {foreachelse} -->
