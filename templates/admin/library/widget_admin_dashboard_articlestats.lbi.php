@@ -1,6 +1,5 @@
 <?php defined('IN_ECJIA') or exit('No permission resources.');?>
 
-{if $article}
 <div class="move-mod-group" id="widget_admin_dashboard_articlestats">
 	<div class="heading clearfix move-mod-head">
 		<h3 class="pull-left">{$article_title}</h3>
@@ -19,14 +18,20 @@
 					</p>
 				</td>
 			</tr>
+			<!-- {foreachelse} -->
+			<tr>
+				<td class="no-records">
+					暂无文章
+				</td>
+			</tr>
 			<!-- {/foreach} -->
 		</tbody>
 	</table>
+	{if $article}
 	<div class="ecjiaf-tar"><a href="{RC_Uri::url('article/admin/init')}" title="查看更多">查看更多</a></div>
+	{/if}
 </div>
-{/if}
 
-{if $article_comment}
 <div class="move-mod-group" id="widget_admin_dashboard_article_commentstats">
 	<div class="heading clearfix move-mod-head no-border">
 		<h3 class="pull-left">近期评论</h3>
@@ -44,12 +49,19 @@
 					</div>
 				</td>
 			</tr>
+			<!-- {foreachelse} -->
+			<tr>
+				<td class="no-records">
+					暂无评论
+				</td>
+			</tr>
 			<!-- {/foreach} -->
 		</tbody>
 	</table>
+	{if $article_comment}
 	<div class="ecjiaf-tar"><a href="{RC_Uri::url('article/admin/article_comment_list')}&publishby=total_comments" title="查看更多">查看更多</a></div>
+	{/if}
 </div>
-{/if}
 
 <style type="text/css">
 	.heading.no-border {

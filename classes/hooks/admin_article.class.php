@@ -51,21 +51,21 @@ class article_hooks
 
     public static function widget_admin_dashboard_articlestats()
     {
-
         if (!ecjia_admin::$controller->admin_priv('article_manage', ecjia::MSGTYPE_HTML, false)) {
             return false;
         }
-        $article_title = '文章投稿';
 
+        $article_title = '文章投稿';
+        $static_url = RC_App::apps_url('article/statics/image/');
+
+        //最新发布
         $article = RC_Cache::app_cache_get('admin_dashboard_articlestats', 'article');
         if (!$article) {
             $article = RC_DB::table('article')->select('title', 'article_id', 'add_time')->take(5)->orderBy('article_id', 'desc')->get();
             RC_Cache::app_cache_set('admin_dashboard_articlestats', $article, 'article', 120);
         }
 
-        ecjia_admin::$controller->assign('article_title', $article_title);
-        ecjia_admin::$controller->assign('article', $article);
-
+        //近期评论
         $article_comment = RC_Cache::app_cache_get('admin_dashboard_article_commentstats', 'article');
         if (!$article_comment) {
             $article_comment = RC_DB::table('discuss_comments as dc')
@@ -78,19 +78,19 @@ class article_hooks
                 ->get();
             if (!empty($article_comment)) {
                 foreach ($article_comment as $k => $v) {
-                    $article_comment[$k]['avatar_img'] = !empty($v['avatar_img']) ? RC_Upload::upload_url($v['avatar_img']) : '';
+                    $article_comment[$k]['avatar_img'] = !empty($v['avatar_img']) ? RC_Upload::upload_url($v['avatar_img']) : $static_url . 'avatar.png';
                 }
             }
             RC_Cache::app_cache_set('admin_dashboard_article_commentstats', $article_comment, 'article', 120);
         }
+        ecjia_admin::$controller->assign('article_title', $article_title);
+
+        ecjia_admin::$controller->assign('article', $article);
         ecjia_admin::$controller->assign('article_comment', $article_comment);
 
-        if (!empty($article) && !empty($article_comment)) {
-            ecjia_admin::$controller->display(ecjia_app::get_app_template('library/widget_admin_dashboard_articlestats.lbi', 'article'));
-        }
+        ecjia_admin::$controller->display(ecjia_app::get_app_template('library/widget_admin_dashboard_articlestats.lbi', 'article'));
     }
 }
 
 RC_Hook::add_action('admin_dashboard_left', array('article_hooks', 'widget_admin_dashboard_articlestats'), 21);
-
 // end
