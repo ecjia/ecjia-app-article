@@ -30,9 +30,7 @@
 	{if $article}
 	<div class="ecjiaf-tar"><a href="{RC_Uri::url('article/admin/init')}" title="查看更多">查看更多</a></div>
 	{/if}
-</div>
 
-<div class="move-mod-group" id="widget_admin_dashboard_article_commentstats">
 	<div class="heading clearfix move-mod-head no-border">
 		<h3 class="pull-left">近期评论</h3>
 	</div>
@@ -83,6 +81,7 @@
 		height: 80px;
 		float: left;
 		margin: 0px 10px 0 10px;
+		border-radius: 4px;
 	}
 
 	.table.article_stats_table .td-left {
