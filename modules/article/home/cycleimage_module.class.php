@@ -68,52 +68,50 @@ class cycleimage_module extends api_front implements api_interface {
 			}
 		}
 		$cycleimage_data = array();
-		$cycleimage_data = article_cycleimage_data($request);
+		$cycleimage_data = $this->article_cycleimage_data($request);
 		$cycleimage_data['category'] = $list;
 				
 		return $cycleimage_data;
 		
 	}	
-}
-
-function article_cycleimage_data($request)
-{
-	$city_id	= $request->input('city_id', 0);
-	$device_client = $request->header('device-client', 'iphone');
-
-	if ($device_client == 'android') {
-		$client = Ecjia\App\Adsense\Client::ANDROID;
-	} elseif ($device_client == 'h5') {
-		$client = Ecjia\App\Adsense\Client::H5;
-	} else {
-		$client = Ecjia\App\Adsense\Client::IPHONE;
+	
+	private function article_cycleimage_data($request)
+	{
+		$city_id	= $request->input('city_id', 0);
+		$device_client = $request->header('device-client', 'iphone');
+	
+		if ($device_client == 'android') {
+			$client = Ecjia\App\Adsense\Client::ANDROID;
+		} elseif ($device_client == 'h5') {
+			$client = Ecjia\App\Adsense\Client::H5;
+		} else {
+			$client = Ecjia\App\Adsense\Client::IPHONE;
+		}
+	
+		$cycleimageDatas = RC_Api::api('adsense',  'cycleimage', [
+				'code'     => 'article_cycleimage',
+				'client'   => $client,
+				'city'     => $city_id
+				]);
+	
+		$player_data = array();
+		$response = array();
+		foreach ($cycleimageDatas as $val) {
+			$player_data[] = array(
+					'photo' => array(
+							'small'      => $val['image'],
+							'thumb'      => $val['image'],
+							'url'        => $val['image'],
+					),
+					'url'        => $val['url'],
+					'description'=> $val['text'],
+			);
+		}
+	
+		$response['player'] = $player_data;
+	
+		return $response;
 	}
-
-	$cycleimageDatas = RC_Api::api('adsense',  'cycleimage', [
-			'code'     => 'article_cycleimage',
-			'client'   => $client,
-			'city'     => $city_id
-			]);
-
-	$player_data = array();
-	$response = array();
-	foreach ($cycleimageDatas as $val) {
-		$player_data[] = array(
-				'photo' => array(
-						'small'      => $val['image'],
-						'thumb'      => $val['image'],
-						'url'        => $val['image'],
-				),
-				'url'        => $val['url'],
-				'description'=> $val['text'],
-		);
-	}
-
-	$response['player'] = $player_data;
-
-	return $response;
 }
-
-
 
 // end
