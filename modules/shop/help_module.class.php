@@ -50,7 +50,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 商店帮助列表
  * @author royalwang
  */
-class help_module extends api_front implements api_interface {
+class shop_help_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	$cache_article_key = 'article_list_';
     	$cache_id = sprintf('%X', crc32($cache_article_key));

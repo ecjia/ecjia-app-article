@@ -51,7 +51,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author zrl
  *
  */
-class detail_module extends api_front implements api_interface {
+class article_detail_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	$id = $this->requestData('article_id', 0);
     	if ($id <= 0) {
