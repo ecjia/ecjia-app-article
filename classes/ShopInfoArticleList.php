@@ -66,9 +66,6 @@ class ShopInfoArticleList extends BaseArticleList
     public function formatHtmlOutput($item, $key, $count)
     {
         $html = '<a target="_blank" href="' .$item['link']. '">' .$item['title']. '</a>' . PHP_EOL;
-        if ($count-1 != $key) {
-            $html .= '<span>|</span>' . PHP_EOL;
-        }
 
         return $html;
     }
