@@ -40,7 +40,7 @@ class ShopInfoArticleList extends BaseArticleList
     }
 
 
-    public function outputHtml(\callback $callback = null)
+    public function outputHtml(\Closure $callback = null)
     {
         $lists = $this->getArticleLists();
 
