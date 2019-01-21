@@ -81,9 +81,9 @@ class admin_article_auto extends ecjia_admin {
 	public function init() {
 		$this->admin_priv('article_auto_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('article::article.article_auto_release')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('文章自动发布')));
 		
-		$this->assign('ur_here', RC_Lang::get('article::article.article_auto_release'));
+		$this->assign('ur_here', __('文章自动发布'));
 		$this->assign('search_action', RC_Uri::url('article/admin_article_auto/init'));
 	
 		$crons_enable = RC_Api::api('cron', 'cron_info', array('cron_code' => 'cron_auto_manage'));
@@ -103,18 +103,18 @@ class admin_article_auto extends ecjia_admin {
 		$time 		  = !empty($_POST['select_time']) ? RC_Time::local_strtotime($_POST['select_time']) : '';
 		
 		if (empty($article_id)) {
-			return $this->showmessage(RC_Lang::get('article::article.select_article_msg'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(__('请先选中要批量发布的文章'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 			
 		if (empty($time)) {
-			return $this->showmessage(RC_Lang::get('article::article.choose_time'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(__('请选择时间'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		if ($type == 'batch_start') {
-			$message	= RC_Lang::get('article::article.batch_start_succeed');
+			$message	= __('批量发布成功');
 			$time_type 	= 'starttime';
 		} elseif ($type == 'batch_end') {
-			$message 	= RC_Lang::get('article::article.batch_end_succeed');
+			$message 	= __('批量取消成功');
 			$time_type 	= 'endtime';
 		}
 		
@@ -143,7 +143,7 @@ class admin_article_auto extends ecjia_admin {
 		
 		if (!empty($title_list)) {
 			foreach ($title_list as $v) {
-				ecjia_admin::admin_log(RC_Lang::get('article::article.article_name_is').$v, $type, 'article');
+				ecjia_admin::admin_log(__('时间格式不正确').$v, $type, 'article');
 			}
 		}
 		return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
@@ -158,8 +158,8 @@ class admin_article_auto extends ecjia_admin {
 		$title = RC_DB::table('article')->where('article_id', $id)->pluck('title');
 		RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->delete();
 		
-		ecjia_admin::admin_log(RC_Lang::get('article::article.article_name_is').$title, 'cancel', 'article_auto');
-		return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		ecjia_admin::admin_log(__('文章名称是').$title, 'cancel', 'article_auto');
+		return $this->showmessage(__('操作成功'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	public function edit_starttime() {
@@ -173,7 +173,7 @@ class admin_article_auto extends ecjia_admin {
 			$val = RC_Time::local_strtotime($value);
 		}
 		if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) || $value == '0000-00-00' || $val <= 0) {
-			return $this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(__('时间格式不正确'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$count = RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->count();
@@ -189,7 +189,7 @@ class admin_article_auto extends ecjia_admin {
 		} else {
             RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->update($data);
 		}
-		return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
+		return $this->showmessage(__('操作成功'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
 	}
 	
 	public function edit_endtime() {
@@ -203,7 +203,7 @@ class admin_article_auto extends ecjia_admin {
 			$val = RC_Time::local_strtotime($value);
 		}
 		if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) || $value == '0000-00-00' || $val <= 0) {
-			return $this->showmessage(RC_Lang::get('article::article.time_format_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(__('时间格式不正确'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$count = RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->count();
@@ -219,7 +219,7 @@ class admin_article_auto extends ecjia_admin {
 		} else {
             RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->update($data);
 		}
-		return $this->showmessage(RC_Lang::get('article::article.edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
+		return $this->showmessage(__('操作成功'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_article_auto/init')));
 	}
 	
 	/**
