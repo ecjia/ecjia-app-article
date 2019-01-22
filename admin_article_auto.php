@@ -76,8 +76,7 @@ class admin_article_auto extends ecjia_admin {
 		
 		RC_Script::enqueue_script('article_auto', RC_App::apps_url('statics/js/article_auto.js', __FILE__));
 		
-		$js_lang = RC_Loader::load_app_config('lang');
-		RC_Script::localize_script('article_auto', 'js_lang', $js_lang);
+		RC_Script::localize_script('article_auto', 'js_lang', config('app-article::jslang.article_auto_page'));
 	}
 
 	public function init() {

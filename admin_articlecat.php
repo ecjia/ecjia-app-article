@@ -68,8 +68,7 @@ class admin_articlecat extends ecjia_admin {
 		RC_Script::enqueue_script('jquery-uniform');
 		RC_Script::enqueue_script('jquery-chosen');
 		
-		$js_lang = RC_Loader::load_app_config('lang');
-		RC_Script::localize_script('article_cat_info', 'js_lang', $js_lang);
+		RC_Script::localize_script('article_cat_info', 'js_lang', config('app-article::jslang.article_cat_page'));
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('文章分类'), RC_Uri::url('article/admin_articlecat/init')));
 	}

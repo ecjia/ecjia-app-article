@@ -66,8 +66,7 @@ class admin_shophelp extends ecjia_admin {
 		RC_Script::enqueue_script('jquery-uniform');
 		RC_Script::enqueue_script('jquery-chosen');
 		
-		$js_lang = RC_Loader::load_app_config('lang');
-		RC_Script::localize_script('shophelp_list', 'js_lang', $js_lang);
+		RC_Script::localize_script('shophelp_list', 'js_lang', config('app-article::jslang.shophelp_page'));
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('帮助分类'), RC_Uri::url('article/admin_shophelp/init')));
 	}

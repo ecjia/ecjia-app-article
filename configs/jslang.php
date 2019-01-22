@@ -52,21 +52,40 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 return array(
-	'select_moved_article'		=> __('请选择需要转移的文章'),
-	'article_title_required'	=> __('请输入文章标题'),
-	'back_select_term'			=> __('返回选择栏目'),
-	'select_goods_empty'		=> __('未搜索到商品信息'),
-	'editable_miss_parameters'	=> __('editable缺少参数'),
-	'edit_info'					=> __('编辑信息'),
-	'operate_selected_confirm'  => __('您确定要操作所有选中项吗？'),
-	'noSelectMsg'				=> __('请先选中操作项'),
-	'batch_miss_parameters'		=> __('批量操作缺少参数'),
-	'ok'						=> __('确定'),
-	'cancel'					=> __('取消'),
-	'select_time'   		    => __('请选择时间'),
-	'no_select_cat'				=> __('请选择文章分类'),
-	'shopinfo_title_required'   => __('请输入网店标题'),
-	'shophelp_title_required'   => __('请输入帮助文章标题'),
-	'cat_name_required'	        => __('请输入文章分类名称'),
+	//平台后台和商家后台文章
+	'article_page' =>array(
+		'select_moved_article'		=> __('请选择需要转移的文章'),
+		'article_title_required'	=> __('请输入文章标题'),
+		'back_select_term'			=> __('返回选择栏目'),
+		'select_goods_empty'		=> __('未搜索到商品信息'),
+		'ok'						=> __('确定'),
+		'cancel'					=> __('取消'),
+		'no_select_cat'				=> __('请选择文章分类'),
+	),
+		
+	//文章自动发布
+	'article_auto_page' => array(
+		'editable_miss_parameters'	=> __('editable缺少参数'),
+		'edit_info'					=> __('编辑信息'),
+		'operate_selected_confirm'  => __('您确定要操作所有选中项吗？'),
+		'noSelectMsg'				=> __('请先选中操作项'),
+		'select_time'   		    => __('请选择时间'),
+		'batch_miss_parameters'		=> __('批量操作缺少参数'),
+	),
+		
+	//文章分类
+	'article_cat_page' => array(
+		'cat_name_required'	        => __('请输入文章分类名称'),
+	),
+		
+	//网店帮助
+	'shophelp_page' => array(
+		'shophelp_title_required'   => __('请输入帮助文章标题'),
+	),
+		
+	//网店信息
+	'shopinfo_page' => array(
+		'shopinfo_title_required'   => __('请输入网店标题'),
+	)
 );
 //end
