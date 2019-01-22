@@ -75,7 +75,8 @@ class merchant extends ecjia_merchant {
 		
 		RC_Script::enqueue_script('merchant_article_list', RC_App::apps_url('statics/js/merchant_article_list.js', __FILE__), array(), false, true);
 		
-		RC_Script::localize_script('merchant_article_list', 'js_lang', RC_Lang::get('article::article.js_lang'));
+		$js_lang = RC_Loader::load_app_config('lang');
+		RC_Script::localize_script('merchant_article_list', 'js_lang', $js_lang);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('文章列表'), RC_Uri::url('article/merchant/init')));
 		ecjia_merchant_screen::get_current_screen()->set_parentage('article', 'article/merhcant.php');

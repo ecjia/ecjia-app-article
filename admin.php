@@ -73,7 +73,8 @@ class admin extends ecjia_admin {
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		
-		RC_Script::localize_script('article_list', 'js_lang', RC_Lang::get('article::article.js_lang'));
+		$js_lang = RC_Loader::load_app_config('lang');
+		RC_Script::localize_script('article_list', 'js_lang', $js_lang);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('文章列表'), RC_Uri::url('article/admin/init')));
 	}

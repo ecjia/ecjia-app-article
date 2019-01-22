@@ -67,9 +67,7 @@ class admin_shopinfo extends ecjia_admin {
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Script::enqueue_script('bootstrap-placeholder', RC_Uri::admin_url('statics/lib/dropper-upload/bootstrap-placeholder.js'), array(), false, true);
 
-		$js_lang = array(
-			'shopinfo_title_required' => __('请输入网店标题'),
-		);
+        $js_lang = RC_Loader::load_app_config('lang');
 		RC_Script::localize_script('shoparticle_info', 'js_lang', $js_lang);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('网店信息'), RC_Uri::url('article/admin_shopinfo/init')));

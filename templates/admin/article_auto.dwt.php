@@ -76,7 +76,7 @@
 					  		<td>
 						  		<span>
 						  			{if $val.endtime || $val.starttime}
-						    			<a class="ajax-remove" data-toggle="ajaxremove" data-msg="{t}您确定要撤销该文章吗？{/t}" href='{RC_Uri::url("article/admin_article_auto/del", "id={$val.article_id}")}' title="{t}撤销{t}"><i class="fontello-icon-export-alt"></i></a>
+						    			<a class="ajax-remove" data-toggle="ajaxremove" data-msg="{t}您确定要撤销该文章吗？{/t}" href='{RC_Uri::url("article/admin_article_auto/del", "id={$val.article_id}")}' title="{t}撤销{/t}"><i class="fontello-icon-export-alt"></i></a>
 						  			{else}
 							    		-
 							  		{/if}
