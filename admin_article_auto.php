@@ -159,7 +159,9 @@ class admin_article_auto extends ecjia_admin {
 		$title = RC_DB::table('article')->where('article_id', $id)->pluck('title');
 		RC_DB::table('auto_manage')->where('item_id', $id)->where('type', 'article')->delete();
 		
-		ecjia_admin::admin_log(__('文章名称是', 'article').$title, 'cancel', 'article_auto');
+// 		ecjia_admin::admin_log(__('文章名称是', 'article').$title, 'cancel', 'article_auto');
+		ecjia_admin::admin_log(sprintf(__('文章名称是：%s', 'article'), $title), 'cancel', 'article_auto');
+		
 		return $this->showmessage(__('操作成功', 'article'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	

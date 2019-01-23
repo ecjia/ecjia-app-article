@@ -98,7 +98,7 @@ class admin_articlecat extends ecjia_admin {
 		
 		$articlecat = article_cat::article_cat_list(0, 0, false, 0, 'article');
 // 		if (!empty($articlecat)) {
-// 			foreach ($articlecat as $key => $cat) {//TODO语言包sqq
+// 			foreach ($articlecat as $key => $cat) {//TODO语言包升级
 // 				$articlecat[$key]['type_name'] = RC_Lang::get('article::article.type_name.'.$cat['cat_type']);
 // 			}
 			$this->assign('articlecat', $articlecat);
@@ -339,7 +339,6 @@ class admin_articlecat extends ecjia_admin {
 			return $this->showmessage(__('请输入一个整数', 'article'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
 			RC_DB::table('article_cat')->where('cat_id', $id)->update(array('sort_order' => $order));
-		   
 			return $this->showmessage(__('编辑成功', 'article'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('article/admin_articlecat/init')) );
 		}
 	}

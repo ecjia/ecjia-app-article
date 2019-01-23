@@ -121,7 +121,7 @@ class admin_shophelp extends ecjia_admin {
         
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($cat_name));
 		
-		$this->assign('ur_here', $cat_name.__('列表', 'article'));
+		$this->assign('ur_here', $cat_name.__(' 列表', 'article'));
 		$this->assign('action_linkadd', array('text' => __('添加帮助文章', 'article'), 'href' => RC_Uri::url('article/admin_shophelp/add', array('cat_id' => $cat_id))));
 		$this->assign('back_helpcat', array('text' => __('帮助分类', 'article'), 'href' => RC_Uri::url('article/admin_shophelp/init')));
 		 
@@ -268,7 +268,9 @@ class admin_shophelp extends ecjia_admin {
 	    $cache_id_list = sprintf('%X', crc32($cache_article_list_key));
 	    $orm_article_db->delete_cache_item($cache_id_list);
 	    
-		ecjia_admin::admin_log($title.'，'.__('所属帮助分类是', 'article').$cat_name, 'edit', 'shophelp');
+// 		ecjia_admin::admin_log($title.'，'.__('所属帮助分类是', 'article').$cat_name, 'edit', 'shophelp');
+	    ecjia_admin::admin_log(sprintf(__('%s 所属帮助分类是: %s', 'article'), $title, $cat_name), 'edit', 'shophelp');
+		
 		return $this->showmessage(sprintf(__('文章 %s 编辑成功', 'article'), $title), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_shophelp/edit', array('id' => $id, 'cat_id' => $cat_id))));
 	}
 	
@@ -360,7 +362,8 @@ class admin_shophelp extends ecjia_admin {
 	    $cache_id_list = sprintf('%X', crc32($cache_article_list_key));
 	    $orm_article_db->delete_cache_item($cache_id_list);
 
-	    ecjia_admin::admin_log($info['title'].'，'.__('所属帮助分类是', 'article').$cat_name, 'remove', 'shophelp');
+// 	    ecjia_admin::admin_log($info['title'].'，'.__('所属帮助分类是', 'article').$cat_name, 'remove', 'shophelp');
+	    ecjia_admin::admin_log(sprintf(__('%s 所属帮助分类是: %s', 'article'), $info['title'], $cat_name), 'remove', 'shophelp');
 		return $this->showmessage(__('删除文章成功', 'article'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
