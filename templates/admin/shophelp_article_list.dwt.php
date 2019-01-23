@@ -19,9 +19,9 @@
     	<table class="table table-striped" id="smpl_tbl">
     		<thead>
     			<tr>
-    				<th>{t}文章名称{/t}</th>
-    				<th class="w180">{t}添加时间{/t}</th>
-    				<th class="w70">{t}操作{/t}</th>
+    				<th>{t domain="article"}文章名称{/t}</th>
+    				<th class="w180">{t domain="article"}添加时间{/t}</th>
+    				<th class="w70">{t domain="article"}操作{/t}</th>
     			</tr>
     		</thead>
     		<tbody>
@@ -35,13 +35,13 @@
     				<td align="right"><span>{$item.add_time}</span></td>
     				<td align="right">
     					<span>
-    						<a class="data-pjax no-underline" href='{url path="article/admin_shophelp/edit" args="cat_id=$cat_id&id={$item.article_id}"}' title="{t}编辑{/t}"><i class="fontello-icon-edit"></i></a>
-    						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除该文章吗？{/t}" href='{RC_Uri::url("article/admin_shophelp/remove_art","id={$item.article_id}")}' title="{t}删除{/t}"><i class="fontello-icon-trash"></i></a>
+    						<a class="data-pjax no-underline" href='{url path="article/admin_shophelp/edit" args="cat_id=$cat_id&id={$item.article_id}"}' title="{t domain="article"}编辑{/t}"><i class="fontello-icon-edit"></i></a>
+    						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t domain="article"}您确定要删除该文章吗？{/t}" href='{RC_Uri::url("article/admin_shophelp/remove_art","id={$item.article_id}")}' title="{t domain="article"}删除{/t}"><i class="fontello-icon-trash"></i></a>
     					</span>
     				</td>
     			</tr>
     			<!-- {foreachelse} -->
-    			<tr><td class="no-records" colspan="3">{t}没有找到任何记录{/t}</td></tr>
+    			<tr><td class="no-records" colspan="3">{t domain="article"}没有找到任何记录{/t}</td></tr>
     			<!-- {/foreach} -->
     		</tbody>
     	</table>

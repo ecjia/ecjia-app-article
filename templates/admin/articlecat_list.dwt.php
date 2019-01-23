@@ -15,9 +15,9 @@
 		<table class="table table-striped unlimited-category-list" id="list-table">
 			<thead>
 				<tr>
-					<th>{t}文章分类名称{/t}</th>
-					<th class="w100">{t}排序{/t}</th>
-					<th class="w100">{t}操作{/t}</th>
+					<th>{t domain="article"}文章分类名称{/t}</th>
+					<th class="w100">{t domain="article"}排序{/t}</th>
+					<th class="w100">{t domain="article"}操作{/t}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,18 +29,18 @@
 					</td>
 			
 					<td>
-						<span class="cursor_pointer" data-trigger="editable" data-url="{url path='article/admin_articlecat/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="{t}请输入排序序号{/t}"> 
+						<span class="cursor_pointer" data-trigger="editable" data-url="{url path='article/admin_articlecat/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="{t domain="article"}请输入排序序号{/t}"> 
 							{$cat.sort_order}
 						</span>
 					</td>
 
 					<td>
-						<a class="data-pjax no-underline" href='{RC_Uri::url("article/admin_articlecat/edit", "id={$cat.cat_id}")}' title="{t}编辑{/t}"><i class="fontello-icon-edit"></i></a>
-						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除该文章分类吗？{/t}" href='{RC_Uri::url("article/admin_articlecat/remove","id={$cat.cat_id}")}' title="{t}删除{/t}"><i class="fontello-icon-trash"></i></a>
+						<a class="data-pjax no-underline" href='{RC_Uri::url("article/admin_articlecat/edit", "id={$cat.cat_id}")}' title="{t domain="article"}编辑{/t}"><i class="fontello-icon-edit"></i></a>
+						<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t domain="article"}您确定要删除该文章分类吗？{/t}" href='{RC_Uri::url("article/admin_articlecat/remove","id={$cat.cat_id}")}' title="{t domain="article"}删除{/t}"><i class="fontello-icon-trash"></i></a>
 					</td>
 				</tr>
 				<!-- {foreachelse} -->
-				   <tr><td class="no-records" colspan="3">{t}没有找到任何记录{/t}</td></tr>
+				   <tr><td class="no-records" colspan="3">{t domain="article"}没有找到任何记录{/t}</td></tr>
 				<!-- {/foreach} -->
 			</tbody>
 		</table>

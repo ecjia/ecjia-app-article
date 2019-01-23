@@ -23,14 +23,14 @@
 				<div class="tab-pane active" id="tab1">
 					<h3 class="text-center">{$article.title}</h3>
 					<p class="text-center">
-						{t}文章作者：{/t}
+						{t domain="article"}文章作者：{/t}
 						{if $article.author}
 							{$article.author}
 						{else}
-							{t}暂无{/t}
+							{t domain="article"}暂无{/t}
 						{/if}
 						&nbsp;&nbsp;
-						{t}添加时间：{/t}{$article.add_time}
+						{t domain="article"}添加时间：{/t}{$article.add_time}
 					</p>
 					{$article.content}
 				</div>

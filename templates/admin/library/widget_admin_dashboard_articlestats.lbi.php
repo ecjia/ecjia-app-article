@@ -5,7 +5,7 @@
 		<h3 class="pull-left">{$article_title}</h3>
 	</div>
 	<div class="heading clearfix move-mod-head no-border">
-		<h3 class="pull-left">{t}最新发布{/t}</h3>
+		<h3 class="pull-left">{t domain="article"}最新发布{/t}</h3>
 	</div>
 	<table class="table table-striped ecjiaf-wwb article_stats_table">
 		<tbody>
@@ -22,18 +22,18 @@
 			<!-- {foreachelse} -->
 			<tr>
 				<td class="no-records">
-					{t}暂无文章{/t}
+					{t domain="article"}暂无文章{/t}
 				</td>
 			</tr>
 			<!-- {/foreach} -->
 		</tbody>
 	</table>
 	{if $article}
-	<div class="ecjiaf-tar"><a href="{RC_Uri::url('article/admin/init')}" title="{t}查看更多{/t}">{t}查看更多{/t}</a></div>
+	<div class="ecjiaf-tar"><a href="{RC_Uri::url('article/admin/init')}" title="{t domain="article"}查看更多{/t}">{t domain="article"}查看更多{/t}</a></div>
 	{/if}
 
 	<div class="heading clearfix move-mod-head no-border">
-		<h3 class="pull-left">{t}近期评论{/t}</h3>
+		<h3 class="pull-left">{t domain="article"}近期评论{/t}</h3>
 	</div>
 	<table class="table table-striped ecjiaf-wwb article_stats_table">
 		<tbody>
@@ -51,14 +51,14 @@
 			<!-- {foreachelse} -->
 			<tr>
 				<td class="no-records">
-					{t}暂无评论{/t}
+					{t domain="article"}暂无评论{/t}
 				</td>
 			</tr>
 			<!-- {/foreach} -->
 		</tbody>
 	</table>
 	{if $article_comment}
-	<div class="ecjiaf-tar"><a href="{RC_Uri::url('article/admin/article_comment_list')}&publishby=total_comments" title="{t}查看更多{/t}">{t}查看更多{/t}</a></div>
+	<div class="ecjiaf-tar"><a href="{RC_Uri::url('article/admin/article_comment_list')}&publishby=total_comments" title="{t domain="article"}查看更多{/t}">{t domain="article"}查看更多{/t}</a></div>
 	{/if}
 </div>
 
