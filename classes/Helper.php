@@ -57,17 +57,17 @@ class Helper
      * 添加管理员记录日志操作对象
      */
     public static function assign_adminlog_content() {
-        ecjia_admin_log::instance()->add_object('article_auto', __('文章自动发布'));
+        ecjia_admin_log::instance()->add_object('article_auto', __('文章自动发布', 'article'));
 
-    	ecjia_admin_log::instance()->add_action('batch_setup', __('批量设置'));
-    	ecjia_admin_log::instance()->add_action('batch_start', __('批量发布'));
-    	ecjia_admin_log::instance()->add_action('batch_end', __('批量取消发布'));
-    	ecjia_admin_log::instance()->add_action('cancel', __('撤销'));
-    	ecjia_admin_log::instance()->add_action('comment_status', __('更新文章评论状态'));
-    	ecjia_admin_log::instance()->add_object('article_comment', __('文章评论'));
+    	ecjia_admin_log::instance()->add_action('batch_setup', __('批量设置', 'article'));
+    	ecjia_admin_log::instance()->add_action('batch_start', __('批量发布', 'article'));
+    	ecjia_admin_log::instance()->add_action('batch_end', __('批量取消发布', 'article'));
+    	ecjia_admin_log::instance()->add_action('cancel', __('撤销', 'article'));
+    	ecjia_admin_log::instance()->add_action('comment_status', __('更新文章评论状态', 'article'));
+    	ecjia_admin_log::instance()->add_object('article_comment', __('文章评论', 'article'));
     	
-    	ecjia_admin_log::instance()->add_object('merchant_notice', __('商家公告'));
-    	ecjia_admin_log::instance()->add_object('system_info', __('系统信息'));
+    	ecjia_admin_log::instance()->add_object('merchant_notice', __('商家公告', 'article'));
+    	ecjia_admin_log::instance()->add_object('system_info', __('系统信息', 'article'));
     }
     
 }

@@ -69,7 +69,7 @@ class admin_shopinfo extends ecjia_admin {
 
 		RC_Script::localize_script('shoparticle_info', 'js_lang', config('app-article::jslang.shopinfo_page'));
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('网店信息'), RC_Uri::url('article/admin_shopinfo/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('网店信息', 'article'), RC_Uri::url('article/admin_shopinfo/init')));
 	}
 	
 	/**
@@ -79,20 +79,20 @@ class admin_shopinfo extends ecjia_admin {
 		$this->admin_priv('shopinfo_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('网店信息')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('网店信息', 'article')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
-			'title'		=> __('概述'),
-			'content'	=> '<p>' . __('欢迎访问ECJia智能后台网店信息页面，系统中所有的网店信息都会显示在此列表中。') . '</p>'
+			'title'		=> __('概述', 'article'),
+			'content'	=> '<p>' . __('欢迎访问ECJia智能后台网店信息页面，系统中所有的网店信息都会显示在此列表中。', 'article') . '</p>'
 		));
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
-			'<p><strong>' . __('更多信息：') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于网店信息帮助文档').'</a></p>'
+			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
+			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于网店信息帮助文档', 'article').'</a></p>'
 		);
 		
-		$this->assign('ur_here', __('网店信息'));
-		$this->assign('action_link', array('text' => __('添加网店信息'), 'href'=> RC_Uri::url('article/admin_shopinfo/add')));
+		$this->assign('ur_here', __('网店信息', 'article'));
+		$this->assign('action_link', array('text' => __('添加网店信息', 'article'), 'href'=> RC_Uri::url('article/admin_shopinfo/add')));
 		$this->assign('list', $this->get_shopinfo_article());
 		
 		$this->display('shopinfo_list.dwt');
@@ -104,20 +104,20 @@ class admin_shopinfo extends ecjia_admin {
 	public function add() {
 		$this->admin_priv('shopinfo_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加网店信息')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加网店信息', 'article')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
-			'title'		=> __('概述'),
-			'content'	=> '<p>' . __('欢迎访问ECJia智能后台添加网店信息页面，可以在此页面添加网店信息。') . '</p>'
+			'title'		=> __('概述', 'article'),
+			'content'	=> '<p>' . __('欢迎访问ECJia智能后台添加网店信息页面，可以在此页面添加网店信息。', 'article') . '</p>'
 		));
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
-			'<p><strong>' . __('更多信息：') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于添加网店信息帮助文档').'</a></p>'
+			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
+			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于添加网店信息帮助文档', 'article').'</a></p>'
 		);
 		
-		$this->assign('ur_here', __('添加网店信息'));
-		$this->assign('action_link', array('text' => __('网店信息'), 'href'=> RC_Uri::url('article/admin_shopinfo/init')));
+		$this->assign('ur_here', __('添加网店信息', 'article'));
+		$this->assign('action_link', array('text' => __('网店信息', 'article'), 'href'=> RC_Uri::url('article/admin_shopinfo/init')));
 		
 		$this->assign('form_action', RC_Uri::url('article/admin_shopinfo/insert'));
 		$this->display('shopinfo_info.dwt');
@@ -135,7 +135,7 @@ class admin_shopinfo extends ecjia_admin {
 		
  		$is_only = RC_DB::table('article')->where('title', $title)->where('cat_id', 0)->count();
 		if ($is_only != 0) {
-			return $this->showmessage(sprintf(__('网店标题 %s 已经存在'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(sprintf(__('网店标题 %s 已经存在', 'article'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$file_name = '';
@@ -173,7 +173,7 @@ class admin_shopinfo extends ecjia_admin {
 		$orm_article_db->delete_cache_item($cache_id_list);
 
 		ecjia_admin::admin_log($title, 'add', 'shopinfo');
-		return $this->showmessage(sprintf(__('添加 %s 成功'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
+		return $this->showmessage(sprintf(__('添加 %s 成功', 'article'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
 	}
 	
 	/**
@@ -182,20 +182,20 @@ class admin_shopinfo extends ecjia_admin {
 	public function edit() {
 		$this->admin_priv('shopinfo_manage');
 	
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑网店信息')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑网店信息', 'article')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
-			'title'		=> __('概述'),
-			'content'	=> '<p>' . __('欢迎访问ECJia智能后台编辑网店信息页面，可以在此页面编辑相应的网店信息。') . '</p>'
+			'title'		=> __('概述', 'article'),
+			'content'	=> '<p>' . __('欢迎访问ECJia智能后台编辑网店信息页面，可以在此页面编辑相应的网店信息。', 'article') . '</p>'
 		));
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
-			'<p><strong>' . __('更多信息：') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于编辑网店信息帮助文档').'</a></p>'
+			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
+			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于编辑网店信息帮助文档', 'article').'</a></p>'
 		);
 		
-		$this->assign('ur_here', __('编辑网店信息'));
-		$this->assign('action_link', array('text' => __('网店信息'), 'href'=> RC_Uri::url('article/admin_shopinfo/init')));
+		$this->assign('ur_here', __('编辑网店信息', 'article'));
+		$this->assign('action_link', array('text' => __('网店信息', 'article'), 'href'=> RC_Uri::url('article/admin_shopinfo/init')));
 		
 		$id = intval($_GET['id']);
 		$article = RC_DB::table('article')->where('article_id', $id)->first();
@@ -229,7 +229,7 @@ class admin_shopinfo extends ecjia_admin {
 		if ($title != $old_title) {
 			$is_only = RC_DB::table('article')->where('title', $title)->where('cat_id', 0)->where('article_id', '!=', $id)->count();
 			if ($is_only != 0) {
-				return $this->showmessage(sprintf(__('网店标题 %s 已经存在'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(sprintf(__('网店标题 %s 已经存在', 'article'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 		
@@ -270,8 +270,8 @@ class admin_shopinfo extends ecjia_admin {
 		$orm_article_db->delete_cache_item($cache_id_list);
 		ecjia_admin::admin_log($title, 'edit', 'shopinfo');
 		
-		$links = array('text' => __('返回网店信息列表'), 'href' => RC_Uri::url('article/admin_shopinfo/init'));
-		return $this->showmessage(sprintf(__('更新 %s 成功'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
+		$links = array('text' => __('返回网店信息列表', 'article'), 'href' => RC_Uri::url('article/admin_shopinfo/init'));
+		return $this->showmessage(sprintf(__('更新 %s 成功', 'article'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
 	}
 	
 	/**
@@ -299,7 +299,7 @@ class admin_shopinfo extends ecjia_admin {
 			
 			ecjia_admin::admin_log(addslashes($shop_info['title']), 'remove', 'shopinfo');
 		}
-		return $this->showmessage(sprintf(__('删除 %s 成功'), $shop_info['title']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		return $this->showmessage(sprintf(__('删除 %s 成功', 'article'), $shop_info['title']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	/**
@@ -326,7 +326,7 @@ class admin_shopinfo extends ecjia_admin {
 		$cache_id_list = sprintf('%X', crc32($cache_article_list_key));
 		$orm_article_db->delete_cache_item($cache_id_list);
 		
-		return $this->showmessage(__('删除成功'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
+		return $this->showmessage(__('删除成功', 'article'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('article/admin_shopinfo/edit', array('id' => $id))));
 	}
 	
 	/**
