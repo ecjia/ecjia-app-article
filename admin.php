@@ -94,7 +94,7 @@ class admin extends ecjia_admin {
 
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表" target="_blank">'.__('关于文章列表帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表" target="_blank">关于文章列表帮助文档</a>', 'article') . '</p>'     
 		);
 		$publishby = trim($_GET['publishby']);
 		if (!empty($publishby)) {
@@ -153,7 +153,7 @@ class admin extends ecjia_admin {
 
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:添加文章" target="_blank">'.__('关于添加文章帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:添加文章" target="_blank">关于添加文章帮助文档</a>', 'article') . '</p>'     
 		);
 		$publishby = trim($_GET['publishby']);
 		$this->assign('ur_here', __('添加新文章', 'article'));
@@ -401,7 +401,7 @@ class admin extends ecjia_admin {
 
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E6.96.87.E7.AB.A0.E7.BC.96.E8.BE.91" target="_blank">'.__('关于编辑文章帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E6.96.87.E7.AB.A0.E7.BC.96.E8.BE.91" target="_blank">关于编辑文章帮助文档</a>', 'article') . '</p>'  
 		);
 		
 		$publishby = trim($_GET['publishby']);
@@ -621,7 +621,7 @@ class admin extends ecjia_admin {
 
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E9.A2.84.E8.A7.88.E6.96.87.E7.AB.A0" target="_blank">'.__('关于预览文章帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E9.A2.84.E8.A7.88.E6.96.87.E7.AB.A0" target="_blank">关于预览文章帮助文档</a>', 'article') . '</p>'  
 		);
 		
 		$publishby = trim($_GET['publishby']);
@@ -660,7 +660,7 @@ class admin extends ecjia_admin {
 
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E5.85.B3.E8.81.94.E5.95.86.E5.93.81" target="_blank">'.__('关于关联商品帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E5.85.B3.E8.81.94.E5.95.86.E5.93.81" target="_blank">关于关联商品帮助文档</a>', 'article') . '</p>'  
 		);
 		
 		$publishby = trim($_GET['publishby']);

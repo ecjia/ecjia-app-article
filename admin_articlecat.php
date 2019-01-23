@@ -90,7 +90,7 @@ class admin_articlecat extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类" target="_blank">'.__('关于文章分类帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类" target="_blank">关于文章分类帮助文档</a>', 'article') . '</p>'	
 		);
 		
 		$this->assign('ur_here', __('文章分类', 'article'));
@@ -122,7 +122,7 @@ class admin_articlecat extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E6.B7.BB.E5.8A.A0.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB" target="_blank">'.__('关于添加文章分类帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E6.B7.BB.E5.8A.A0.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB" target="_blank">关于添加文章分类帮助文档</a>', 'article') . '</p>'	
 		);
 		
 		$this->assign('ur_here', __('添加文章分类', 'article'));
@@ -200,7 +200,7 @@ class admin_articlecat extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E7.BC.96.E8.BE.91.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB" target="_blank">'.__('关于编辑文章分类帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E7.BC.96.E8.BE.91.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB" target="_blank">关于编辑文章分类帮助文档</a>', 'article') . '</p>' 
 		);
 		
 		$this->assign('ur_here', __('编辑文章分类', 'article'));

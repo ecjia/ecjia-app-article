@@ -88,7 +88,7 @@ class admin_shopinfo extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于网店信息帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">关于网店信息帮助文档</a>', 'article') . '</p>'   
 		);
 		
 		$this->assign('ur_here', __('网店信息', 'article'));
@@ -113,7 +113,7 @@ class admin_shopinfo extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于添加网店信息帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">关于添加网店信息帮助文档</a>', 'article') . '</p>'   
 		);
 		
 		$this->assign('ur_here', __('添加网店信息', 'article'));
@@ -191,7 +191,7 @@ class admin_shopinfo extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">'.__('关于编辑网店信息帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店信息" target="_blank">关于编辑网店信息帮助文档</a>', 'article') . '</p>'     
 		);
 		
 		$this->assign('ur_here', __('编辑网店信息', 'article'));

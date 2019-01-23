@@ -87,7 +87,7 @@ class admin_shophelp extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助" target="_blank">'.__('关于网店帮助列表帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助" target="_blank">关于网店帮助列表帮助文档</a>', 'article') . '</p>'   
 		);
 		
 		$this->assign('action_link', array('text' => __('添加新帮助文章', 'article'), 'href' => RC_Uri::url('article/admin_shophelp/add/')));
@@ -113,7 +113,7 @@ class admin_shophelp extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.9F.A5.E7.9C.8B.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0" target="_blank">'.__('关于网店帮助文章帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.9F.A5.E7.9C.8B.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0" target="_blank">关于网店帮助文章帮助文档</a>', 'article') . '</p>'
 		);
 		
 		$cat_id = intval($_GET['cat_id']);
@@ -154,7 +154,7 @@ class admin_shophelp extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.B7.BB.E5.8A.A0.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0" target="_blank">'.__('关于添加帮助文章帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.B7.BB.E5.8A.A0.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0" target="_blank">关于添加帮助文章帮助文档</a>', 'article') . '</p>'
 		);
 		
 		$this->assign('cat_id', $cat_id);
@@ -230,7 +230,7 @@ class admin_shophelp extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __('更多信息：', 'article') . '</strong></p>' .
-			'<p><a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E7.BC.96.E8.BE.91.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0" target="_blank">'.__('关于编辑帮助文章帮助文档', 'article').'</a></p>'
+			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E7.BC.96.E8.BE.91.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0" target="_blank">关于编辑帮助文章帮助文档</a>', 'article') . '</p>'   
 		);
 		
 		$this->assign('form_action', RC_Uri::url('article/admin_shophelp/update'));
