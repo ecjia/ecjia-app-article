@@ -4,16 +4,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App article 1.27.0\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-01-25 02:53:30+00:00\n"
+"POT-Creation-Date: 2019-01-25 07:50:31+00:00\n"
+"PO-Revision-Date: 2019-01-25 15:59+0800\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-01-25 15:05+0800\n"
-"Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "X-Generator: Poedit 2.2\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_US\n"
 
 #: admin.php:78 admin.php:88 admin.php:105 admin.php:165 admin.php:415
 #: admin.php:656 admin.php:1115 apis/article_admin_menu_api.class.php:61
@@ -33,8 +33,7 @@ msgid "概述"
 msgstr "Overview"
 
 #: admin.php:92
-msgid ""
-"欢迎访问ECJia智能后台文章列表页面，系统中所有的文章都会显示在此列表中。"
+msgid "欢迎访问ECJia智能后台文章列表页面，系统中所有的文章都会显示在此列表中。"
 msgstr ""
 "Welcome to the ECJia Smart Backstage Article List page, where all articles "
 "in the system will appear in this list."
@@ -81,8 +80,8 @@ msgstr "Article description cannot be empty"
 #: admin.php:205 admin.php:490
 msgid "文章类型为普通文章时，文章内容不能为空"
 msgstr ""
-"When the article type is a normal article, the content of the article "
-"cannot be empty."
+"When the article type is a normal article, the content of the article cannot "
+"be empty."
 
 #: admin.php:208 admin.php:493
 msgid "文章类型为跳转链接时，外部链接不能为空"
@@ -96,8 +95,8 @@ msgstr "Article %s already exists"
 #: admin.php:256 admin.php:550
 msgid "文章类型为点击标题直接下载时，上传文件不能为空"
 msgstr ""
-"The upload file cannot be empty when the article type is directly "
-"downloaded by clicking on the title."
+"The upload file cannot be empty when the article type is directly downloaded "
+"by clicking on the title."
 
 #: admin.php:259 admin.php:553
 msgid "文章类型为内容底部相关下载时，文章内容和上传文件都不能为空！"
@@ -146,11 +145,11 @@ msgstr ""
 
 #: admin.php:404
 msgid ""
-"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E6.96.87.E7."
-"AB.A0.E7.BC.96.E8.BE.91\" target=\"_blank\">关于编辑文章帮助文档</a>"
+"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E6.96.87.E7.AB."
+"A0.E7.BC.96.E8.BE.91\" target=\"_blank\">关于编辑文章帮助文档</a>"
 msgstr ""
-"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E6.96.87.E7."
-"AB.A0.E7.BC.96.E8.BE.91\" target=\"_blank\">About editing article help "
+"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章列表#.E6.96.87.E7.AB."
+"A0.E7.BC.96.E8.BE.91\" target=\"_blank\">About editing article help "
 "documentation</a>"
 
 #: admin.php:587 admin_shophelp.php:274
@@ -189,8 +188,7 @@ msgid "编辑关联商品"
 msgstr "Edit related products"
 
 #: admin.php:648
-msgid ""
-"欢迎访问ECJia智能后台关联商品页面，可以在此页面编辑相应的关联商品信息。"
+msgid "欢迎访问ECJia智能后台关联商品页面，可以在此页面编辑相应的关联商品信息。"
 msgstr ""
 "Welcome to the ECJia Smart Backstage Related Products page, where you can "
 "edit the corresponding related product information."
@@ -256,8 +254,7 @@ msgstr "Remove article to recycle bin successfully"
 
 #: admin.php:828
 msgid "文章移到回收站，文章标题是：%s"
-msgstr ""
-"The article was moved to the recycle bin and the article title is: %s"
+msgstr "The article was moved to the recycle bin and the article title is: %s"
 
 #: admin.php:858 admin.php:868
 msgid "成功切换文章是否置顶"
@@ -441,8 +438,8 @@ msgstr "Article Category"
 msgid ""
 "欢迎访问ECJia智能后台文章分类页面，系统中所有的文章分类都会显示在此列表中。"
 msgstr ""
-"Welcome to the ECJia Smart Backstage Articles Classification page, where "
-"all article categories in the system will appear in this list."
+"Welcome to the ECJia Smart Backstage Articles Classification page, where all "
+"article categories in the system will appear in this list."
 
 #: admin_articlecat.php:93
 msgid ""
@@ -459,18 +456,18 @@ msgstr "Add article category"
 #: admin_articlecat.php:120
 msgid "欢迎访问ECJia智能后台添加文章分类页面，可以在此页面添加文章分类信息。"
 msgstr ""
-"Welcome to the ECJia Smart Background Add Article Classification page, "
-"where you can add article category information."
+"Welcome to the ECJia Smart Background Add Article Classification page, where "
+"you can add article category information."
 
 #: admin_articlecat.php:125
 msgid ""
-"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E6.B7.BB."
-"E5.8A.A0.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">关于添加文"
-"章分类帮助文档</a>"
+"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E6.B7.BB.E5.8A."
+"A0.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">关于添加文章分类帮"
+"助文档</a>"
 msgstr ""
-"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E6.B7.BB."
-"E5.8A.A0.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">About "
-"adding article category help documentation\n"
+"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E6.B7.BB.E5.8A."
+"A0.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">About adding "
+"article category help documentation\n"
 "</a>"
 
 #: admin_articlecat.php:148 admin_articlecat.php:256
@@ -503,18 +500,18 @@ msgstr ""
 #: admin_articlecat.php:203
 msgid ""
 "<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E7.BC.96.E8."
-"BE.91.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">关于编辑文章"
-"分类帮助文档</a>"
+"BE.91.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">关于编辑文章分"
+"类帮助文档</a>"
 msgstr ""
 "<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:文章分类#.E7.BC.96.E8."
-"BE.91.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">About "
-"editing article category help documentation</a>"
+"BE.91.E6.96.87.E7.AB.A0.E5.88.86.E7.B1.BB\" target=\"_blank\">About editing "
+"article category help documentation</a>"
 
 #: admin_articlecat.php:273
 msgid "分类名的父分类不能设置成本身或本身的子分类"
 msgstr ""
-"The parent category of the category name cannot set the cost body or its "
-"own sub-category"
+"The parent category of the category name cannot set the cost body or its own "
+"sub-category"
 
 #: admin_articlecat.php:327
 msgid "分类 %s 编辑成功"
@@ -538,8 +535,8 @@ msgstr ""
 #: admin_articlecat.php:362
 msgid "分类下还有文章，不允许删除非空分类"
 msgstr ""
-"There are also articles under the category, it is not allowed to delete "
-"non-empty category"
+"There are also articles under the category, it is not allowed to delete non-"
+"empty category"
 
 #: admin_notice.php:171 admin_shopinfo.php:176
 msgid "添加 %s 成功"
@@ -580,8 +577,8 @@ msgstr "Add a new help article"
 
 #: admin_shophelp.php:111
 msgid ""
-"欢迎访问ECJia智能后台网店帮助文章列表页面，系统中指定分类下的网店帮助文章都"
-"会显示在此列表中。"
+"欢迎访问ECJia智能后台网店帮助文章列表页面，系统中指定分类下的网店帮助文章都会"
+"显示在此列表中。"
 msgstr ""
 "Welcome to the ECJia Smart Backstage Store Help Article List page. The "
 "online store help articles under the specified category in the system will "
@@ -590,8 +587,8 @@ msgstr ""
 #: admin_shophelp.php:116
 msgid ""
 "<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.9F.A5."
-"E7.9C.8B.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">关于网店帮"
-"助文章帮助文档</a>"
+"E7.9C.8B.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">关于网店帮助"
+"文章帮助文档</a>"
 msgstr ""
 "<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.9F.A5."
 "E7.9C.8B.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">About the "
@@ -618,13 +615,13 @@ msgstr ""
 
 #: admin_shophelp.php:157
 msgid ""
-"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.B7.BB."
-"E5.8A.A0.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">关于添加帮"
-"助文章帮助文档</a>"
+"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.B7.BB.E5.8A."
+"A0.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">关于添加帮助文章帮"
+"助文档</a>"
 msgstr ""
-"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.B7.BB."
-"E5.8A.A0.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">About "
-"adding help article help documentation</a>"
+"<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E6.B7.BB.E5.8A."
+"A0.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">About adding help "
+"article help documentation</a>"
 
 #: admin_shophelp.php:174 admin_shophelp.php:249
 msgid "此文章主题已经存在！"
@@ -660,12 +657,12 @@ msgstr ""
 #: admin_shophelp.php:233
 msgid ""
 "<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E7.BC.96.E8."
-"BE.91.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">关于编辑帮助"
-"文章帮助文档</a>"
+"BE.91.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">关于编辑帮助文"
+"章帮助文档</a>"
 msgstr ""
 "<a href=\"https://ecjia.com/wiki/帮助:ECJia智能后台:网店帮助#.E7.BC.96.E8."
-"BE.91.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">About "
-"editing help article help documentation</a>"
+"BE.91.E5.B8.AE.E5.8A.A9.E6.96.87.E7.AB.A0\" target=\"_blank\">About editing "
+"help article help documentation</a>"
 
 #: admin_shophelp.php:272 admin_shophelp.php:366
 msgid "%s 所属帮助分类是: %s"
@@ -740,12 +737,10 @@ msgid "编辑网店信息"
 msgstr "Edit online store information"
 
 #: admin_shopinfo.php:189
-msgid ""
-"欢迎访问ECJia智能后台编辑网店信息页面，可以在此页面编辑相应的网店信息。"
+msgid "欢迎访问ECJia智能后台编辑网店信息页面，可以在此页面编辑相应的网店信息。"
 msgstr ""
-"Welcome to the ECJia intelligent background editing online store "
-"information page, you can edit the corresponding online store information "
-"on this page."
+"Welcome to the ECJia intelligent background editing online store information "
+"page, you can edit the corresponding online store information on this page."
 
 #: admin_shopinfo.php:194
 msgid ""
@@ -774,6 +769,7 @@ msgid "添加文章"
 msgstr "Add Article"
 
 #: apis/article_admin_menu_api.class.php:69
+#: functions/admin_article.func.php:114
 msgid "平台公告"
 msgstr "Platform Announcement"
 
@@ -782,10 +778,12 @@ msgid "网店帮助"
 msgstr "Store Help"
 
 #: apis/article_admin_menu_api.class.php:72 classes/Helper.php:69
+#: functions/admin_article.func.php:97
 msgid "商家公告"
 msgstr "Merchant Announcement"
 
 #: apis/article_admin_menu_api.class.php:73 classes/Helper.php:70
+#: functions/admin_article.func.php:106
 msgid "系统信息"
 msgstr "System Information"
 
@@ -877,6 +875,10 @@ msgstr "Cancel"
 msgid "更新文章评论状态"
 msgstr "Update article comment status"
 
+#: classes/hooks/admin_article.class.php:58
+msgid "文章投稿"
+msgstr ""
+
 #: configs/jslang.php:57
 msgid "请选择需要转移的文章"
 msgstr "Please select the article you want to transfer"
@@ -933,6 +935,42 @@ msgstr "Please enter a help article title"
 msgid "请输入网店标题"
 msgstr "Please enter the store title"
 
+#: functions/admin_article.func.php:98
+#, fuzzy
+#| msgid "商家公告"
+msgid "发布商家公告"
+msgstr "Merchant Announcement"
+
+#: functions/admin_article.func.php:99
+#, fuzzy
+#| msgid "商家公告"
+msgid "编辑商家公告"
+msgstr "Merchant Announcement"
+
+#: functions/admin_article.func.php:107
+#, fuzzy
+#| msgid "系统信息"
+msgid "发布系统信息"
+msgstr "System Information"
+
+#: functions/admin_article.func.php:108
+#, fuzzy
+#| msgid "系统信息"
+msgid "编辑系统信息"
+msgstr "System Information"
+
+#: functions/admin_article.func.php:115
+#, fuzzy
+#| msgid "平台公告"
+msgid "发布平台公告"
+msgstr "Platform Announcement"
+
+#: functions/admin_article.func.php:116
+#, fuzzy
+#| msgid "平台公告"
+msgid "编辑平台公告"
+msgstr "Platform Announcement"
+
 #: merchant.php:187 merchant.php:460
 msgid "请输入文章内容"
 msgstr "Please enter the content of the article"
@@ -981,14 +1019,14 @@ msgstr "To category"
 #: merchant.php:934
 msgid "通过文章评论，评论内容为：%s，文章标题为：%s"
 msgstr ""
-"Through the article comments, the comment content is: %s, the article "
-"title is: %s"
+"Through the article comments, the comment content is: %s, the article title "
+"is: %s"
 
 #: merchant.php:938
 msgid "驳回文章评论，评论内容为：%s，文章标题为：%s"
 msgstr ""
-"Dismissed the article comment, the comment content is: %s, the article "
-"title is: %s"
+"Dismissed the article comment, the comment content is: %s, the article title "
+"is: %s"
 
 #: merchant.php:942
 msgid "设为垃圾评论，评论内容为：%s，文章标题为：%s"
@@ -997,6 +1035,21 @@ msgstr "Set as spam comment, comment content: %s, article title: %s"
 #: merchant.php:1001
 msgid "评论内容为：%s，文章标题为：%s"
 msgstr "The comment content is: %s, the article title is: %s"
+
+#: modules/article/comment/create_module.class.php:67
+#: modules/article/like/like_manage_module.class.php:67
+msgid "参数错误！"
+msgstr "Parameter error!"
+
+#: modules/article/detail_module.class.php:69
+#: modules/shop/help/detail_module.class.php:64
+#: modules/shop/info/detail_module.class.php:65
+msgid "不存在的信息"
+msgstr "Non-existent information"
+
+#: modules/article/like/like_manage_module.class.php:71
+msgid "不存在的信息！"
+msgstr "Non-existent information!"
 
 #: content/apps/article/templates/admin/preview.dwt.php:22
 #: content/apps/article/templates/merchant/preview.dwt.php:26
@@ -1474,13 +1527,13 @@ msgstr "Search"
 #: content/apps/article/templates/admin/link_goods.dwt.php:42
 #: content/apps/article/templates/merchant/link_goods.dwt.php:56
 msgid ""
-"搜索要关联的商品，搜到商品会展示在左侧列表框中。点击左侧列表中选项，关联商"
-"品即可进入右侧已关联列表。保存后生效。您还可以在右侧编辑关联模式。"
+"搜索要关联的商品，搜到商品会展示在左侧列表框中。点击左侧列表中选项，关联商品"
+"即可进入右侧已关联列表。保存后生效。您还可以在右侧编辑关联模式。"
 msgstr ""
 "Search for items to be associated, and items found will appear in the list "
 "box on the left. Click on the option in the list on the left to associate "
-"the item to the linked list on the right. Take effect after saving. You "
-"can also edit the association mode on the right."
+"the item to the linked list on the right. Take effect after saving. You can "
+"also edit the association mode on the right."
 
 #: content/apps/article/templates/admin/link_goods.dwt.php:48
 #: content/apps/article/templates/merchant/link_goods.dwt.php:65
