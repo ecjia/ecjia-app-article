@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Ecjia App article 1.27.0\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
 "POT-Creation-Date: 2019-01-25 07:50:31+00:00\n"
-"PO-Revision-Date: 2019-01-25 16:11+0800\n"
+"PO-Revision-Date: 2019-01-25 16:22+0800\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "Language: en_US\n"
@@ -849,7 +849,7 @@ msgstr "article"
 
 #: apis/article_merchant_menu_api.class.php:58
 msgid "我要投稿"
-msgstr "I want to contribute"
+msgstr "Article Contribute "
 
 #: apis/article_merchant_purview_api.class.php:60
 msgid "删除文章"
