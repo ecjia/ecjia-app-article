@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Ecjia App article 1.27.0\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
 "POT-Creation-Date: 2019-01-25 07:50:31+00:00\n"
-"PO-Revision-Date: 2019-01-25 15:59+0800\n"
+"PO-Revision-Date: 2019-01-25 16:11+0800\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "Language: en_US\n"
@@ -936,40 +936,28 @@ msgid "请输入网店标题"
 msgstr "Please enter the store title"
 
 #: functions/admin_article.func.php:98
-#, fuzzy
-#| msgid "商家公告"
 msgid "发布商家公告"
-msgstr "Merchant Announcement"
+msgstr "Release merchant announcement"
 
 #: functions/admin_article.func.php:99
-#, fuzzy
-#| msgid "商家公告"
 msgid "编辑商家公告"
-msgstr "Merchant Announcement"
+msgstr "Edit merchant announcement"
 
 #: functions/admin_article.func.php:107
-#, fuzzy
-#| msgid "系统信息"
 msgid "发布系统信息"
-msgstr "System Information"
+msgstr "Release system Information"
 
 #: functions/admin_article.func.php:108
-#, fuzzy
-#| msgid "系统信息"
 msgid "编辑系统信息"
-msgstr "System Information"
+msgstr "Edit system Information"
 
 #: functions/admin_article.func.php:115
-#, fuzzy
-#| msgid "平台公告"
 msgid "发布平台公告"
-msgstr "Platform Announcement"
+msgstr "Release platform announcement"
 
 #: functions/admin_article.func.php:116
-#, fuzzy
-#| msgid "平台公告"
 msgid "编辑平台公告"
-msgstr "Platform Announcement"
+msgstr "Edit platform announcement"
 
 #: merchant.php:187 merchant.php:460
 msgid "请输入文章内容"
