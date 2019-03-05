@@ -40,20 +40,17 @@ class StoreArticleClear extends StoreCleanAbstract
      */
     public function handlePrintData()
     {
-        $count = $this->handleCount();
-
         $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
+        $url        = RC_Uri::url('article/admin/init', array('publishby' => 'store', 'keywords' => $store_info['merchants_name']));
 
-        $url = RC_Uri::url('article/admin/init', array('publishby' => 'store', 'keywords' => $store_info['merchants_name']));
+        $count     = $this->handleCount();
+        $text      = sprintf(__('总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>篇文章', 'article'), $count);
+        $text_info = __('查看全部>>>', 'article');
 
         return <<<HTML
-
-<span class="controls-info w300">总共有<span class="ecjiafc-red ecjiaf-fs3">{$count}</span>篇文章</span>
-
-<span class="controls-info"><a href="{$url}" target="__blank">查看全部>>></a></span>
-
+<span class="controls-info w300">{$text}</span>
+<span class="controls-info"><a href="{$url}" target="__blank">{$text_info}</a></span>
 HTML;
-
     }
 
     /**
