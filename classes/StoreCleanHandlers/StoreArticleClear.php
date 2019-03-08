@@ -13,6 +13,8 @@ use RC_Uri;
 use RC_DB;
 use RC_Api;
 use ecjia_admin;
+use RC_Filesystem;
+use RC_Upload;
 
 class StoreArticleClear extends StoreCleanAbstract
 {
@@ -85,6 +87,15 @@ HTML;
         }
 
         $cat_list = RC_DB::table('article_cat')->where('cat_type', 'article')->lists('cat_id');
+
+        $file_list = RC_DB::table('article')->where('store_id', $this->store_id)->whereIn('cat_id', $cat_list)->select('file_url', 'cover_image')->get();
+        if (!empty($file_list)) {
+            $disk = RC_Filesystem::disk();
+            foreach ($file_list as $k => $v) {
+                $disk->delete(RC_Upload::upload_path() . $v['file_url']);
+                $disk->delete(RC_Upload::upload_path() . $v['cover_image']);
+            }
+        }
 
         $result = RC_DB::table('article')->where('store_id', $this->store_id)->whereIn('cat_id', $cat_list)->delete();
 
