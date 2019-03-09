@@ -47,12 +47,12 @@ class ArticleTypeEnum extends Enum
     protected function __statusMap()
     {
         return [
-            self::TYPE_SHOP_HELP        => __('网店帮助'),
-            self::TYPE_SHOP_INFO        => __('网店信息'),
-            self::TYPE_ARTICLE          => __('普通文章'),
-            self::TYPE_SYSTEM           => __('系统信息'),
-            self::TYPE_MERCHANT_NOTICE  => __('商家公告'),
-            self::TYPE_SHOP_NOTICE      => __('平台公告'),
+            self::TYPE_SHOP_HELP        => __('网店帮助', 'article'),
+            self::TYPE_SHOP_INFO        => __('网店信息', 'article'),
+            self::TYPE_ARTICLE          => __('普通文章', 'article'),
+            self::TYPE_SYSTEM           => __('系统信息', 'article'),
+            self::TYPE_MERCHANT_NOTICE  => __('商家公告', 'article'),
+            self::TYPE_SHOP_NOTICE      => __('平台公告', 'article'),
         ];
     }
 
