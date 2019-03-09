@@ -6,10 +6,11 @@
  * Time: 16:29
  */
 
-namespace Ecjia\App\Article;
+namespace Ecjia\App\Article\Enums;
 
+use Royalcms\Component\Enum\Enum;
 
-class ArticleType
+class ArticleTypeEnum extends Enum
 {
 
     /**
@@ -43,5 +44,16 @@ class ArticleType
     const TYPE_SHOP_NOTICE = 'shop_notice';
 
 
+    protected function __statusMap()
+    {
+        return [
+            self::TYPE_SHOP_HELP        => __('网店帮助'),
+            self::TYPE_SHOP_INFO        => __('网店信息'),
+            self::TYPE_ARTICLE          => __('普通文章'),
+            self::TYPE_SYSTEM           => __('系统信息'),
+            self::TYPE_MERCHANT_NOTICE  => __('商家公告'),
+            self::TYPE_SHOP_NOTICE      => __('平台公告'),
+        ];
+    }
 
 }
