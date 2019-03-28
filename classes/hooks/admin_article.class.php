@@ -103,8 +103,8 @@ class article_admin_hooks
     {
         $setting = ecjia_admin_setting::singleton();
 
-        $menus[] = ecjia_admin::make_admin_menu('nav-header', __('文章', 'article'), '', 26)->add_purview(array('shop_config'));
-        $menus[] = ecjia_admin::make_admin_menu('article', __('文章设置', 'article'), RC_Uri::url('setting/shop_config/init', array('code' => 'article')), 27)->add_purview('shop_config')->add_icon('fontello-icon-gift');
+        $menus[] = ecjia_admin::make_admin_menu('nav-header', __('文章', 'article'), '', 26)->add_purview(array('article_setting'));
+        $menus[] = ecjia_admin::make_admin_menu('article', __('文章设置', 'article'), RC_Uri::url('setting/shop_config/init', array('code' => 'article')), 27)->add_purview('article_setting')->add_icon('fontello-icon-gift');
 
         return $menus;
     }
