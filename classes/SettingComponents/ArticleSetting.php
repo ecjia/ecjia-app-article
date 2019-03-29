@@ -40,6 +40,7 @@ class ArticleSetting extends ComponentAbstract
             ['code' => 'article_title_length', 'value' => '20', 'options' => ['type' => 'text']],
             ['code' => 'article_page_size', 'value' => '20', 'options' => ['type' => 'text']],
             ['code' => 'help_open', 'value' => '1', 'options' => ['type' => 'select', 'store_range' => '0,1']],
+            ['code' => 'article_number', 'value' => '8', 'options' => ['type' => 'text']],
 
         ];
 
@@ -73,6 +74,12 @@ class ArticleSetting extends ComponentAbstract
                 ),
             ],
 
+            [
+                'cfg_code' => 'article_number',
+                'cfg_name' => __('最新文章显示数量', 'goods'),
+                'cfg_desc' => '',
+                'cfg_range' => '',
+            ],
 
         ];
 
