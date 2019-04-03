@@ -20,17 +20,10 @@ class ArticleSetting extends ComponentAbstract
      */
     protected $code = 'article';
 
-    /**
-     * 名称
-     * @var string
-     */
-    protected $name = '文章设置';
-
-    /**
-     * 描述
-     * @var string
-     */
-    protected $description = '';
+    public function __construct()
+    {
+        $this->name = __('文章设置', 'article');
+    }
 
 
     public function handle()
@@ -76,7 +69,7 @@ class ArticleSetting extends ComponentAbstract
 
             [
                 'cfg_code' => 'article_number',
-                'cfg_name' => __('最新文章显示数量', 'goods'),
+                'cfg_name' => __('最新文章显示数量', 'article'),
                 'cfg_desc' => '',
                 'cfg_range' => '',
             ],
