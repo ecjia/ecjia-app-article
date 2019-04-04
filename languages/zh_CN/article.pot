@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App article 1.28.0\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-03-29 01:42:00+00:00\n"
+"POT-Creation-Date: 2019-04-04 05:54:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -801,24 +801,33 @@ msgstr ""
 msgid "更新文章评论状态"
 msgstr ""
 
-#: classes/SettingComponents/ArticleSetting.php:54
+#: classes/SettingComponents/ArticleSetting.php:25
+#: classes/hooks/admin_article.class.php:107
+msgid "文章设置"
+msgstr ""
+
+#: classes/SettingComponents/ArticleSetting.php:48
 msgid "文章标题的长度"
 msgstr ""
 
-#: classes/SettingComponents/ArticleSetting.php:61
+#: classes/SettingComponents/ArticleSetting.php:55
 msgid "文章分类页列表的数量"
 msgstr ""
 
-#: classes/SettingComponents/ArticleSetting.php:68
+#: classes/SettingComponents/ArticleSetting.php:62
 msgid "用户帮助是否打开"
 msgstr ""
 
-#: classes/SettingComponents/ArticleSetting.php:71
+#: classes/SettingComponents/ArticleSetting.php:65
 msgid "关闭"
 msgstr ""
 
-#: classes/SettingComponents/ArticleSetting.php:72
+#: classes/SettingComponents/ArticleSetting.php:66
 msgid "打开"
+msgstr ""
+
+#: classes/SettingComponents/ArticleSetting.php:72
+msgid "最新文章显示数量"
 msgstr ""
 
 #: classes/StoreCleanHandlers/StoreArticleClear.php:36
@@ -843,10 +852,6 @@ msgstr ""
 
 #: classes/hooks/admin_article.class.php:58
 msgid "文章投稿"
-msgstr ""
-
-#: classes/hooks/admin_article.class.php:107
-msgid "文章设置"
 msgstr ""
 
 #: configs/jslang.php:57
