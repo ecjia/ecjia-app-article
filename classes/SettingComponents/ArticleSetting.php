@@ -46,24 +46,24 @@ class ArticleSetting extends ComponentAbstract
             [
                 'cfg_code' => 'article_title_length',
                 'cfg_name' => __('文章标题的长度', 'article'),
-                'cfg_desc' => '',
+                'cfg_desc' => __('与商品名称长度一样的原理，例如:设置“16”，当文章列表文字的字符数超过16，则用“...”代替', 'article'),
                 'cfg_range' => '',
             ],
 
             [
                 'cfg_code' => 'article_page_size',
                 'cfg_name' => __('文章分类页列表的数量', 'article'),
-                'cfg_desc' => '',
+                'cfg_desc' => __('限制文章分类页文章显示数量，不填写，则代表没有限制', 'article'),
                 'cfg_range' => '',
             ],
 
             [
                 'cfg_code' => 'help_open',
                 'cfg_name' => __('用户帮助是否打开', 'article'),
-                'cfg_desc' => '',
+                'cfg_desc' => __('设置“打开”后，此帮助会在后台顶部出现帮助信息', 'article'),
                 'cfg_range' => array(
-                    '0' => __('关闭', 'goods'),
-                    '1' => __('打开', 'goods'),
+                    '0' => __('关闭', 'article'),
+                    '1' => __('打开', 'article'),
                 ),
             ],
 
