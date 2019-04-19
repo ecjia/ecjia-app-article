@@ -89,47 +89,21 @@ class article_detail_module extends api_front implements api_interface {
 
 			if (!empty($article_related_goods_ids)) {
 				//用户端商品展示基础条件
-// 				$filters = [
-// 				'goods_ids' 		=> [$article_related_goods_ids]   //文章关联的商品id
-// 				];
+				$filters = [
+					'goods_ids' 		=> $article_related_goods_ids   //文章关联的商品id
+				];
 				
-// 				//定位附近店铺id
-// 				$filters['store_id'] = $article_info['store_id'];
-				
-// 				//会员等级价格
-// 				$filters['user_rank'] = $_SESSION['user_rank'];
-// 				$filters['user_rank_discount'] = $_SESSION['discount'];
-// 				//分页信息
-// 				$filters['size'] = 6;
-// 				$filters['page'] = 1;
+				//会员等级价格
+				$filters['user_rank'] = $_SESSION['user_rank'];
+				$filters['user_rank_discount'] = $_SESSION['discount'];
+				//分页信息
+				$filters['size'] = 6;
+				$filters['page'] = 1;
 					
-// 				$collection = (new \Ecjia\App\Goods\GoodsSearch\GoodsApiCollection($filters))->getData();
+				$collection = (new \Ecjia\App\Goods\GoodsSearch\GoodsApiCollection($filters))->getData();
 					
-// 				$list = $collection['goods_list'];
-
-				$article_related_goods = array();
-				if (!empty($article_related_goods_ids)) {
-					$article_related_goods = RC_DB::table('goods')->whereIn('goods_id', $article_related_goods_ids)->select(RC_DB::raw('goods_id, goods_name, market_price, shop_price, goods_thumb, goods_img, original_img'))->get();
-				}
-				$list = array();
-				if (!empty($article_related_goods)) {
-					foreach ($article_related_goods as $row) {
-						$list[] = array(
-								'goods_id' 		=> intval($row['goods_id']),
-								'name'	   		=> empty($row['goods_name']) ? '' : trim($row['goods_name']),
-								'market_price'	=> $row['market_price'] > 0 ? price_format($row['market_price']) : '0.00￥',
-								'shop_price'	=> $row['shop_price'] > 0 	? price_format($row['shop_price']) : '0.00￥',
-								'img'			=> array(
-										'thumb' => empty($row['goods_thumb']) ? RC_Uri::admin_url('statics/images/nopic.png') : RC_Upload::upload_url($row['goods_thumb']),
-										'url'	=> empty($row['original_img'])? RC_Uri::admin_url('statics/images/nopic.png') : RC_Upload::upload_url($row['original_img']),
-										'small'	=> empty($row['goods_img'])	  ? RC_Uri::admin_url('statics/images/nopic.png') : RC_Upload::upload_url($row['goods_img'])
-								)
-						);
-					}
-				}
+				$list = $collection['goods_list'];
 			}
-			
-			
 			
 			/*推荐商品*/
 			$recommend_goods = array();
