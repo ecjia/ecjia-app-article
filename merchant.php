@@ -858,7 +858,7 @@ class merchant extends ecjia_merchant {
 	 * 搜索商品，仅返回名称及ID
 	 */
 	public function get_goods_list() {
-		$filter = remove_xss($_GET['JSON']);
+		$filter = $_GET['JSON'];
 		/*商家条件*/
 		if (!empty($_SESSION['store_id']) && $_SESSION['store_id'] > 0) {
 			$filter['store_id'] = $_SESSION['store_id'];
