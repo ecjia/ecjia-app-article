@@ -74,7 +74,7 @@ class admin_article_auto extends ecjia_admin {
 		RC_Script::enqueue_script('bootstrap-datepicker', RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'));
 		RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
 		
-		RC_Script::enqueue_script('article_auto', RC_App::apps_url('statics/js/article_auto.js', __FILE__));
+		RC_Script::enqueue_script('article_auto', RC_App::apps_url('statics/js/article_auto.js', __FILE__), array(), false, 1);
 		
 		RC_Script::localize_script('article_auto', 'js_lang', config('app-article::jslang.article_auto_page'));
 	}
